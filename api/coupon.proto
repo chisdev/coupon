@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package coupon;
+
+option go_package = "github.com/chisdev/coupon/api;coupon";
+
+import "validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "google/api/annotations.proto";
+
+service Coupon {
+    rpc CheckCoupon (CheckCouponRequest) returns (CheckCouponResponse) {
+        option (google.api.http) = {
+            post: "/coupon/check"
+            body: "*"
+        };
+    };
+}
+
+enum SortType {
+    SORT_TYPE_UNKNOWN = 0;
+    SORT_TYPE_ASC =  1;
+    SORT_TYPE_DESC = 2;
+}
+
+enum CouponType {
+    COUPON_TYPE_UNKNOWN = 0;
+    COUPON_TYPE_PERCENTAGE = 1;
+    COUPON_TYPE_FIXED = 2;
+}   
+
+enum CouponStatus {
+    COUPON_STATUS_UNKNOWN = 0;
+    COUPON_STATUS_USED = 1;
+    COUPON_STATUS_RESERVED  = 2;
+    COUPON_STATUS_ACTIVE  = 3;
+    COUPON_STATUS_EXPIRED  = 4;
+}
+
+enum MilestoneType {
+    MILESTONE_TYPE_UNKNOWN = 0;
+    MILESTONE_TYPE_FIXED = 1;
+    MILESTONE_TYPE_RECURRING  = 2;
+}
+
+message SortMethod {
+    string name = 1 [
+      (validate.rules).string = {
+        min_len: 1
+      }
+    ];
+    SortType type = 2;
+}
+
+message CheckCouponRequest {
+    string code = 1;
+    string user_id = 2;
+    repeated string service_ids = 3;
+    optional string store_id = 4;
+}
+
+message CheckCouponResponse {
+    bool valid = 1;
+    string message = 2;
+}

@@ -1,0 +1,45 @@
+project:
+  name: coupon
+  monorepo: false
+  go_package: github.com/chisdev/coupon
+  npm_package: "@marketplace/coupon"
+
+extend: # extend file name
+
+generate:
+  allow_custom_options: true
+  profiling:
+    port: 6060
+    enable: false
+  dockerfile:
+    enable: true
+  ent:
+    enable: true
+  command:
+    enable: true
+  server:
+    enable: true
+    path: internal/server
+  grpc_server:
+    enable: true
+    path: internal/server
+  grpc_gateway:
+    enable: true
+  http_server:
+    enable: true  
+  client:
+    enable: true
+    path: pkg/client
+  helm:
+    enable: false
+  proto:
+    go:
+      - coupon.proto
+      - coupon_config.proto
+      - coupon_code.proto
+    js:
+      - coupon.proto
+      - coupon_code.proto
+    imports: # optional
+  grpc_log:
+    enable: false
