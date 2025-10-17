@@ -7,10 +7,7 @@
 package coupon
 
 import (
-	context "context"
 	grpc "google.golang.org/grpc"
-	codes "google.golang.org/grpc/codes"
-	status "google.golang.org/grpc/status"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -18,15 +15,10 @@ import (
 // Requires gRPC-Go v1.64.0 or later.
 const _ = grpc.SupportPackageIsVersion9
 
-const (
-	Coupon_HealCheck_FullMethodName = "/coupon.Coupon/HealCheck"
-)
-
 // CouponClient is the client API for Coupon service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CouponClient interface {
-	HealCheck(ctx context.Context, in *HealCheckRequest, opts ...grpc.CallOption) (*HealCheckResponse, error)
 }
 
 type couponClient struct {
@@ -37,21 +29,10 @@ func NewCouponClient(cc grpc.ClientConnInterface) CouponClient {
 	return &couponClient{cc}
 }
 
-func (c *couponClient) HealCheck(ctx context.Context, in *HealCheckRequest, opts ...grpc.CallOption) (*HealCheckResponse, error) {
-	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(HealCheckResponse)
-	err := c.cc.Invoke(ctx, Coupon_HealCheck_FullMethodName, in, out, cOpts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
 // CouponServer is the server API for Coupon service.
 // All implementations must embed UnimplementedCouponServer
 // for forward compatibility.
 type CouponServer interface {
-	HealCheck(context.Context, *HealCheckRequest) (*HealCheckResponse, error)
 	mustEmbedUnimplementedCouponServer()
 }
 
@@ -62,9 +43,6 @@ type CouponServer interface {
 // pointer dereference when methods are called.
 type UnimplementedCouponServer struct{}
 
-func (UnimplementedCouponServer) HealCheck(context.Context, *HealCheckRequest) (*HealCheckResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method HealCheck not implemented")
-}
 func (UnimplementedCouponServer) mustEmbedUnimplementedCouponServer() {}
 func (UnimplementedCouponServer) testEmbeddedByValue()                {}
 
@@ -86,36 +64,73 @@ func RegisterCouponServer(s grpc.ServiceRegistrar, srv CouponServer) {
 	s.RegisterService(&Coupon_ServiceDesc, srv)
 }
 
-func _Coupon_HealCheck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HealCheckRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(CouponServer).HealCheck(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Coupon_HealCheck_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CouponServer).HealCheck(ctx, req.(*HealCheckRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 // Coupon_ServiceDesc is the grpc.ServiceDesc for Coupon service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Coupon_ServiceDesc = grpc.ServiceDesc{
 	ServiceName: "coupon.Coupon",
 	HandlerType: (*CouponServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "HealCheck",
-			Handler:    _Coupon_HealCheck_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "coupon/api/coupon.proto",
+	Methods:     []grpc.MethodDesc{},
+	Streams:     []grpc.StreamDesc{},
+	Metadata:    "coupon/api/coupon.proto",
+}
+
+// CouponCmsClient is the client API for CouponCms service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type CouponCmsClient interface {
+}
+
+type couponCmsClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewCouponCmsClient(cc grpc.ClientConnInterface) CouponCmsClient {
+	return &couponCmsClient{cc}
+}
+
+// CouponCmsServer is the server API for CouponCms service.
+// All implementations must embed UnimplementedCouponCmsServer
+// for forward compatibility.
+type CouponCmsServer interface {
+	mustEmbedUnimplementedCouponCmsServer()
+}
+
+// UnimplementedCouponCmsServer must be embedded to have
+// forward compatible implementations.
+//
+// NOTE: this should be embedded by value instead of pointer to avoid a nil
+// pointer dereference when methods are called.
+type UnimplementedCouponCmsServer struct{}
+
+func (UnimplementedCouponCmsServer) mustEmbedUnimplementedCouponCmsServer() {}
+func (UnimplementedCouponCmsServer) testEmbeddedByValue()                   {}
+
+// UnsafeCouponCmsServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to CouponCmsServer will
+// result in compilation errors.
+type UnsafeCouponCmsServer interface {
+	mustEmbedUnimplementedCouponCmsServer()
+}
+
+func RegisterCouponCmsServer(s grpc.ServiceRegistrar, srv CouponCmsServer) {
+	// If the following call pancis, it indicates UnimplementedCouponCmsServer was
+	// embedded by pointer and is nil.  This will cause panics if an
+	// unimplemented method is ever invoked, so we test this at initialization
+	// time to prevent it from happening at runtime later due to I/O.
+	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
+		t.testEmbeddedByValue()
+	}
+	s.RegisterService(&CouponCms_ServiceDesc, srv)
+}
+
+// CouponCms_ServiceDesc is the grpc.ServiceDesc for CouponCms service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var CouponCms_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "coupon.CouponCms",
+	HandlerType: (*CouponCmsServer)(nil),
+	Methods:     []grpc.MethodDesc{},
+	Streams:     []grpc.StreamDesc{},
+	Metadata:    "coupon/api/coupon.proto",
 }

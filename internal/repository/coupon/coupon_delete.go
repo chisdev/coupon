@@ -19,14 +19,6 @@ func (c *coupon) Delete(ctx context.Context, tx tx.Tx, opts ...Option) error {
 		query = query.Where(entcoupon.CodeEQ(couponOpts.Code))
 	}
 
-	if couponOpts.UserID != "" {
-		query = query.Where(entcoupon.CustomerIDEQ(couponOpts.UserID))
-	}
-
-	if couponOpts.StoreID != "" {
-		query = query.Where(entcoupon.StoreIDEQ(couponOpts.StoreID))
-	}
-
 	if len(couponOpts.UserIDs) > 0 {
 		query = query.Where(entcoupon.CustomerIDIn(couponOpts.UserIDs...))
 	}

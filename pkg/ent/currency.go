@@ -23,6 +23,8 @@ type Currency struct {
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
+	// Code holds the value of the "code" field.
+	Code string `json:"code,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CurrencyQuery when eager-loading is set.
 	Edges        CurrencyEdges `json:"edges"`
@@ -65,7 +67,7 @@ func (*Currency) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case currency.FieldID:
 			values[i] = new(sql.NullInt64)
-		case currency.FieldName:
+		case currency.FieldName, currency.FieldCode:
 			values[i] = new(sql.NullString)
 		case currency.FieldCreatedAt, currency.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
@@ -107,6 +109,12 @@ func (_m *Currency) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
 				_m.Name = value.String
+			}
+		case currency.FieldCode:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field code", values[i])
+			} else if value.Valid {
+				_m.Code = value.String
 			}
 		default:
 			_m.selectValues.Set(columns[i], values[i])
@@ -162,6 +170,9 @@ func (_m *Currency) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(_m.Name)
+	builder.WriteString(", ")
+	builder.WriteString("code=")
+	builder.WriteString(_m.Code)
 	builder.WriteByte(')')
 	return builder.String()
 }

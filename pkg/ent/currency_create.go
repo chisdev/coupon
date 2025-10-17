@@ -58,6 +58,12 @@ func (_c *CurrencyCreate) SetName(v string) *CurrencyCreate {
 	return _c
 }
 
+// SetCode sets the "code" field.
+func (_c *CurrencyCreate) SetCode(v string) *CurrencyCreate {
+	_c.mutation.SetCode(v)
+	return _c
+}
+
 // SetID sets the "id" field.
 func (_c *CurrencyCreate) SetID(v uint64) *CurrencyCreate {
 	_c.mutation.SetID(v)
@@ -150,6 +156,9 @@ func (_c *CurrencyCreate) check() error {
 	if _, ok := _c.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Currency.name"`)}
 	}
+	if _, ok := _c.mutation.Code(); !ok {
+		return &ValidationError{Name: "code", err: errors.New(`ent: missing required field "Currency.code"`)}
+	}
 	return nil
 }
 
@@ -194,6 +203,10 @@ func (_c *CurrencyCreate) createSpec() (*Currency, *sqlgraph.CreateSpec) {
 	if value, ok := _c.mutation.Name(); ok {
 		_spec.SetField(currency.FieldName, field.TypeString, value)
 		_node.Name = value
+	}
+	if value, ok := _c.mutation.Code(); ok {
+		_spec.SetField(currency.FieldCode, field.TypeString, value)
+		_node.Code = value
 	}
 	if nodes := _c.mutation.CouponsIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -303,6 +316,18 @@ func (u *CurrencyUpsert) UpdateName() *CurrencyUpsert {
 	return u
 }
 
+// SetCode sets the "code" field.
+func (u *CurrencyUpsert) SetCode(v string) *CurrencyUpsert {
+	u.Set(currency.FieldCode, v)
+	return u
+}
+
+// UpdateCode sets the "code" field to the value that was provided on create.
+func (u *CurrencyUpsert) UpdateCode() *CurrencyUpsert {
+	u.SetExcluded(currency.FieldCode)
+	return u
+}
+
 // UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
@@ -379,6 +404,20 @@ func (u *CurrencyUpsertOne) SetName(v string) *CurrencyUpsertOne {
 func (u *CurrencyUpsertOne) UpdateName() *CurrencyUpsertOne {
 	return u.Update(func(s *CurrencyUpsert) {
 		s.UpdateName()
+	})
+}
+
+// SetCode sets the "code" field.
+func (u *CurrencyUpsertOne) SetCode(v string) *CurrencyUpsertOne {
+	return u.Update(func(s *CurrencyUpsert) {
+		s.SetCode(v)
+	})
+}
+
+// UpdateCode sets the "code" field to the value that was provided on create.
+func (u *CurrencyUpsertOne) UpdateCode() *CurrencyUpsertOne {
+	return u.Update(func(s *CurrencyUpsert) {
+		s.UpdateCode()
 	})
 }
 
@@ -624,6 +663,20 @@ func (u *CurrencyUpsertBulk) SetName(v string) *CurrencyUpsertBulk {
 func (u *CurrencyUpsertBulk) UpdateName() *CurrencyUpsertBulk {
 	return u.Update(func(s *CurrencyUpsert) {
 		s.UpdateName()
+	})
+}
+
+// SetCode sets the "code" field.
+func (u *CurrencyUpsertBulk) SetCode(v string) *CurrencyUpsertBulk {
+	return u.Update(func(s *CurrencyUpsert) {
+		s.SetCode(v)
+	})
+}
+
+// UpdateCode sets the "code" field to the value that was provided on create.
+func (u *CurrencyUpsertBulk) UpdateCode() *CurrencyUpsertBulk {
+	return u.Update(func(s *CurrencyUpsert) {
+		s.UpdateCode()
 	})
 }
 

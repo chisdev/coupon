@@ -1410,6 +1410,7 @@ type CurrencyMutation struct {
 	created_at     *time.Time
 	updated_at     *time.Time
 	name           *string
+	code           *string
 	clearedFields  map[string]struct{}
 	coupons        map[uint64]struct{}
 	removedcoupons map[uint64]struct{}
@@ -1634,6 +1635,42 @@ func (m *CurrencyMutation) ResetName() {
 	m.name = nil
 }
 
+// SetCode sets the "code" field.
+func (m *CurrencyMutation) SetCode(s string) {
+	m.code = &s
+}
+
+// Code returns the value of the "code" field in the mutation.
+func (m *CurrencyMutation) Code() (r string, exists bool) {
+	v := m.code
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCode returns the old "code" field's value of the Currency entity.
+// If the Currency object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CurrencyMutation) OldCode(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCode is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCode requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCode: %w", err)
+	}
+	return oldValue.Code, nil
+}
+
+// ResetCode resets all changes to the "code" field.
+func (m *CurrencyMutation) ResetCode() {
+	m.code = nil
+}
+
 // AddCouponIDs adds the "coupons" edge to the Coupon entity by ids.
 func (m *CurrencyMutation) AddCouponIDs(ids ...uint64) {
 	if m.coupons == nil {
@@ -1776,7 +1813,7 @@ func (m *CurrencyMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CurrencyMutation) Fields() []string {
-	fields := make([]string, 0, 3)
+	fields := make([]string, 0, 4)
 	if m.created_at != nil {
 		fields = append(fields, currency.FieldCreatedAt)
 	}
@@ -1785,6 +1822,9 @@ func (m *CurrencyMutation) Fields() []string {
 	}
 	if m.name != nil {
 		fields = append(fields, currency.FieldName)
+	}
+	if m.code != nil {
+		fields = append(fields, currency.FieldCode)
 	}
 	return fields
 }
@@ -1800,6 +1840,8 @@ func (m *CurrencyMutation) Field(name string) (ent.Value, bool) {
 		return m.UpdatedAt()
 	case currency.FieldName:
 		return m.Name()
+	case currency.FieldCode:
+		return m.Code()
 	}
 	return nil, false
 }
@@ -1815,6 +1857,8 @@ func (m *CurrencyMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldUpdatedAt(ctx)
 	case currency.FieldName:
 		return m.OldName(ctx)
+	case currency.FieldCode:
+		return m.OldCode(ctx)
 	}
 	return nil, fmt.Errorf("unknown Currency field %s", name)
 }
@@ -1844,6 +1888,13 @@ func (m *CurrencyMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetName(v)
+		return nil
+	case currency.FieldCode:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCode(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Currency field %s", name)
@@ -1902,6 +1953,9 @@ func (m *CurrencyMutation) ResetField(name string) error {
 		return nil
 	case currency.FieldName:
 		m.ResetName()
+		return nil
+	case currency.FieldCode:
+		m.ResetCode()
 		return nil
 	}
 	return fmt.Errorf("unknown Currency field %s", name)

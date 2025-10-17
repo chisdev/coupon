@@ -19,12 +19,12 @@ func (c *coupon) Create(ctx context.Context, value float64, opts ...Option) erro
 		SetStatus(api.CouponStatus_COUPON_STATUS_ACTIVE).
 		SetCode(uuid.NewString())
 
-	if couponOpts.UserID != "" {
-		query = query.SetCustomerID(couponOpts.UserID)
+	if len(couponOpts.UserIDs) != 0 {
+		query = query.SetCustomerID(couponOpts.UserIDs[0])
 	}
 
-	if couponOpts.StoreID != "" {
-		query = query.SetStoreID(couponOpts.StoreID)
+	if len(couponOpts.StoreIDs) != 0 {
+		query = query.SetStoreID(couponOpts.StoreIDs[0])
 	}
 
 	if couponOpts.ExpiredAt != nil {

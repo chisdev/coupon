@@ -10,10 +10,29 @@ import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 
 service Coupon {
-    rpc HealCheck (HealCheckRequest) returns (HealCheckResponse) { option (google.api.http) = {
-      get: "/coupon/healcheck"
-    };
+    // rpc HealCheck (HealCheckRequest) returns (HealCheckResponse) { option (google.api.http) = {
+    //   get: "/coupon/healcheck"
+    //     };
+    // }
+    rpc ReserveCoupon (ReserveCouponRequest) returns (ReserveCouponResponse);
+    rpc UnReserveCoupon (UnReserveCouponRequest) returns (UnReserveCouponResponse);
+    rpc UseCoupon (UseCouponRequest) returns (UseCouponResponse);
+
 }
+
+service CouponCms {
+    // Milestone API
+    rpc CreateMileStone (CreateMileStoneRequest) returns (CreateMileStoneResponse);
+    rpc UpdateMileStone (UpdateMileStoneRequest) returns (UpdateMileStoneResponse);
+    rpc ListMileStone   (ListMileStoneRequest) returns (ListMileStoneResponse);
+    rpc DeleteMileStone (DeleteMileStoneRequest) returns (DeleteMileStoneResponse);
+
+    // Coupon API
+    rpc CreateCoupon (CreateCouponRequest) returns (CreateCouponResponse);
+    rpc ListCoupon (ListCouponRequest) returns (ListCouponResponse);
+    rpc DelteCoupon (DelteCouponRequest) returns (DelteCouponResponse);
+    rpc UpdateCoupon (UpdateCouponRequest) returns (UpdateCouponResponse);
+
 }
 
 enum SortType {
@@ -87,10 +106,8 @@ message StoreCoupon {
     int32 reserved_count = 12;
 }
 
-message HealCheckRequest {
-    
-}
 
-message HealCheckResponse {
-    
+message MilestoneProgress {
+    Milestone Milestone = 1;
+    int32 progress = 2;
 }

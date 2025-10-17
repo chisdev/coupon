@@ -51,6 +51,20 @@ func (_u *CurrencyUpdate) SetNillableName(v *string) *CurrencyUpdate {
 	return _u
 }
 
+// SetCode sets the "code" field.
+func (_u *CurrencyUpdate) SetCode(v string) *CurrencyUpdate {
+	_u.mutation.SetCode(v)
+	return _u
+}
+
+// SetNillableCode sets the "code" field if the given value is not nil.
+func (_u *CurrencyUpdate) SetNillableCode(v *string) *CurrencyUpdate {
+	if v != nil {
+		_u.SetCode(*v)
+	}
+	return _u
+}
+
 // AddCouponIDs adds the "coupons" edge to the Coupon entity by IDs.
 func (_u *CurrencyUpdate) AddCouponIDs(ids ...uint64) *CurrencyUpdate {
 	_u.mutation.AddCouponIDs(ids...)
@@ -185,6 +199,9 @@ func (_u *CurrencyUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	if value, ok := _u.mutation.Name(); ok {
 		_spec.SetField(currency.FieldName, field.TypeString, value)
 	}
+	if value, ok := _u.mutation.Code(); ok {
+		_spec.SetField(currency.FieldCode, field.TypeString, value)
+	}
 	if _u.mutation.CouponsCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
@@ -313,6 +330,20 @@ func (_u *CurrencyUpdateOne) SetName(v string) *CurrencyUpdateOne {
 func (_u *CurrencyUpdateOne) SetNillableName(v *string) *CurrencyUpdateOne {
 	if v != nil {
 		_u.SetName(*v)
+	}
+	return _u
+}
+
+// SetCode sets the "code" field.
+func (_u *CurrencyUpdateOne) SetCode(v string) *CurrencyUpdateOne {
+	_u.mutation.SetCode(v)
+	return _u
+}
+
+// SetNillableCode sets the "code" field if the given value is not nil.
+func (_u *CurrencyUpdateOne) SetNillableCode(v *string) *CurrencyUpdateOne {
+	if v != nil {
+		_u.SetCode(*v)
 	}
 	return _u
 }
@@ -480,6 +511,9 @@ func (_u *CurrencyUpdateOne) sqlSave(ctx context.Context) (_node *Currency, err 
 	}
 	if value, ok := _u.mutation.Name(); ok {
 		_spec.SetField(currency.FieldName, field.TypeString, value)
+	}
+	if value, ok := _u.mutation.Code(); ok {
+		_spec.SetField(currency.FieldCode, field.TypeString, value)
 	}
 	if _u.mutation.CouponsCleared() {
 		edge := &sqlgraph.EdgeSpec{

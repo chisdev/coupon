@@ -29,7 +29,10 @@ func (c *currency) List(ctx context.Context, opts ...Option) ([]*ent.Currency, i
 	}
 
 	if listOptions.SearchContent != "" {
-		query = query.Where(entcurrency.NameContainsFold(listOptions.SearchContent))
+		query = query.Where(entcurrency.Or(
+			entcurrency.NameContainsFold(listOptions.SearchContent),
+			entcurrency.CodeContainsFold(listOptions.SearchContent),
+		))
 	}
 
 	totalCount, err := query.Count(ctx)
@@ -37,11 +40,7 @@ func (c *currency) List(ctx context.Context, opts ...Option) ([]*ent.Currency, i
 		return nil, 0, 0, err
 	}
 
-	totalPage := paging.GetPagingData(int32(totalCount), listOptions.Limit)
-
-	if listOptions.Limit > 0 {
-		query = query.Offset(int(listOptions.PageIndex) * int(listOptions.Limit)).Limit(int(listOptions.Limit))
-	}
+	totalPage := int32(1)
 
 	if len(listOptions.SortMethods) != 0 {
 		sort, err := utils.GetSort(entcurrency.Columns, entcurrency.Table, listOptions.SortMethods)
@@ -50,6 +49,11 @@ func (c *currency) List(ctx context.Context, opts ...Option) ([]*ent.Currency, i
 		}
 
 		query = query.Modify(sort).Clone()
+	}
+
+	if listOptions.Limit > 0 {
+		query = query.Offset(int(listOptions.PageIndex) * int(listOptions.Limit)).Limit(int(listOptions.Limit))
+		totalPage = paging.GetPagingData(int32(totalCount), listOptions.Limit)
 	}
 
 	coupontTypes, err := query.All(ctx)

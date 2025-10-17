@@ -19,6 +19,7 @@ func (Currency) Mixin() []ent.Mixin {
 func (Currency) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("name").Unique(),
+		field.String("code").Unique(),
 	}
 }
 

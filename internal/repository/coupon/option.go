@@ -9,9 +9,7 @@ import (
 type CouponOpts struct {
 	Code          string
 	UserIDs       []string
-	UserID        string
 	StoreIDs      []string
-	StoreID       string
 	ExpiredAt     *time.Time
 	Limit         int32
 	PageIndex     int32
@@ -22,6 +20,7 @@ type CouponOpts struct {
 	Type          api.CouponType
 	CurrencyID    *uint64
 	ServiceIds    []uint64
+	SortMethods   []*api.SortMethod
 }
 
 type Option interface {
@@ -32,12 +31,6 @@ type funcOption func(*CouponOpts)
 
 func (f funcOption) Apply(o *CouponOpts) {
 	f(o)
-}
-
-func WithUserID(userID string) Option {
-	return funcOption(func(co *CouponOpts) {
-		co.UserID = userID
-	})
 }
 
 func WithExpiredAt(expiredAt *time.Time) Option {
@@ -62,12 +55,6 @@ func WithUserIDs(userIDs []string) Option {
 func WithStoreIDs(storeIDs []string) Option {
 	return funcOption(func(co *CouponOpts) {
 		co.StoreIDs = storeIDs
-	})
-}
-
-func WithStoreID(storeID string) Option {
-	return funcOption(func(co *CouponOpts) {
-		co.StoreID = storeID
 	})
 }
 

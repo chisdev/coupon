@@ -7,25 +7,19 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqljson"
 	api "github.com/chisdev/coupon/api"
+	"github.com/chisdev/coupon/internal/utiils/paging"
+	utils "github.com/chisdev/coupon/internal/utiils/sort"
 	"github.com/chisdev/coupon/pkg/ent"
 	entcoupon "github.com/chisdev/coupon/pkg/ent/coupon"
 )
 
-func (c *coupon) List(ctx context.Context, opts ...Option) ([]*ent.Coupon, error) {
+func (c *coupon) List(ctx context.Context, opts ...Option) ([]*ent.Coupon, int32, int32, error) {
 	var couponOpts CouponOpts
 	for _, opt := range opts {
 		opt.Apply(&couponOpts)
 	}
 
 	query := c.ent.Coupon.Query().ForUpdate()
-
-	if couponOpts.UserID != "" {
-		query = query.Where(entcoupon.CustomerID(couponOpts.UserID))
-	}
-
-	if couponOpts.StoreID != "" {
-		query = query.Where(entcoupon.StoreID(couponOpts.StoreID))
-	}
 
 	if len(couponOpts.UserIDs) > 0 {
 		query = query.Where(entcoupon.CustomerIDIn(couponOpts.UserIDs...))
@@ -48,9 +42,29 @@ func (c *coupon) List(ctx context.Context, opts ...Option) ([]*ent.Coupon, error
 		})
 	}
 
-	entCoupons, err := query.Order(entcoupon.ByID()).All(ctx)
+	totalCount, err := query.Count(ctx)
 	if err != nil {
-		return nil, err
+		return nil, 0, 0, err
+	}
+
+	totalPage := int32(1)
+
+	if len(couponOpts.SortMethods) != 0 {
+		sort, err := utils.GetSort(entcoupon.Columns, entcoupon.Table, couponOpts.SortMethods)
+		if err != nil {
+			return nil, 0, 0, err
+		}
+		query = query.Modify(sort).Clone()
+	}
+
+	if couponOpts.Limit > 0 {
+		query = query.Offset(int(couponOpts.PageIndex) * int(couponOpts.Limit)).Limit(int(couponOpts.Limit))
+		totalPage = paging.GetPagingData(int32(totalCount), couponOpts.Limit)
+	}
+
+	entCoupons, err := query.All(ctx)
+	if err != nil {
+		return nil, 0, 0, err
 	}
 
 	for _, entCoupon := range entCoupons {
@@ -58,11 +72,11 @@ func (c *coupon) List(ctx context.Context, opts ...Option) ([]*ent.Coupon, error
 			if entCoupon.ExpireAt != nil && entCoupon.ExpireAt.Before(time.Now()) {
 				entCoupon.Status = api.CouponStatus_COUPON_STATUS_EXPIRED
 				if entCoupon, err = entCoupon.Update().Save(ctx); err != nil {
-					return nil, err
+					return nil, 0, 0, err
 				}
 			}
 		}
 	}
 
-	return entCoupons, nil
+	return entCoupons, int32(totalCount), totalPage, nil
 }

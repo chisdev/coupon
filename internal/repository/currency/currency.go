@@ -8,8 +8,7 @@ import (
 )
 
 type Currency interface {
-	Create(ctx context.Context, name string) (*ent.Currency, error)
-	Update(ctx context.Context, tx tx.Tx, id uint64, name string) (*ent.Currency, error)
+	Create(ctx context.Context, name, code string) (*ent.Currency, error)
 	Delete(ctx context.Context, tx tx.Tx, ids []uint64) error
 	List(ctx context.Context, opts ...Option) ([]*ent.Currency, int32, int32, error)
 }

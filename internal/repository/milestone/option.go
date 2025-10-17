@@ -7,9 +7,12 @@ import (
 type MilestoneOption struct {
 	Name          *string
 	Step          int32
+	PageIndex     int32
 	Threshold     int32
+	Limit         int32
 	MilestoneType coupon.MilestoneType
 	StoreIDs      []string
+	SortMethods   []*coupon.SortMethod
 }
 
 type Option interface {
@@ -46,8 +49,21 @@ func WithMilestoneType(milestoneType coupon.MilestoneType) Option {
 	})
 }
 
-func WhereStoreIDs(storeIDs []string) Option {
+func WithStoreIDs(storeIDs []string) Option {
 	return funcOption(func(mo *MilestoneOption) {
 		mo.StoreIDs = storeIDs
+	})
+}
+
+func WithSortMethods(sortMethods []*coupon.SortMethod) Option {
+	return funcOption(func(mo *MilestoneOption) {
+		mo.SortMethods = sortMethods
+	})
+}
+
+func WithPaging(limit, pageIndex int32) Option {
+	return funcOption(func(mo *MilestoneOption) {
+		mo.Limit = limit
+		mo.PageIndex = pageIndex
 	})
 }

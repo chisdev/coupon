@@ -24,12 +24,12 @@ func (c *coupon) Get(ctx context.Context, opts ...Option) (*ent.Coupon, error) {
 		query = query.Where(entcoupon.CodeEQ(couponOpts.Code))
 	}
 
-	if couponOpts.UserID != "" {
-		query = query.Where(entcoupon.CustomerIDEQ(couponOpts.UserID))
+	if len(couponOpts.UserIDs) != 0 {
+		query = query.Where(entcoupon.CustomerIDIn(couponOpts.UserIDs...))
 	}
 
-	if couponOpts.StoreID != "" {
-		query = query.Where(entcoupon.StoreIDEQ(couponOpts.StoreID))
+	if len(couponOpts.StoreIDs) != 0 {
+		query = query.Where(entcoupon.StoreIDIn(couponOpts.StoreIDs...))
 	}
 
 	for _, serviceID := range couponOpts.ServiceIds {

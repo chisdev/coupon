@@ -46,6 +46,7 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "name", Type: field.TypeString, Unique: true},
+		{Name: "code", Type: field.TypeString, Unique: true},
 	}
 	// CurrenciesTable holds the schema information for the "currencies" table.
 	CurrenciesTable = &schema.Table{
