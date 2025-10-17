@@ -35,7 +35,7 @@ type Coupon struct {
 	// CustomerID holds the value of the "customer_id" field.
 	CustomerID *string `json:"customer_id,omitempty"`
 	// ServiceIds holds the value of the "service_ids" field.
-	ServiceIds []string `json:"service_ids,omitempty"`
+	ServiceIds []uint64 `json:"service_ids,omitempty"`
 	// Type holds the value of the "type" field.
 	Type coupon.CouponType `json:"type,omitempty"`
 	// CurrencyID holds the value of the "currency_id" field.

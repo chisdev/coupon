@@ -15,20 +15,20 @@ import (
 	"entgo.io/ent/schema/field"
 	entcoupon "github.com/chisdev/coupon/pkg/ent/coupon"
 	"github.com/chisdev/coupon/pkg/ent/currency"
-	"github.com/chisdev/coupon/pkg/ent/milestone"
 	"github.com/chisdev/coupon/pkg/ent/predicate"
+	"github.com/chisdev/coupon/pkg/ent/reward"
 )
 
 // CurrencyQuery is the builder for querying Currency entities.
 type CurrencyQuery struct {
 	config
-	ctx            *QueryContext
-	order          []currency.OrderOption
-	inters         []Interceptor
-	predicates     []predicate.Currency
-	withCoupons    *CouponQuery
-	withMilestones *MilestoneQuery
-	modifiers      []func(*sql.Selector)
+	ctx         *QueryContext
+	order       []currency.OrderOption
+	inters      []Interceptor
+	predicates  []predicate.Currency
+	withCoupons *CouponQuery
+	withReward  *RewardQuery
+	modifiers   []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -87,9 +87,9 @@ func (_q *CurrencyQuery) QueryCoupons() *CouponQuery {
 	return query
 }
 
-// QueryMilestones chains the current query on the "milestones" edge.
-func (_q *CurrencyQuery) QueryMilestones() *MilestoneQuery {
-	query := (&MilestoneClient{config: _q.config}).Query()
+// QueryReward chains the current query on the "reward" edge.
+func (_q *CurrencyQuery) QueryReward() *RewardQuery {
+	query := (&RewardClient{config: _q.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := _q.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -100,8 +100,8 @@ func (_q *CurrencyQuery) QueryMilestones() *MilestoneQuery {
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(currency.Table, currency.FieldID, selector),
-			sqlgraph.To(milestone.Table, milestone.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, currency.MilestonesTable, currency.MilestonesColumn),
+			sqlgraph.To(reward.Table, reward.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, currency.RewardTable, currency.RewardColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
 		return fromU, nil
@@ -296,13 +296,13 @@ func (_q *CurrencyQuery) Clone() *CurrencyQuery {
 		return nil
 	}
 	return &CurrencyQuery{
-		config:         _q.config,
-		ctx:            _q.ctx.Clone(),
-		order:          append([]currency.OrderOption{}, _q.order...),
-		inters:         append([]Interceptor{}, _q.inters...),
-		predicates:     append([]predicate.Currency{}, _q.predicates...),
-		withCoupons:    _q.withCoupons.Clone(),
-		withMilestones: _q.withMilestones.Clone(),
+		config:      _q.config,
+		ctx:         _q.ctx.Clone(),
+		order:       append([]currency.OrderOption{}, _q.order...),
+		inters:      append([]Interceptor{}, _q.inters...),
+		predicates:  append([]predicate.Currency{}, _q.predicates...),
+		withCoupons: _q.withCoupons.Clone(),
+		withReward:  _q.withReward.Clone(),
 		// clone intermediate query.
 		sql:       _q.sql.Clone(),
 		path:      _q.path,
@@ -321,14 +321,14 @@ func (_q *CurrencyQuery) WithCoupons(opts ...func(*CouponQuery)) *CurrencyQuery 
 	return _q
 }
 
-// WithMilestones tells the query-builder to eager-load the nodes that are connected to
-// the "milestones" edge. The optional arguments are used to configure the query builder of the edge.
-func (_q *CurrencyQuery) WithMilestones(opts ...func(*MilestoneQuery)) *CurrencyQuery {
-	query := (&MilestoneClient{config: _q.config}).Query()
+// WithReward tells the query-builder to eager-load the nodes that are connected to
+// the "reward" edge. The optional arguments are used to configure the query builder of the edge.
+func (_q *CurrencyQuery) WithReward(opts ...func(*RewardQuery)) *CurrencyQuery {
+	query := (&RewardClient{config: _q.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	_q.withMilestones = query
+	_q.withReward = query
 	return _q
 }
 
@@ -412,7 +412,7 @@ func (_q *CurrencyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cur
 		_spec       = _q.querySpec()
 		loadedTypes = [2]bool{
 			_q.withCoupons != nil,
-			_q.withMilestones != nil,
+			_q.withReward != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -443,10 +443,10 @@ func (_q *CurrencyQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Cur
 			return nil, err
 		}
 	}
-	if query := _q.withMilestones; query != nil {
-		if err := _q.loadMilestones(ctx, query, nodes,
-			func(n *Currency) { n.Edges.Milestones = []*Milestone{} },
-			func(n *Currency, e *Milestone) { n.Edges.Milestones = append(n.Edges.Milestones, e) }); err != nil {
+	if query := _q.withReward; query != nil {
+		if err := _q.loadReward(ctx, query, nodes,
+			func(n *Currency) { n.Edges.Reward = []*Reward{} },
+			func(n *Currency, e *Reward) { n.Edges.Reward = append(n.Edges.Reward, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -483,7 +483,7 @@ func (_q *CurrencyQuery) loadCoupons(ctx context.Context, query *CouponQuery, no
 	}
 	return nil
 }
-func (_q *CurrencyQuery) loadMilestones(ctx context.Context, query *MilestoneQuery, nodes []*Currency, init func(*Currency), assign func(*Currency, *Milestone)) error {
+func (_q *CurrencyQuery) loadReward(ctx context.Context, query *RewardQuery, nodes []*Currency, init func(*Currency), assign func(*Currency, *Reward)) error {
 	fks := make([]driver.Value, 0, len(nodes))
 	nodeids := make(map[uint64]*Currency)
 	for i := range nodes {
@@ -494,10 +494,10 @@ func (_q *CurrencyQuery) loadMilestones(ctx context.Context, query *MilestoneQue
 		}
 	}
 	if len(query.ctx.Fields) > 0 {
-		query.ctx.AppendFieldOnce(milestone.FieldCurrencyID)
+		query.ctx.AppendFieldOnce(reward.FieldCurrencyID)
 	}
-	query.Where(predicate.Milestone(func(s *sql.Selector) {
-		s.Where(sql.InValues(s.C(currency.MilestonesColumn), fks...))
+	query.Where(predicate.Reward(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(currency.RewardColumn), fks...))
 	}))
 	neighbors, err := query.All(ctx)
 	if err != nil {

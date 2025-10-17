@@ -14,3 +14,9 @@ type Currency func(*sql.Selector)
 
 // Milestone is the predicate function for milestone builders.
 type Milestone func(*sql.Selector)
+
+// Progress is the predicate function for progress builders.
+type Progress func(*sql.Selector)
+
+// Reward is the predicate function for reward builders.
+type Reward func(*sql.Selector)

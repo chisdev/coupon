@@ -3,7 +3,6 @@
 package ent
 
 import (
-	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -11,7 +10,6 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	coupon "github.com/chisdev/coupon/api"
-	"github.com/chisdev/coupon/pkg/ent/currency"
 	"github.com/chisdev/coupon/pkg/ent/milestone"
 )
 
@@ -28,24 +26,12 @@ type Milestone struct {
 	Name *string `json:"name,omitempty"`
 	// StoreID holds the value of the "store_id" field.
 	StoreID string `json:"store_id,omitempty"`
-	// ExpireAt holds the value of the "expire_at" field.
-	ExpireAt *time.Time `json:"expire_at,omitempty"`
-	// ServiceIds holds the value of the "service_ids" field.
-	ServiceIds []string `json:"service_ids,omitempty"`
-	// CouponType holds the value of the "coupon_type" field.
-	CouponType coupon.CouponType `json:"coupon_type,omitempty"`
 	// MilestoneType holds the value of the "milestone_type" field.
 	MilestoneType coupon.MilestoneType `json:"milestone_type,omitempty"`
-	// CurrencyID holds the value of the "currency_id" field.
-	CurrencyID uint64 `json:"currency_id,omitempty"`
-	// UsageLimit holds the value of the "usage_limit" field.
-	UsageLimit int32 `json:"usage_limit,omitempty"`
 	// Threshold holds the value of the "threshold" field.
 	Threshold int32 `json:"threshold,omitempty"`
 	// Step holds the value of the "step" field.
 	Step int32 `json:"step,omitempty"`
-	// CouponValue holds the value of the "coupon_value" field.
-	CouponValue float64 `json:"coupon_value,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the MilestoneQuery when eager-loading is set.
 	Edges        MilestoneEdges `json:"edges"`
@@ -54,22 +40,31 @@ type Milestone struct {
 
 // MilestoneEdges holds the relations/edges for other nodes in the graph.
 type MilestoneEdges struct {
-	// Currency holds the value of the currency edge.
-	Currency *Currency `json:"currency,omitempty"`
+	// Reward holds the value of the reward edge.
+	Reward []*Reward `json:"reward,omitempty"`
+	// Progress holds the value of the progress edge.
+	Progress []*Progress `json:"progress,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [2]bool
 }
 
-// CurrencyOrErr returns the Currency value or an error if the edge
-// was not loaded in eager-loading, or loaded but was not found.
-func (e MilestoneEdges) CurrencyOrErr() (*Currency, error) {
-	if e.Currency != nil {
-		return e.Currency, nil
-	} else if e.loadedTypes[0] {
-		return nil, &NotFoundError{label: currency.Label}
+// RewardOrErr returns the Reward value or an error if the edge
+// was not loaded in eager-loading.
+func (e MilestoneEdges) RewardOrErr() ([]*Reward, error) {
+	if e.loadedTypes[0] {
+		return e.Reward, nil
 	}
-	return nil, &NotLoadedError{edge: "currency"}
+	return nil, &NotLoadedError{edge: "reward"}
+}
+
+// ProgressOrErr returns the Progress value or an error if the edge
+// was not loaded in eager-loading.
+func (e MilestoneEdges) ProgressOrErr() ([]*Progress, error) {
+	if e.loadedTypes[1] {
+		return e.Progress, nil
+	}
+	return nil, &NotLoadedError{edge: "progress"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -77,15 +72,11 @@ func (*Milestone) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case milestone.FieldServiceIds:
-			values[i] = new([]byte)
-		case milestone.FieldCouponValue:
-			values[i] = new(sql.NullFloat64)
-		case milestone.FieldID, milestone.FieldCouponType, milestone.FieldMilestoneType, milestone.FieldCurrencyID, milestone.FieldUsageLimit, milestone.FieldThreshold, milestone.FieldStep:
+		case milestone.FieldID, milestone.FieldMilestoneType, milestone.FieldThreshold, milestone.FieldStep:
 			values[i] = new(sql.NullInt64)
 		case milestone.FieldName, milestone.FieldStoreID:
 			values[i] = new(sql.NullString)
-		case milestone.FieldCreatedAt, milestone.FieldUpdatedAt, milestone.FieldExpireAt:
+		case milestone.FieldCreatedAt, milestone.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -133,44 +124,11 @@ func (_m *Milestone) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				_m.StoreID = value.String
 			}
-		case milestone.FieldExpireAt:
-			if value, ok := values[i].(*sql.NullTime); !ok {
-				return fmt.Errorf("unexpected type %T for field expire_at", values[i])
-			} else if value.Valid {
-				_m.ExpireAt = new(time.Time)
-				*_m.ExpireAt = value.Time
-			}
-		case milestone.FieldServiceIds:
-			if value, ok := values[i].(*[]byte); !ok {
-				return fmt.Errorf("unexpected type %T for field service_ids", values[i])
-			} else if value != nil && len(*value) > 0 {
-				if err := json.Unmarshal(*value, &_m.ServiceIds); err != nil {
-					return fmt.Errorf("unmarshal field service_ids: %w", err)
-				}
-			}
-		case milestone.FieldCouponType:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field coupon_type", values[i])
-			} else if value.Valid {
-				_m.CouponType = coupon.CouponType(value.Int64)
-			}
 		case milestone.FieldMilestoneType:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field milestone_type", values[i])
 			} else if value.Valid {
 				_m.MilestoneType = coupon.MilestoneType(value.Int64)
-			}
-		case milestone.FieldCurrencyID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field currency_id", values[i])
-			} else if value.Valid {
-				_m.CurrencyID = uint64(value.Int64)
-			}
-		case milestone.FieldUsageLimit:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field usage_limit", values[i])
-			} else if value.Valid {
-				_m.UsageLimit = int32(value.Int64)
 			}
 		case milestone.FieldThreshold:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -183,12 +141,6 @@ func (_m *Milestone) assignValues(columns []string, values []any) error {
 				return fmt.Errorf("unexpected type %T for field step", values[i])
 			} else if value.Valid {
 				_m.Step = int32(value.Int64)
-			}
-		case milestone.FieldCouponValue:
-			if value, ok := values[i].(*sql.NullFloat64); !ok {
-				return fmt.Errorf("unexpected type %T for field coupon_value", values[i])
-			} else if value.Valid {
-				_m.CouponValue = value.Float64
 			}
 		default:
 			_m.selectValues.Set(columns[i], values[i])
@@ -203,9 +155,14 @@ func (_m *Milestone) Value(name string) (ent.Value, error) {
 	return _m.selectValues.Get(name)
 }
 
-// QueryCurrency queries the "currency" edge of the Milestone entity.
-func (_m *Milestone) QueryCurrency() *CurrencyQuery {
-	return NewMilestoneClient(_m.config).QueryCurrency(_m)
+// QueryReward queries the "reward" edge of the Milestone entity.
+func (_m *Milestone) QueryReward() *RewardQuery {
+	return NewMilestoneClient(_m.config).QueryReward(_m)
+}
+
+// QueryProgress queries the "progress" edge of the Milestone entity.
+func (_m *Milestone) QueryProgress() *ProgressQuery {
+	return NewMilestoneClient(_m.config).QueryProgress(_m)
 }
 
 // Update returns a builder for updating this Milestone.
@@ -245,34 +202,14 @@ func (_m *Milestone) String() string {
 	builder.WriteString("store_id=")
 	builder.WriteString(_m.StoreID)
 	builder.WriteString(", ")
-	if v := _m.ExpireAt; v != nil {
-		builder.WriteString("expire_at=")
-		builder.WriteString(v.Format(time.ANSIC))
-	}
-	builder.WriteString(", ")
-	builder.WriteString("service_ids=")
-	builder.WriteString(fmt.Sprintf("%v", _m.ServiceIds))
-	builder.WriteString(", ")
-	builder.WriteString("coupon_type=")
-	builder.WriteString(fmt.Sprintf("%v", _m.CouponType))
-	builder.WriteString(", ")
 	builder.WriteString("milestone_type=")
 	builder.WriteString(fmt.Sprintf("%v", _m.MilestoneType))
-	builder.WriteString(", ")
-	builder.WriteString("currency_id=")
-	builder.WriteString(fmt.Sprintf("%v", _m.CurrencyID))
-	builder.WriteString(", ")
-	builder.WriteString("usage_limit=")
-	builder.WriteString(fmt.Sprintf("%v", _m.UsageLimit))
 	builder.WriteString(", ")
 	builder.WriteString("threshold=")
 	builder.WriteString(fmt.Sprintf("%v", _m.Threshold))
 	builder.WriteString(", ")
 	builder.WriteString("step=")
 	builder.WriteString(fmt.Sprintf("%v", _m.Step))
-	builder.WriteString(", ")
-	builder.WriteString("coupon_value=")
-	builder.WriteString(fmt.Sprintf("%v", _m.CouponValue))
 	builder.WriteByte(')')
 	return builder.String()
 }

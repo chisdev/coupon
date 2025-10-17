@@ -18,6 +18,10 @@ type Tx struct {
 	Currency *CurrencyClient
 	// Milestone is the client for interacting with the Milestone builders.
 	Milestone *MilestoneClient
+	// Progress is the client for interacting with the Progress builders.
+	Progress *ProgressClient
+	// Reward is the client for interacting with the Reward builders.
+	Reward *RewardClient
 
 	// lazily loaded.
 	client     *Client
@@ -152,6 +156,8 @@ func (tx *Tx) init() {
 	tx.Coupon = NewCouponClient(tx.config)
 	tx.Currency = NewCurrencyClient(tx.config)
 	tx.Milestone = NewMilestoneClient(tx.config)
+	tx.Progress = NewProgressClient(tx.config)
+	tx.Reward = NewRewardClient(tx.config)
 }
 
 // txDriver wraps the given dialect.Tx with a nop dialect.Driver implementation.

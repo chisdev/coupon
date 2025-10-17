@@ -16,6 +16,8 @@ import (
 	entcoupon "github.com/chisdev/coupon/pkg/ent/coupon"
 	"github.com/chisdev/coupon/pkg/ent/currency"
 	"github.com/chisdev/coupon/pkg/ent/milestone"
+	"github.com/chisdev/coupon/pkg/ent/progress"
+	"github.com/chisdev/coupon/pkg/ent/reward"
 )
 
 // ent aliases to avoid import conflicts in user's code.
@@ -79,6 +81,8 @@ func checkColumn(t, c string) error {
 			entcoupon.Table: entcoupon.ValidColumn,
 			currency.Table:  currency.ValidColumn,
 			milestone.Table: milestone.ValidColumn,
+			progress.Table:  progress.ValidColumn,
+			reward.Table:    reward.ValidColumn,
 		})
 	})
 	return columnCheck(t, c)

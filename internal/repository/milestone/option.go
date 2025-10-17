@@ -1,16 +1,15 @@
 package milestone
 
-import "time"
+import (
+	coupon "github.com/chisdev/coupon/api"
+)
 
 type MilestoneOption struct {
-	Name        *string
-	ExpireAt    *time.Time
-	CurrencyID  *uint64
-	UsageLimit  int32
-	Step        int32
-	Threshold   int32
-	CouponValue float64
-	ServiceIds  []string
+	Name          *string
+	Step          int32
+	Threshold     int32
+	MilestoneType coupon.MilestoneType
+	StoreIDs      []string
 }
 
 type Option interface {
@@ -21,23 +20,6 @@ type funcOption func(*MilestoneOption)
 
 func (f funcOption) Apply(o *MilestoneOption) {
 	f(o)
-}
-
-func WithExpireAt(expireAt *time.Time) Option {
-	return funcOption(func(mo *MilestoneOption) {
-		mo.ExpireAt = expireAt
-	})
-}
-
-func WithCurrencyID(currencyID *uint64) Option {
-	return funcOption(func(mo *MilestoneOption) {
-		mo.CurrencyID = currencyID
-	})
-}
-func WithUsageLimit(usageLimit int32) Option {
-	return funcOption(func(mo *MilestoneOption) {
-		mo.UsageLimit = usageLimit
-	})
 }
 
 func WithStep(step int32) Option {
@@ -52,20 +34,20 @@ func WithThreshold(threshold int32) Option {
 	})
 }
 
-func WithCouponValue(couponValue float64) Option {
-	return funcOption(func(mo *MilestoneOption) {
-		mo.CouponValue = couponValue
-	})
-}
-
-func WithServiceIds(serviceIds []string) Option {
-	return funcOption(func(mo *MilestoneOption) {
-		mo.ServiceIds = serviceIds
-	})
-}
-
 func WithName(name *string) Option {
 	return funcOption(func(mo *MilestoneOption) {
 		mo.Name = name
+	})
+}
+
+func WithMilestoneType(milestoneType coupon.MilestoneType) Option {
+	return funcOption(func(mo *MilestoneOption) {
+		mo.MilestoneType = milestoneType
+	})
+}
+
+func WhereStoreIDs(storeIDs []string) Option {
+	return funcOption(func(mo *MilestoneOption) {
+		mo.StoreIDs = storeIDs
 	})
 }

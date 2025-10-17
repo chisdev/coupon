@@ -13,8 +13,8 @@ import (
 	"entgo.io/ent/schema/field"
 	entcoupon "github.com/chisdev/coupon/pkg/ent/coupon"
 	"github.com/chisdev/coupon/pkg/ent/currency"
-	"github.com/chisdev/coupon/pkg/ent/milestone"
 	"github.com/chisdev/coupon/pkg/ent/predicate"
+	"github.com/chisdev/coupon/pkg/ent/reward"
 )
 
 // CurrencyUpdate is the builder for updating Currency entities.
@@ -66,19 +66,19 @@ func (_u *CurrencyUpdate) AddCoupons(v ...*Coupon) *CurrencyUpdate {
 	return _u.AddCouponIDs(ids...)
 }
 
-// AddMilestoneIDs adds the "milestones" edge to the Milestone entity by IDs.
-func (_u *CurrencyUpdate) AddMilestoneIDs(ids ...uint64) *CurrencyUpdate {
-	_u.mutation.AddMilestoneIDs(ids...)
+// AddRewardIDs adds the "reward" edge to the Reward entity by IDs.
+func (_u *CurrencyUpdate) AddRewardIDs(ids ...uint64) *CurrencyUpdate {
+	_u.mutation.AddRewardIDs(ids...)
 	return _u
 }
 
-// AddMilestones adds the "milestones" edges to the Milestone entity.
-func (_u *CurrencyUpdate) AddMilestones(v ...*Milestone) *CurrencyUpdate {
+// AddReward adds the "reward" edges to the Reward entity.
+func (_u *CurrencyUpdate) AddReward(v ...*Reward) *CurrencyUpdate {
 	ids := make([]uint64, len(v))
 	for i := range v {
 		ids[i] = v[i].ID
 	}
-	return _u.AddMilestoneIDs(ids...)
+	return _u.AddRewardIDs(ids...)
 }
 
 // Mutation returns the CurrencyMutation object of the builder.
@@ -107,25 +107,25 @@ func (_u *CurrencyUpdate) RemoveCoupons(v ...*Coupon) *CurrencyUpdate {
 	return _u.RemoveCouponIDs(ids...)
 }
 
-// ClearMilestones clears all "milestones" edges to the Milestone entity.
-func (_u *CurrencyUpdate) ClearMilestones() *CurrencyUpdate {
-	_u.mutation.ClearMilestones()
+// ClearReward clears all "reward" edges to the Reward entity.
+func (_u *CurrencyUpdate) ClearReward() *CurrencyUpdate {
+	_u.mutation.ClearReward()
 	return _u
 }
 
-// RemoveMilestoneIDs removes the "milestones" edge to Milestone entities by IDs.
-func (_u *CurrencyUpdate) RemoveMilestoneIDs(ids ...uint64) *CurrencyUpdate {
-	_u.mutation.RemoveMilestoneIDs(ids...)
+// RemoveRewardIDs removes the "reward" edge to Reward entities by IDs.
+func (_u *CurrencyUpdate) RemoveRewardIDs(ids ...uint64) *CurrencyUpdate {
+	_u.mutation.RemoveRewardIDs(ids...)
 	return _u
 }
 
-// RemoveMilestones removes "milestones" edges to Milestone entities.
-func (_u *CurrencyUpdate) RemoveMilestones(v ...*Milestone) *CurrencyUpdate {
+// RemoveReward removes "reward" edges to Reward entities.
+func (_u *CurrencyUpdate) RemoveReward(v ...*Reward) *CurrencyUpdate {
 	ids := make([]uint64, len(v))
 	for i := range v {
 		ids[i] = v[i].ID
 	}
-	return _u.RemoveMilestoneIDs(ids...)
+	return _u.RemoveRewardIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -230,28 +230,28 @@ func (_u *CurrencyUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if _u.mutation.MilestonesCleared() {
+	if _u.mutation.RewardCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   currency.MilestonesTable,
-			Columns: []string{currency.MilestonesColumn},
+			Table:   currency.RewardTable,
+			Columns: []string{currency.RewardColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(milestone.FieldID, field.TypeUint64),
+				IDSpec: sqlgraph.NewFieldSpec(reward.FieldID, field.TypeUint64),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := _u.mutation.RemovedMilestonesIDs(); len(nodes) > 0 && !_u.mutation.MilestonesCleared() {
+	if nodes := _u.mutation.RemovedRewardIDs(); len(nodes) > 0 && !_u.mutation.RewardCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   currency.MilestonesTable,
-			Columns: []string{currency.MilestonesColumn},
+			Table:   currency.RewardTable,
+			Columns: []string{currency.RewardColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(milestone.FieldID, field.TypeUint64),
+				IDSpec: sqlgraph.NewFieldSpec(reward.FieldID, field.TypeUint64),
 			},
 		}
 		for _, k := range nodes {
@@ -259,15 +259,15 @@ func (_u *CurrencyUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := _u.mutation.MilestonesIDs(); len(nodes) > 0 {
+	if nodes := _u.mutation.RewardIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   currency.MilestonesTable,
-			Columns: []string{currency.MilestonesColumn},
+			Table:   currency.RewardTable,
+			Columns: []string{currency.RewardColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(milestone.FieldID, field.TypeUint64),
+				IDSpec: sqlgraph.NewFieldSpec(reward.FieldID, field.TypeUint64),
 			},
 		}
 		for _, k := range nodes {
@@ -332,19 +332,19 @@ func (_u *CurrencyUpdateOne) AddCoupons(v ...*Coupon) *CurrencyUpdateOne {
 	return _u.AddCouponIDs(ids...)
 }
 
-// AddMilestoneIDs adds the "milestones" edge to the Milestone entity by IDs.
-func (_u *CurrencyUpdateOne) AddMilestoneIDs(ids ...uint64) *CurrencyUpdateOne {
-	_u.mutation.AddMilestoneIDs(ids...)
+// AddRewardIDs adds the "reward" edge to the Reward entity by IDs.
+func (_u *CurrencyUpdateOne) AddRewardIDs(ids ...uint64) *CurrencyUpdateOne {
+	_u.mutation.AddRewardIDs(ids...)
 	return _u
 }
 
-// AddMilestones adds the "milestones" edges to the Milestone entity.
-func (_u *CurrencyUpdateOne) AddMilestones(v ...*Milestone) *CurrencyUpdateOne {
+// AddReward adds the "reward" edges to the Reward entity.
+func (_u *CurrencyUpdateOne) AddReward(v ...*Reward) *CurrencyUpdateOne {
 	ids := make([]uint64, len(v))
 	for i := range v {
 		ids[i] = v[i].ID
 	}
-	return _u.AddMilestoneIDs(ids...)
+	return _u.AddRewardIDs(ids...)
 }
 
 // Mutation returns the CurrencyMutation object of the builder.
@@ -373,25 +373,25 @@ func (_u *CurrencyUpdateOne) RemoveCoupons(v ...*Coupon) *CurrencyUpdateOne {
 	return _u.RemoveCouponIDs(ids...)
 }
 
-// ClearMilestones clears all "milestones" edges to the Milestone entity.
-func (_u *CurrencyUpdateOne) ClearMilestones() *CurrencyUpdateOne {
-	_u.mutation.ClearMilestones()
+// ClearReward clears all "reward" edges to the Reward entity.
+func (_u *CurrencyUpdateOne) ClearReward() *CurrencyUpdateOne {
+	_u.mutation.ClearReward()
 	return _u
 }
 
-// RemoveMilestoneIDs removes the "milestones" edge to Milestone entities by IDs.
-func (_u *CurrencyUpdateOne) RemoveMilestoneIDs(ids ...uint64) *CurrencyUpdateOne {
-	_u.mutation.RemoveMilestoneIDs(ids...)
+// RemoveRewardIDs removes the "reward" edge to Reward entities by IDs.
+func (_u *CurrencyUpdateOne) RemoveRewardIDs(ids ...uint64) *CurrencyUpdateOne {
+	_u.mutation.RemoveRewardIDs(ids...)
 	return _u
 }
 
-// RemoveMilestones removes "milestones" edges to Milestone entities.
-func (_u *CurrencyUpdateOne) RemoveMilestones(v ...*Milestone) *CurrencyUpdateOne {
+// RemoveReward removes "reward" edges to Reward entities.
+func (_u *CurrencyUpdateOne) RemoveReward(v ...*Reward) *CurrencyUpdateOne {
 	ids := make([]uint64, len(v))
 	for i := range v {
 		ids[i] = v[i].ID
 	}
-	return _u.RemoveMilestoneIDs(ids...)
+	return _u.RemoveRewardIDs(ids...)
 }
 
 // Where appends a list predicates to the CurrencyUpdate builder.
@@ -526,28 +526,28 @@ func (_u *CurrencyUpdateOne) sqlSave(ctx context.Context) (_node *Currency, err 
 		}
 		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
-	if _u.mutation.MilestonesCleared() {
+	if _u.mutation.RewardCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   currency.MilestonesTable,
-			Columns: []string{currency.MilestonesColumn},
+			Table:   currency.RewardTable,
+			Columns: []string{currency.RewardColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(milestone.FieldID, field.TypeUint64),
+				IDSpec: sqlgraph.NewFieldSpec(reward.FieldID, field.TypeUint64),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := _u.mutation.RemovedMilestonesIDs(); len(nodes) > 0 && !_u.mutation.MilestonesCleared() {
+	if nodes := _u.mutation.RemovedRewardIDs(); len(nodes) > 0 && !_u.mutation.RewardCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   currency.MilestonesTable,
-			Columns: []string{currency.MilestonesColumn},
+			Table:   currency.RewardTable,
+			Columns: []string{currency.RewardColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(milestone.FieldID, field.TypeUint64),
+				IDSpec: sqlgraph.NewFieldSpec(reward.FieldID, field.TypeUint64),
 			},
 		}
 		for _, k := range nodes {
@@ -555,15 +555,15 @@ func (_u *CurrencyUpdateOne) sqlSave(ctx context.Context) (_node *Currency, err 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := _u.mutation.MilestonesIDs(); len(nodes) > 0 {
+	if nodes := _u.mutation.RewardIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   currency.MilestonesTable,
-			Columns: []string{currency.MilestonesColumn},
+			Table:   currency.RewardTable,
+			Columns: []string{currency.RewardColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(milestone.FieldID, field.TypeUint64),
+				IDSpec: sqlgraph.NewFieldSpec(reward.FieldID, field.TypeUint64),
 			},
 		}
 		for _, k := range nodes {

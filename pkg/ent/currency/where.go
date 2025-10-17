@@ -238,21 +238,21 @@ func HasCouponsWith(preds ...predicate.Coupon) predicate.Currency {
 	})
 }
 
-// HasMilestones applies the HasEdge predicate on the "milestones" edge.
-func HasMilestones() predicate.Currency {
+// HasReward applies the HasEdge predicate on the "reward" edge.
+func HasReward() predicate.Currency {
 	return predicate.Currency(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, MilestonesTable, MilestonesColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, RewardTable, RewardColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasMilestonesWith applies the HasEdge predicate on the "milestones" edge with a given conditions (other predicates).
-func HasMilestonesWith(preds ...predicate.Milestone) predicate.Currency {
+// HasRewardWith applies the HasEdge predicate on the "reward" edge with a given conditions (other predicates).
+func HasRewardWith(preds ...predicate.Reward) predicate.Currency {
 	return predicate.Currency(func(s *sql.Selector) {
-		step := newMilestonesStep()
+		step := newRewardStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

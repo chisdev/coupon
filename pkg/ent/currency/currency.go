@@ -22,8 +22,8 @@ const (
 	FieldName = "name"
 	// EdgeCoupons holds the string denoting the coupons edge name in mutations.
 	EdgeCoupons = "coupons"
-	// EdgeMilestones holds the string denoting the milestones edge name in mutations.
-	EdgeMilestones = "milestones"
+	// EdgeReward holds the string denoting the reward edge name in mutations.
+	EdgeReward = "reward"
 	// Table holds the table name of the currency in the database.
 	Table = "currencies"
 	// CouponsTable is the table that holds the coupons relation/edge.
@@ -33,13 +33,13 @@ const (
 	CouponsInverseTable = "coupons"
 	// CouponsColumn is the table column denoting the coupons relation/edge.
 	CouponsColumn = "currency_id"
-	// MilestonesTable is the table that holds the milestones relation/edge.
-	MilestonesTable = "milestones"
-	// MilestonesInverseTable is the table name for the Milestone entity.
-	// It exists in this package in order to avoid circular dependency with the "milestone" package.
-	MilestonesInverseTable = "milestones"
-	// MilestonesColumn is the table column denoting the milestones relation/edge.
-	MilestonesColumn = "currency_id"
+	// RewardTable is the table that holds the reward relation/edge.
+	RewardTable = "rewards"
+	// RewardInverseTable is the table name for the Reward entity.
+	// It exists in this package in order to avoid circular dependency with the "reward" package.
+	RewardInverseTable = "rewards"
+	// RewardColumn is the table column denoting the reward relation/edge.
+	RewardColumn = "currency_id"
 )
 
 // Columns holds all SQL columns for currency fields.
@@ -106,17 +106,17 @@ func ByCoupons(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	}
 }
 
-// ByMilestonesCount orders the results by milestones count.
-func ByMilestonesCount(opts ...sql.OrderTermOption) OrderOption {
+// ByRewardCount orders the results by reward count.
+func ByRewardCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborsCount(s, newMilestonesStep(), opts...)
+		sqlgraph.OrderByNeighborsCount(s, newRewardStep(), opts...)
 	}
 }
 
-// ByMilestones orders the results by milestones terms.
-func ByMilestones(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+// ByReward orders the results by reward terms.
+func ByReward(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newMilestonesStep(), append([]sql.OrderTerm{term}, terms...)...)
+		sqlgraph.OrderByNeighborTerms(s, newRewardStep(), append([]sql.OrderTerm{term}, terms...)...)
 	}
 }
 func newCouponsStep() *sqlgraph.Step {
@@ -126,10 +126,10 @@ func newCouponsStep() *sqlgraph.Step {
 		sqlgraph.Edge(sqlgraph.O2M, false, CouponsTable, CouponsColumn),
 	)
 }
-func newMilestonesStep() *sqlgraph.Step {
+func newRewardStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(MilestonesInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.O2M, false, MilestonesTable, MilestonesColumn),
+		sqlgraph.To(RewardInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, RewardTable, RewardColumn),
 	)
 }

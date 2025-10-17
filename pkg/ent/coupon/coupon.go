@@ -96,7 +96,7 @@ var (
 	// StoreIDValidator is a validator for the "store_id" field. It is called by the builders before save.
 	StoreIDValidator func(string) error
 	// DefaultServiceIds holds the default value on creation for the "service_ids" field.
-	DefaultServiceIds []string
+	DefaultServiceIds []uint64
 	// DefaultUsageLimit holds the default value on creation for the "usage_limit" field.
 	DefaultUsageLimit int32
 	// DefaultUsedCount holds the default value on creation for the "used_count" field.

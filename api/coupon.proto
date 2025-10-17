@@ -6,16 +6,14 @@ option go_package = "github.com/chisdev/coupon/api;coupon";
 
 import "validate/validate.proto";
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/empty.proto";
+// import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
 
 service Coupon {
-    rpc CheckCoupon (CheckCouponRequest) returns (CheckCouponResponse) {
-        option (google.api.http) = {
-            post: "/coupon/check"
-            body: "*"
-        };
+    rpc HealCheck (HealCheckRequest) returns (HealCheckResponse) { option (google.api.http) = {
+      get: "/coupon/healcheck"
     };
+}
 }
 
 enum SortType {
@@ -53,14 +51,46 @@ message SortMethod {
     SortType type = 2;
 }
 
-message CheckCouponRequest {
-    string code = 1;
-    string user_id = 2;
-    repeated string service_ids = 3;
-    optional string store_id = 4;
+
+message Reward {
+    uint64 id = 1;
+    double coupon_value = 2;
+    optional double expired_duration = 3;
+    optional uint64 currency_id = 4;
+    optional int32 usage_limit = 5;
+    uint64 milestone_id = 6;
+    CouponType coupon_type = 7;
+    repeated uint64 service_ids = 8;
 }
 
-message CheckCouponResponse {
-    bool valid = 1;
-    string message = 2;
+message Milestone {
+    uint64 id = 1;
+    MilestoneType type = 2;
+    optional int32 threshold = 3;
+    optional int32 step = 4;
+    uint64 store_id = 5;
+    repeated Reward  rewards = 6;
+}
+
+message StoreCoupon {
+    uint64 id = 1;
+    string code =  2;
+    string store_id = 3;
+    optional google.protobuf.Timestamp expired_at = 4;
+    optional string customer_id = 5;
+    repeated uint64 service_ids = 6;
+    optional uint64 currency_id = 7;
+    CouponType coupon_type = 8;
+    CouponStatus status = 9;
+    int32 usage_limit = 10;
+    int32 used_count = 11;
+    int32 reserved_count = 12;
+}
+
+message HealCheckRequest {
+    
+}
+
+message HealCheckResponse {
+    
 }

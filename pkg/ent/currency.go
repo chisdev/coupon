@@ -33,8 +33,8 @@ type Currency struct {
 type CurrencyEdges struct {
 	// Coupons holds the value of the coupons edge.
 	Coupons []*Coupon `json:"coupons,omitempty"`
-	// Milestones holds the value of the milestones edge.
-	Milestones []*Milestone `json:"milestones,omitempty"`
+	// Reward holds the value of the reward edge.
+	Reward []*Reward `json:"reward,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
 	loadedTypes [2]bool
@@ -49,13 +49,13 @@ func (e CurrencyEdges) CouponsOrErr() ([]*Coupon, error) {
 	return nil, &NotLoadedError{edge: "coupons"}
 }
 
-// MilestonesOrErr returns the Milestones value or an error if the edge
+// RewardOrErr returns the Reward value or an error if the edge
 // was not loaded in eager-loading.
-func (e CurrencyEdges) MilestonesOrErr() ([]*Milestone, error) {
+func (e CurrencyEdges) RewardOrErr() ([]*Reward, error) {
 	if e.loadedTypes[1] {
-		return e.Milestones, nil
+		return e.Reward, nil
 	}
-	return nil, &NotLoadedError{edge: "milestones"}
+	return nil, &NotLoadedError{edge: "reward"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -126,9 +126,9 @@ func (_m *Currency) QueryCoupons() *CouponQuery {
 	return NewCurrencyClient(_m.config).QueryCoupons(_m)
 }
 
-// QueryMilestones queries the "milestones" edge of the Currency entity.
-func (_m *Currency) QueryMilestones() *MilestoneQuery {
-	return NewCurrencyClient(_m.config).QueryMilestones(_m)
+// QueryReward queries the "reward" edge of the Currency entity.
+func (_m *Currency) QueryReward() *RewardQuery {
+	return NewCurrencyClient(_m.config).QueryReward(_m)
 }
 
 // Update returns a builder for updating this Currency.

@@ -4,6 +4,7 @@ package ent
 
 import (
 	"context"
+	"database/sql/driver"
 	"fmt"
 	"math"
 
@@ -12,9 +13,10 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
-	"github.com/chisdev/coupon/pkg/ent/currency"
 	"github.com/chisdev/coupon/pkg/ent/milestone"
 	"github.com/chisdev/coupon/pkg/ent/predicate"
+	"github.com/chisdev/coupon/pkg/ent/progress"
+	"github.com/chisdev/coupon/pkg/ent/reward"
 )
 
 // MilestoneQuery is the builder for querying Milestone entities.
@@ -24,7 +26,8 @@ type MilestoneQuery struct {
 	order        []milestone.OrderOption
 	inters       []Interceptor
 	predicates   []predicate.Milestone
-	withCurrency *CurrencyQuery
+	withReward   *RewardQuery
+	withProgress *ProgressQuery
 	modifiers    []func(*sql.Selector)
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
@@ -62,9 +65,9 @@ func (_q *MilestoneQuery) Order(o ...milestone.OrderOption) *MilestoneQuery {
 	return _q
 }
 
-// QueryCurrency chains the current query on the "currency" edge.
-func (_q *MilestoneQuery) QueryCurrency() *CurrencyQuery {
-	query := (&CurrencyClient{config: _q.config}).Query()
+// QueryReward chains the current query on the "reward" edge.
+func (_q *MilestoneQuery) QueryReward() *RewardQuery {
+	query := (&RewardClient{config: _q.config}).Query()
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := _q.prepareQuery(ctx); err != nil {
 			return nil, err
@@ -75,8 +78,30 @@ func (_q *MilestoneQuery) QueryCurrency() *CurrencyQuery {
 		}
 		step := sqlgraph.NewStep(
 			sqlgraph.From(milestone.Table, milestone.FieldID, selector),
-			sqlgraph.To(currency.Table, currency.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, milestone.CurrencyTable, milestone.CurrencyColumn),
+			sqlgraph.To(reward.Table, reward.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, milestone.RewardTable, milestone.RewardColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryProgress chains the current query on the "progress" edge.
+func (_q *MilestoneQuery) QueryProgress() *ProgressQuery {
+	query := (&ProgressClient{config: _q.config}).Query()
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := _q.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := _q.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(milestone.Table, milestone.FieldID, selector),
+			sqlgraph.To(progress.Table, progress.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, milestone.ProgressTable, milestone.ProgressColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(_q.driver.Dialect(), step)
 		return fromU, nil
@@ -276,7 +301,8 @@ func (_q *MilestoneQuery) Clone() *MilestoneQuery {
 		order:        append([]milestone.OrderOption{}, _q.order...),
 		inters:       append([]Interceptor{}, _q.inters...),
 		predicates:   append([]predicate.Milestone{}, _q.predicates...),
-		withCurrency: _q.withCurrency.Clone(),
+		withReward:   _q.withReward.Clone(),
+		withProgress: _q.withProgress.Clone(),
 		// clone intermediate query.
 		sql:       _q.sql.Clone(),
 		path:      _q.path,
@@ -284,14 +310,25 @@ func (_q *MilestoneQuery) Clone() *MilestoneQuery {
 	}
 }
 
-// WithCurrency tells the query-builder to eager-load the nodes that are connected to
-// the "currency" edge. The optional arguments are used to configure the query builder of the edge.
-func (_q *MilestoneQuery) WithCurrency(opts ...func(*CurrencyQuery)) *MilestoneQuery {
-	query := (&CurrencyClient{config: _q.config}).Query()
+// WithReward tells the query-builder to eager-load the nodes that are connected to
+// the "reward" edge. The optional arguments are used to configure the query builder of the edge.
+func (_q *MilestoneQuery) WithReward(opts ...func(*RewardQuery)) *MilestoneQuery {
+	query := (&RewardClient{config: _q.config}).Query()
 	for _, opt := range opts {
 		opt(query)
 	}
-	_q.withCurrency = query
+	_q.withReward = query
+	return _q
+}
+
+// WithProgress tells the query-builder to eager-load the nodes that are connected to
+// the "progress" edge. The optional arguments are used to configure the query builder of the edge.
+func (_q *MilestoneQuery) WithProgress(opts ...func(*ProgressQuery)) *MilestoneQuery {
+	query := (&ProgressClient{config: _q.config}).Query()
+	for _, opt := range opts {
+		opt(query)
+	}
+	_q.withProgress = query
 	return _q
 }
 
@@ -373,8 +410,9 @@ func (_q *MilestoneQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Mi
 	var (
 		nodes       = []*Milestone{}
 		_spec       = _q.querySpec()
-		loadedTypes = [1]bool{
-			_q.withCurrency != nil,
+		loadedTypes = [2]bool{
+			_q.withReward != nil,
+			_q.withProgress != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]any, error) {
@@ -398,41 +436,80 @@ func (_q *MilestoneQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Mi
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := _q.withCurrency; query != nil {
-		if err := _q.loadCurrency(ctx, query, nodes, nil,
-			func(n *Milestone, e *Currency) { n.Edges.Currency = e }); err != nil {
+	if query := _q.withReward; query != nil {
+		if err := _q.loadReward(ctx, query, nodes,
+			func(n *Milestone) { n.Edges.Reward = []*Reward{} },
+			func(n *Milestone, e *Reward) { n.Edges.Reward = append(n.Edges.Reward, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := _q.withProgress; query != nil {
+		if err := _q.loadProgress(ctx, query, nodes,
+			func(n *Milestone) { n.Edges.Progress = []*Progress{} },
+			func(n *Milestone, e *Progress) { n.Edges.Progress = append(n.Edges.Progress, e) }); err != nil {
 			return nil, err
 		}
 	}
 	return nodes, nil
 }
 
-func (_q *MilestoneQuery) loadCurrency(ctx context.Context, query *CurrencyQuery, nodes []*Milestone, init func(*Milestone), assign func(*Milestone, *Currency)) error {
-	ids := make([]uint64, 0, len(nodes))
-	nodeids := make(map[uint64][]*Milestone)
+func (_q *MilestoneQuery) loadReward(ctx context.Context, query *RewardQuery, nodes []*Milestone, init func(*Milestone), assign func(*Milestone, *Reward)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[uint64]*Milestone)
 	for i := range nodes {
-		fk := nodes[i].CurrencyID
-		if _, ok := nodeids[fk]; !ok {
-			ids = append(ids, fk)
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
 		}
-		nodeids[fk] = append(nodeids[fk], nodes[i])
 	}
-	if len(ids) == 0 {
-		return nil
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(reward.FieldMilestoneID)
 	}
-	query.Where(currency.IDIn(ids...))
+	query.Where(predicate.Reward(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(milestone.RewardColumn), fks...))
+	}))
 	neighbors, err := query.All(ctx)
 	if err != nil {
 		return err
 	}
 	for _, n := range neighbors {
-		nodes, ok := nodeids[n.ID]
+		fk := n.MilestoneID
+		node, ok := nodeids[fk]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "currency_id" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "milestone_id" returned %v for node %v`, fk, n.ID)
 		}
-		for i := range nodes {
-			assign(nodes[i], n)
+		assign(node, n)
+	}
+	return nil
+}
+func (_q *MilestoneQuery) loadProgress(ctx context.Context, query *ProgressQuery, nodes []*Milestone, init func(*Milestone), assign func(*Milestone, *Progress)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[uint64]*Milestone)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
 		}
+	}
+	if len(query.ctx.Fields) > 0 {
+		query.ctx.AppendFieldOnce(progress.FieldMilestoneID)
+	}
+	query.Where(predicate.Progress(func(s *sql.Selector) {
+		s.Where(sql.InValues(s.C(milestone.ProgressColumn), fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.MilestoneID
+		node, ok := nodeids[fk]
+		if !ok {
+			return fmt.Errorf(`unexpected referenced foreign-key "milestone_id" returned %v for node %v`, fk, n.ID)
+		}
+		assign(node, n)
 	}
 	return nil
 }
@@ -464,9 +541,6 @@ func (_q *MilestoneQuery) querySpec() *sqlgraph.QuerySpec {
 			if fields[i] != milestone.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
-		}
-		if _q.withCurrency != nil {
-			_spec.Node.AddColumnOnce(milestone.FieldCurrencyID)
 		}
 	}
 	if ps := _q.predicates; len(ps) > 0 {

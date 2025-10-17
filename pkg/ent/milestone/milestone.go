@@ -22,35 +22,32 @@ const (
 	FieldName = "name"
 	// FieldStoreID holds the string denoting the store_id field in the database.
 	FieldStoreID = "store_id"
-	// FieldExpireAt holds the string denoting the expire_at field in the database.
-	FieldExpireAt = "expire_at"
-	// FieldServiceIds holds the string denoting the service_ids field in the database.
-	FieldServiceIds = "service_ids"
-	// FieldCouponType holds the string denoting the coupon_type field in the database.
-	FieldCouponType = "coupon_type"
 	// FieldMilestoneType holds the string denoting the milestone_type field in the database.
 	FieldMilestoneType = "milestone_type"
-	// FieldCurrencyID holds the string denoting the currency_id field in the database.
-	FieldCurrencyID = "currency_id"
-	// FieldUsageLimit holds the string denoting the usage_limit field in the database.
-	FieldUsageLimit = "usage_limit"
 	// FieldThreshold holds the string denoting the threshold field in the database.
 	FieldThreshold = "threshold"
 	// FieldStep holds the string denoting the step field in the database.
 	FieldStep = "step"
-	// FieldCouponValue holds the string denoting the coupon_value field in the database.
-	FieldCouponValue = "coupon_value"
-	// EdgeCurrency holds the string denoting the currency edge name in mutations.
-	EdgeCurrency = "currency"
+	// EdgeReward holds the string denoting the reward edge name in mutations.
+	EdgeReward = "reward"
+	// EdgeProgress holds the string denoting the progress edge name in mutations.
+	EdgeProgress = "progress"
 	// Table holds the table name of the milestone in the database.
 	Table = "milestones"
-	// CurrencyTable is the table that holds the currency relation/edge.
-	CurrencyTable = "milestones"
-	// CurrencyInverseTable is the table name for the Currency entity.
-	// It exists in this package in order to avoid circular dependency with the "currency" package.
-	CurrencyInverseTable = "currencies"
-	// CurrencyColumn is the table column denoting the currency relation/edge.
-	CurrencyColumn = "currency_id"
+	// RewardTable is the table that holds the reward relation/edge.
+	RewardTable = "rewards"
+	// RewardInverseTable is the table name for the Reward entity.
+	// It exists in this package in order to avoid circular dependency with the "reward" package.
+	RewardInverseTable = "rewards"
+	// RewardColumn is the table column denoting the reward relation/edge.
+	RewardColumn = "milestone_id"
+	// ProgressTable is the table that holds the progress relation/edge.
+	ProgressTable = "progresses"
+	// ProgressInverseTable is the table name for the Progress entity.
+	// It exists in this package in order to avoid circular dependency with the "progress" package.
+	ProgressInverseTable = "progresses"
+	// ProgressColumn is the table column denoting the progress relation/edge.
+	ProgressColumn = "milestone_id"
 )
 
 // Columns holds all SQL columns for milestone fields.
@@ -60,15 +57,9 @@ var Columns = []string{
 	FieldUpdatedAt,
 	FieldName,
 	FieldStoreID,
-	FieldExpireAt,
-	FieldServiceIds,
-	FieldCouponType,
 	FieldMilestoneType,
-	FieldCurrencyID,
-	FieldUsageLimit,
 	FieldThreshold,
 	FieldStep,
-	FieldCouponValue,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -90,16 +81,10 @@ var (
 	UpdateDefaultUpdatedAt func() time.Time
 	// StoreIDValidator is a validator for the "store_id" field. It is called by the builders before save.
 	StoreIDValidator func(string) error
-	// DefaultServiceIds holds the default value on creation for the "service_ids" field.
-	DefaultServiceIds []string
-	// DefaultUsageLimit holds the default value on creation for the "usage_limit" field.
-	DefaultUsageLimit int32
 	// DefaultThreshold holds the default value on creation for the "threshold" field.
 	DefaultThreshold int32
 	// DefaultStep holds the default value on creation for the "step" field.
 	DefaultStep int32
-	// DefaultCouponValue holds the default value on creation for the "coupon_value" field.
-	DefaultCouponValue float64
 )
 
 // OrderOption defines the ordering options for the Milestone queries.
@@ -130,29 +115,9 @@ func ByStoreID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStoreID, opts...).ToFunc()
 }
 
-// ByExpireAt orders the results by the expire_at field.
-func ByExpireAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldExpireAt, opts...).ToFunc()
-}
-
-// ByCouponType orders the results by the coupon_type field.
-func ByCouponType(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCouponType, opts...).ToFunc()
-}
-
 // ByMilestoneType orders the results by the milestone_type field.
 func ByMilestoneType(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldMilestoneType, opts...).ToFunc()
-}
-
-// ByCurrencyID orders the results by the currency_id field.
-func ByCurrencyID(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCurrencyID, opts...).ToFunc()
-}
-
-// ByUsageLimit orders the results by the usage_limit field.
-func ByUsageLimit(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUsageLimit, opts...).ToFunc()
 }
 
 // ByThreshold orders the results by the threshold field.
@@ -165,21 +130,44 @@ func ByStep(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStep, opts...).ToFunc()
 }
 
-// ByCouponValue orders the results by the coupon_value field.
-func ByCouponValue(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCouponValue, opts...).ToFunc()
-}
-
-// ByCurrencyField orders the results by currency field.
-func ByCurrencyField(field string, opts ...sql.OrderTermOption) OrderOption {
+// ByRewardCount orders the results by reward count.
+func ByRewardCount(opts ...sql.OrderTermOption) OrderOption {
 	return func(s *sql.Selector) {
-		sqlgraph.OrderByNeighborTerms(s, newCurrencyStep(), sql.OrderByField(field, opts...))
+		sqlgraph.OrderByNeighborsCount(s, newRewardStep(), opts...)
 	}
 }
-func newCurrencyStep() *sqlgraph.Step {
+
+// ByReward orders the results by reward terms.
+func ByReward(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newRewardStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+
+// ByProgressCount orders the results by progress count.
+func ByProgressCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newProgressStep(), opts...)
+	}
+}
+
+// ByProgress orders the results by progress terms.
+func ByProgress(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newProgressStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+func newRewardStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
-		sqlgraph.To(CurrencyInverseTable, FieldID),
-		sqlgraph.Edge(sqlgraph.M2O, true, CurrencyTable, CurrencyColumn),
+		sqlgraph.To(RewardInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, RewardTable, RewardColumn),
+	)
+}
+func newProgressStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(ProgressInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, ProgressTable, ProgressColumn),
 	)
 }

@@ -128,13 +128,13 @@ func (_u *CouponUpdate) ClearCustomerID() *CouponUpdate {
 }
 
 // SetServiceIds sets the "service_ids" field.
-func (_u *CouponUpdate) SetServiceIds(v []string) *CouponUpdate {
+func (_u *CouponUpdate) SetServiceIds(v []uint64) *CouponUpdate {
 	_u.mutation.SetServiceIds(v)
 	return _u
 }
 
 // AppendServiceIds appends value to the "service_ids" field.
-func (_u *CouponUpdate) AppendServiceIds(v []string) *CouponUpdate {
+func (_u *CouponUpdate) AppendServiceIds(v []uint64) *CouponUpdate {
 	_u.mutation.AppendServiceIds(v)
 	return _u
 }
@@ -556,13 +556,13 @@ func (_u *CouponUpdateOne) ClearCustomerID() *CouponUpdateOne {
 }
 
 // SetServiceIds sets the "service_ids" field.
-func (_u *CouponUpdateOne) SetServiceIds(v []string) *CouponUpdateOne {
+func (_u *CouponUpdateOne) SetServiceIds(v []uint64) *CouponUpdateOne {
 	_u.mutation.SetServiceIds(v)
 	return _u
 }
 
 // AppendServiceIds appends value to the "service_ids" field.
-func (_u *CouponUpdateOne) AppendServiceIds(v []string) *CouponUpdateOne {
+func (_u *CouponUpdateOne) AppendServiceIds(v []uint64) *CouponUpdateOne {
 	_u.mutation.AppendServiceIds(v)
 	return _u
 }

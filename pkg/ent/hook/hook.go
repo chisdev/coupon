@@ -45,6 +45,30 @@ func (f MilestoneFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, e
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.MilestoneMutation", m)
 }
 
+// The ProgressFunc type is an adapter to allow the use of ordinary
+// function as Progress mutator.
+type ProgressFunc func(context.Context, *ent.ProgressMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f ProgressFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.ProgressMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.ProgressMutation", m)
+}
+
+// The RewardFunc type is an adapter to allow the use of ordinary
+// function as Reward mutator.
+type RewardFunc func(context.Context, *ent.RewardMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f RewardFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.RewardMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.RewardMutation", m)
+}
+
 // Condition is a hook condition function.
 type Condition func(context.Context, ent.Mutation) bool
 

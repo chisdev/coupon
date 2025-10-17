@@ -8,6 +8,8 @@ import (
 	entcoupon "github.com/chisdev/coupon/pkg/ent/coupon"
 	"github.com/chisdev/coupon/pkg/ent/currency"
 	"github.com/chisdev/coupon/pkg/ent/milestone"
+	"github.com/chisdev/coupon/pkg/ent/progress"
+	"github.com/chisdev/coupon/pkg/ent/reward"
 	"github.com/chisdev/coupon/schema"
 )
 
@@ -41,7 +43,7 @@ func init() {
 	// entcouponDescServiceIds is the schema descriptor for service_ids field.
 	entcouponDescServiceIds := entcouponFields[5].Descriptor()
 	// entcoupon.DefaultServiceIds holds the default value on creation for the service_ids field.
-	entcoupon.DefaultServiceIds = entcouponDescServiceIds.Default.([]string)
+	entcoupon.DefaultServiceIds = entcouponDescServiceIds.Default.([]uint64)
 	// entcouponDescUsageLimit is the schema descriptor for usage_limit field.
 	entcouponDescUsageLimit := entcouponFields[8].Descriptor()
 	// entcoupon.DefaultUsageLimit holds the default value on creation for the usage_limit field.
@@ -88,24 +90,66 @@ func init() {
 	milestoneDescStoreID := milestoneFields[1].Descriptor()
 	// milestone.StoreIDValidator is a validator for the "store_id" field. It is called by the builders before save.
 	milestone.StoreIDValidator = milestoneDescStoreID.Validators[0].(func(string) error)
-	// milestoneDescServiceIds is the schema descriptor for service_ids field.
-	milestoneDescServiceIds := milestoneFields[3].Descriptor()
-	// milestone.DefaultServiceIds holds the default value on creation for the service_ids field.
-	milestone.DefaultServiceIds = milestoneDescServiceIds.Default.([]string)
-	// milestoneDescUsageLimit is the schema descriptor for usage_limit field.
-	milestoneDescUsageLimit := milestoneFields[7].Descriptor()
-	// milestone.DefaultUsageLimit holds the default value on creation for the usage_limit field.
-	milestone.DefaultUsageLimit = milestoneDescUsageLimit.Default.(int32)
 	// milestoneDescThreshold is the schema descriptor for threshold field.
-	milestoneDescThreshold := milestoneFields[8].Descriptor()
+	milestoneDescThreshold := milestoneFields[3].Descriptor()
 	// milestone.DefaultThreshold holds the default value on creation for the threshold field.
 	milestone.DefaultThreshold = milestoneDescThreshold.Default.(int32)
 	// milestoneDescStep is the schema descriptor for step field.
-	milestoneDescStep := milestoneFields[9].Descriptor()
+	milestoneDescStep := milestoneFields[4].Descriptor()
 	// milestone.DefaultStep holds the default value on creation for the step field.
 	milestone.DefaultStep = milestoneDescStep.Default.(int32)
-	// milestoneDescCouponValue is the schema descriptor for coupon_value field.
-	milestoneDescCouponValue := milestoneFields[10].Descriptor()
-	// milestone.DefaultCouponValue holds the default value on creation for the coupon_value field.
-	milestone.DefaultCouponValue = milestoneDescCouponValue.Default.(float64)
+	progressMixin := schema.Progress{}.Mixin()
+	progressMixinFields0 := progressMixin[0].Fields()
+	_ = progressMixinFields0
+	progressFields := schema.Progress{}.Fields()
+	_ = progressFields
+	// progressDescCreatedAt is the schema descriptor for created_at field.
+	progressDescCreatedAt := progressMixinFields0[1].Descriptor()
+	// progress.DefaultCreatedAt holds the default value on creation for the created_at field.
+	progress.DefaultCreatedAt = progressDescCreatedAt.Default.(func() time.Time)
+	// progressDescUpdatedAt is the schema descriptor for updated_at field.
+	progressDescUpdatedAt := progressMixinFields0[2].Descriptor()
+	// progress.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	progress.DefaultUpdatedAt = progressDescUpdatedAt.Default.(func() time.Time)
+	// progress.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	progress.UpdateDefaultUpdatedAt = progressDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// progressDescCustomerID is the schema descriptor for customer_id field.
+	progressDescCustomerID := progressFields[0].Descriptor()
+	// progress.CustomerIDValidator is a validator for the "customer_id" field. It is called by the builders before save.
+	progress.CustomerIDValidator = progressDescCustomerID.Validators[0].(func(string) error)
+	// progressDescProgress is the schema descriptor for progress field.
+	progressDescProgress := progressFields[2].Descriptor()
+	// progress.DefaultProgress holds the default value on creation for the progress field.
+	progress.DefaultProgress = progressDescProgress.Default.(int32)
+	// progressDescPassCount is the schema descriptor for pass_count field.
+	progressDescPassCount := progressFields[3].Descriptor()
+	// progress.DefaultPassCount holds the default value on creation for the pass_count field.
+	progress.DefaultPassCount = progressDescPassCount.Default.(int32)
+	rewardMixin := schema.Reward{}.Mixin()
+	rewardMixinFields0 := rewardMixin[0].Fields()
+	_ = rewardMixinFields0
+	rewardFields := schema.Reward{}.Fields()
+	_ = rewardFields
+	// rewardDescCreatedAt is the schema descriptor for created_at field.
+	rewardDescCreatedAt := rewardMixinFields0[1].Descriptor()
+	// reward.DefaultCreatedAt holds the default value on creation for the created_at field.
+	reward.DefaultCreatedAt = rewardDescCreatedAt.Default.(func() time.Time)
+	// rewardDescUpdatedAt is the schema descriptor for updated_at field.
+	rewardDescUpdatedAt := rewardMixinFields0[2].Descriptor()
+	// reward.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	reward.DefaultUpdatedAt = rewardDescUpdatedAt.Default.(func() time.Time)
+	// reward.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	reward.UpdateDefaultUpdatedAt = rewardDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// rewardDescServiceIds is the schema descriptor for service_ids field.
+	rewardDescServiceIds := rewardFields[2].Descriptor()
+	// reward.DefaultServiceIds holds the default value on creation for the service_ids field.
+	reward.DefaultServiceIds = rewardDescServiceIds.Default.([]uint64)
+	// rewardDescUsageLimit is the schema descriptor for usage_limit field.
+	rewardDescUsageLimit := rewardFields[5].Descriptor()
+	// reward.DefaultUsageLimit holds the default value on creation for the usage_limit field.
+	reward.DefaultUsageLimit = rewardDescUsageLimit.Default.(int32)
+	// rewardDescCouponValue is the schema descriptor for coupon_value field.
+	rewardDescCouponValue := rewardFields[6].Descriptor()
+	// reward.DefaultCouponValue holds the default value on creation for the coupon_value field.
+	reward.DefaultCouponValue = rewardDescCouponValue.Default.(float64)
 }

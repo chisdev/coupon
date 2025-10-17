@@ -10,12 +10,12 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"entgo.io/ent/dialect/sql/sqljson"
 	"entgo.io/ent/schema/field"
 	coupon "github.com/chisdev/coupon/api"
-	"github.com/chisdev/coupon/pkg/ent/currency"
 	"github.com/chisdev/coupon/pkg/ent/milestone"
 	"github.com/chisdev/coupon/pkg/ent/predicate"
+	"github.com/chisdev/coupon/pkg/ent/progress"
+	"github.com/chisdev/coupon/pkg/ent/reward"
 )
 
 // MilestoneUpdate is the builder for updating Milestone entities.
@@ -72,59 +72,6 @@ func (_u *MilestoneUpdate) SetNillableStoreID(v *string) *MilestoneUpdate {
 	return _u
 }
 
-// SetExpireAt sets the "expire_at" field.
-func (_u *MilestoneUpdate) SetExpireAt(v time.Time) *MilestoneUpdate {
-	_u.mutation.SetExpireAt(v)
-	return _u
-}
-
-// SetNillableExpireAt sets the "expire_at" field if the given value is not nil.
-func (_u *MilestoneUpdate) SetNillableExpireAt(v *time.Time) *MilestoneUpdate {
-	if v != nil {
-		_u.SetExpireAt(*v)
-	}
-	return _u
-}
-
-// ClearExpireAt clears the value of the "expire_at" field.
-func (_u *MilestoneUpdate) ClearExpireAt() *MilestoneUpdate {
-	_u.mutation.ClearExpireAt()
-	return _u
-}
-
-// SetServiceIds sets the "service_ids" field.
-func (_u *MilestoneUpdate) SetServiceIds(v []string) *MilestoneUpdate {
-	_u.mutation.SetServiceIds(v)
-	return _u
-}
-
-// AppendServiceIds appends value to the "service_ids" field.
-func (_u *MilestoneUpdate) AppendServiceIds(v []string) *MilestoneUpdate {
-	_u.mutation.AppendServiceIds(v)
-	return _u
-}
-
-// SetCouponType sets the "coupon_type" field.
-func (_u *MilestoneUpdate) SetCouponType(v coupon.CouponType) *MilestoneUpdate {
-	_u.mutation.ResetCouponType()
-	_u.mutation.SetCouponType(v)
-	return _u
-}
-
-// SetNillableCouponType sets the "coupon_type" field if the given value is not nil.
-func (_u *MilestoneUpdate) SetNillableCouponType(v *coupon.CouponType) *MilestoneUpdate {
-	if v != nil {
-		_u.SetCouponType(*v)
-	}
-	return _u
-}
-
-// AddCouponType adds value to the "coupon_type" field.
-func (_u *MilestoneUpdate) AddCouponType(v coupon.CouponType) *MilestoneUpdate {
-	_u.mutation.AddCouponType(v)
-	return _u
-}
-
 // SetMilestoneType sets the "milestone_type" field.
 func (_u *MilestoneUpdate) SetMilestoneType(v coupon.MilestoneType) *MilestoneUpdate {
 	_u.mutation.ResetMilestoneType()
@@ -143,47 +90,6 @@ func (_u *MilestoneUpdate) SetNillableMilestoneType(v *coupon.MilestoneType) *Mi
 // AddMilestoneType adds value to the "milestone_type" field.
 func (_u *MilestoneUpdate) AddMilestoneType(v coupon.MilestoneType) *MilestoneUpdate {
 	_u.mutation.AddMilestoneType(v)
-	return _u
-}
-
-// SetCurrencyID sets the "currency_id" field.
-func (_u *MilestoneUpdate) SetCurrencyID(v uint64) *MilestoneUpdate {
-	_u.mutation.SetCurrencyID(v)
-	return _u
-}
-
-// SetNillableCurrencyID sets the "currency_id" field if the given value is not nil.
-func (_u *MilestoneUpdate) SetNillableCurrencyID(v *uint64) *MilestoneUpdate {
-	if v != nil {
-		_u.SetCurrencyID(*v)
-	}
-	return _u
-}
-
-// ClearCurrencyID clears the value of the "currency_id" field.
-func (_u *MilestoneUpdate) ClearCurrencyID() *MilestoneUpdate {
-	_u.mutation.ClearCurrencyID()
-	return _u
-}
-
-// SetUsageLimit sets the "usage_limit" field.
-func (_u *MilestoneUpdate) SetUsageLimit(v int32) *MilestoneUpdate {
-	_u.mutation.ResetUsageLimit()
-	_u.mutation.SetUsageLimit(v)
-	return _u
-}
-
-// SetNillableUsageLimit sets the "usage_limit" field if the given value is not nil.
-func (_u *MilestoneUpdate) SetNillableUsageLimit(v *int32) *MilestoneUpdate {
-	if v != nil {
-		_u.SetUsageLimit(*v)
-	}
-	return _u
-}
-
-// AddUsageLimit adds value to the "usage_limit" field.
-func (_u *MilestoneUpdate) AddUsageLimit(v int32) *MilestoneUpdate {
-	_u.mutation.AddUsageLimit(v)
 	return _u
 }
 
@@ -229,30 +135,34 @@ func (_u *MilestoneUpdate) AddStep(v int32) *MilestoneUpdate {
 	return _u
 }
 
-// SetCouponValue sets the "coupon_value" field.
-func (_u *MilestoneUpdate) SetCouponValue(v float64) *MilestoneUpdate {
-	_u.mutation.ResetCouponValue()
-	_u.mutation.SetCouponValue(v)
+// AddRewardIDs adds the "reward" edge to the Reward entity by IDs.
+func (_u *MilestoneUpdate) AddRewardIDs(ids ...uint64) *MilestoneUpdate {
+	_u.mutation.AddRewardIDs(ids...)
 	return _u
 }
 
-// SetNillableCouponValue sets the "coupon_value" field if the given value is not nil.
-func (_u *MilestoneUpdate) SetNillableCouponValue(v *float64) *MilestoneUpdate {
-	if v != nil {
-		_u.SetCouponValue(*v)
+// AddReward adds the "reward" edges to the Reward entity.
+func (_u *MilestoneUpdate) AddReward(v ...*Reward) *MilestoneUpdate {
+	ids := make([]uint64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
+	return _u.AddRewardIDs(ids...)
+}
+
+// AddProgresIDs adds the "progress" edge to the Progress entity by IDs.
+func (_u *MilestoneUpdate) AddProgresIDs(ids ...uint64) *MilestoneUpdate {
+	_u.mutation.AddProgresIDs(ids...)
 	return _u
 }
 
-// AddCouponValue adds value to the "coupon_value" field.
-func (_u *MilestoneUpdate) AddCouponValue(v float64) *MilestoneUpdate {
-	_u.mutation.AddCouponValue(v)
-	return _u
-}
-
-// SetCurrency sets the "currency" edge to the Currency entity.
-func (_u *MilestoneUpdate) SetCurrency(v *Currency) *MilestoneUpdate {
-	return _u.SetCurrencyID(v.ID)
+// AddProgress adds the "progress" edges to the Progress entity.
+func (_u *MilestoneUpdate) AddProgress(v ...*Progress) *MilestoneUpdate {
+	ids := make([]uint64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _u.AddProgresIDs(ids...)
 }
 
 // Mutation returns the MilestoneMutation object of the builder.
@@ -260,10 +170,46 @@ func (_u *MilestoneUpdate) Mutation() *MilestoneMutation {
 	return _u.mutation
 }
 
-// ClearCurrency clears the "currency" edge to the Currency entity.
-func (_u *MilestoneUpdate) ClearCurrency() *MilestoneUpdate {
-	_u.mutation.ClearCurrency()
+// ClearReward clears all "reward" edges to the Reward entity.
+func (_u *MilestoneUpdate) ClearReward() *MilestoneUpdate {
+	_u.mutation.ClearReward()
 	return _u
+}
+
+// RemoveRewardIDs removes the "reward" edge to Reward entities by IDs.
+func (_u *MilestoneUpdate) RemoveRewardIDs(ids ...uint64) *MilestoneUpdate {
+	_u.mutation.RemoveRewardIDs(ids...)
+	return _u
+}
+
+// RemoveReward removes "reward" edges to Reward entities.
+func (_u *MilestoneUpdate) RemoveReward(v ...*Reward) *MilestoneUpdate {
+	ids := make([]uint64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _u.RemoveRewardIDs(ids...)
+}
+
+// ClearProgress clears all "progress" edges to the Progress entity.
+func (_u *MilestoneUpdate) ClearProgress() *MilestoneUpdate {
+	_u.mutation.ClearProgress()
+	return _u
+}
+
+// RemoveProgresIDs removes the "progress" edge to Progress entities by IDs.
+func (_u *MilestoneUpdate) RemoveProgresIDs(ids ...uint64) *MilestoneUpdate {
+	_u.mutation.RemoveProgresIDs(ids...)
+	return _u
+}
+
+// RemoveProgress removes "progress" edges to Progress entities.
+func (_u *MilestoneUpdate) RemoveProgress(v ...*Progress) *MilestoneUpdate {
+	ids := make([]uint64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _u.RemoveProgresIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -342,37 +288,11 @@ func (_u *MilestoneUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	if value, ok := _u.mutation.StoreID(); ok {
 		_spec.SetField(milestone.FieldStoreID, field.TypeString, value)
 	}
-	if value, ok := _u.mutation.ExpireAt(); ok {
-		_spec.SetField(milestone.FieldExpireAt, field.TypeTime, value)
-	}
-	if _u.mutation.ExpireAtCleared() {
-		_spec.ClearField(milestone.FieldExpireAt, field.TypeTime)
-	}
-	if value, ok := _u.mutation.ServiceIds(); ok {
-		_spec.SetField(milestone.FieldServiceIds, field.TypeJSON, value)
-	}
-	if value, ok := _u.mutation.AppendedServiceIds(); ok {
-		_spec.AddModifier(func(u *sql.UpdateBuilder) {
-			sqljson.Append(u, milestone.FieldServiceIds, value)
-		})
-	}
-	if value, ok := _u.mutation.CouponType(); ok {
-		_spec.SetField(milestone.FieldCouponType, field.TypeInt32, value)
-	}
-	if value, ok := _u.mutation.AddedCouponType(); ok {
-		_spec.AddField(milestone.FieldCouponType, field.TypeInt32, value)
-	}
 	if value, ok := _u.mutation.MilestoneType(); ok {
 		_spec.SetField(milestone.FieldMilestoneType, field.TypeInt32, value)
 	}
 	if value, ok := _u.mutation.AddedMilestoneType(); ok {
 		_spec.AddField(milestone.FieldMilestoneType, field.TypeInt32, value)
-	}
-	if value, ok := _u.mutation.UsageLimit(); ok {
-		_spec.SetField(milestone.FieldUsageLimit, field.TypeInt32, value)
-	}
-	if value, ok := _u.mutation.AddedUsageLimit(); ok {
-		_spec.AddField(milestone.FieldUsageLimit, field.TypeInt32, value)
 	}
 	if value, ok := _u.mutation.Threshold(); ok {
 		_spec.SetField(milestone.FieldThreshold, field.TypeInt32, value)
@@ -386,34 +306,89 @@ func (_u *MilestoneUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	if value, ok := _u.mutation.AddedStep(); ok {
 		_spec.AddField(milestone.FieldStep, field.TypeInt32, value)
 	}
-	if value, ok := _u.mutation.CouponValue(); ok {
-		_spec.SetField(milestone.FieldCouponValue, field.TypeFloat64, value)
-	}
-	if value, ok := _u.mutation.AddedCouponValue(); ok {
-		_spec.AddField(milestone.FieldCouponValue, field.TypeFloat64, value)
-	}
-	if _u.mutation.CurrencyCleared() {
+	if _u.mutation.RewardCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   milestone.CurrencyTable,
-			Columns: []string{milestone.CurrencyColumn},
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   milestone.RewardTable,
+			Columns: []string{milestone.RewardColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(currency.FieldID, field.TypeUint64),
+				IDSpec: sqlgraph.NewFieldSpec(reward.FieldID, field.TypeUint64),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := _u.mutation.CurrencyIDs(); len(nodes) > 0 {
+	if nodes := _u.mutation.RemovedRewardIDs(); len(nodes) > 0 && !_u.mutation.RewardCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   milestone.CurrencyTable,
-			Columns: []string{milestone.CurrencyColumn},
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   milestone.RewardTable,
+			Columns: []string{milestone.RewardColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(currency.FieldID, field.TypeUint64),
+				IDSpec: sqlgraph.NewFieldSpec(reward.FieldID, field.TypeUint64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.RewardIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   milestone.RewardTable,
+			Columns: []string{milestone.RewardColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(reward.FieldID, field.TypeUint64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if _u.mutation.ProgressCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   milestone.ProgressTable,
+			Columns: []string{milestone.ProgressColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(progress.FieldID, field.TypeUint64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.RemovedProgressIDs(); len(nodes) > 0 && !_u.mutation.ProgressCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   milestone.ProgressTable,
+			Columns: []string{milestone.ProgressColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(progress.FieldID, field.TypeUint64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.ProgressIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   milestone.ProgressTable,
+			Columns: []string{milestone.ProgressColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(progress.FieldID, field.TypeUint64),
 			},
 		}
 		for _, k := range nodes {
@@ -483,59 +458,6 @@ func (_u *MilestoneUpdateOne) SetNillableStoreID(v *string) *MilestoneUpdateOne 
 	return _u
 }
 
-// SetExpireAt sets the "expire_at" field.
-func (_u *MilestoneUpdateOne) SetExpireAt(v time.Time) *MilestoneUpdateOne {
-	_u.mutation.SetExpireAt(v)
-	return _u
-}
-
-// SetNillableExpireAt sets the "expire_at" field if the given value is not nil.
-func (_u *MilestoneUpdateOne) SetNillableExpireAt(v *time.Time) *MilestoneUpdateOne {
-	if v != nil {
-		_u.SetExpireAt(*v)
-	}
-	return _u
-}
-
-// ClearExpireAt clears the value of the "expire_at" field.
-func (_u *MilestoneUpdateOne) ClearExpireAt() *MilestoneUpdateOne {
-	_u.mutation.ClearExpireAt()
-	return _u
-}
-
-// SetServiceIds sets the "service_ids" field.
-func (_u *MilestoneUpdateOne) SetServiceIds(v []string) *MilestoneUpdateOne {
-	_u.mutation.SetServiceIds(v)
-	return _u
-}
-
-// AppendServiceIds appends value to the "service_ids" field.
-func (_u *MilestoneUpdateOne) AppendServiceIds(v []string) *MilestoneUpdateOne {
-	_u.mutation.AppendServiceIds(v)
-	return _u
-}
-
-// SetCouponType sets the "coupon_type" field.
-func (_u *MilestoneUpdateOne) SetCouponType(v coupon.CouponType) *MilestoneUpdateOne {
-	_u.mutation.ResetCouponType()
-	_u.mutation.SetCouponType(v)
-	return _u
-}
-
-// SetNillableCouponType sets the "coupon_type" field if the given value is not nil.
-func (_u *MilestoneUpdateOne) SetNillableCouponType(v *coupon.CouponType) *MilestoneUpdateOne {
-	if v != nil {
-		_u.SetCouponType(*v)
-	}
-	return _u
-}
-
-// AddCouponType adds value to the "coupon_type" field.
-func (_u *MilestoneUpdateOne) AddCouponType(v coupon.CouponType) *MilestoneUpdateOne {
-	_u.mutation.AddCouponType(v)
-	return _u
-}
-
 // SetMilestoneType sets the "milestone_type" field.
 func (_u *MilestoneUpdateOne) SetMilestoneType(v coupon.MilestoneType) *MilestoneUpdateOne {
 	_u.mutation.ResetMilestoneType()
@@ -554,47 +476,6 @@ func (_u *MilestoneUpdateOne) SetNillableMilestoneType(v *coupon.MilestoneType) 
 // AddMilestoneType adds value to the "milestone_type" field.
 func (_u *MilestoneUpdateOne) AddMilestoneType(v coupon.MilestoneType) *MilestoneUpdateOne {
 	_u.mutation.AddMilestoneType(v)
-	return _u
-}
-
-// SetCurrencyID sets the "currency_id" field.
-func (_u *MilestoneUpdateOne) SetCurrencyID(v uint64) *MilestoneUpdateOne {
-	_u.mutation.SetCurrencyID(v)
-	return _u
-}
-
-// SetNillableCurrencyID sets the "currency_id" field if the given value is not nil.
-func (_u *MilestoneUpdateOne) SetNillableCurrencyID(v *uint64) *MilestoneUpdateOne {
-	if v != nil {
-		_u.SetCurrencyID(*v)
-	}
-	return _u
-}
-
-// ClearCurrencyID clears the value of the "currency_id" field.
-func (_u *MilestoneUpdateOne) ClearCurrencyID() *MilestoneUpdateOne {
-	_u.mutation.ClearCurrencyID()
-	return _u
-}
-
-// SetUsageLimit sets the "usage_limit" field.
-func (_u *MilestoneUpdateOne) SetUsageLimit(v int32) *MilestoneUpdateOne {
-	_u.mutation.ResetUsageLimit()
-	_u.mutation.SetUsageLimit(v)
-	return _u
-}
-
-// SetNillableUsageLimit sets the "usage_limit" field if the given value is not nil.
-func (_u *MilestoneUpdateOne) SetNillableUsageLimit(v *int32) *MilestoneUpdateOne {
-	if v != nil {
-		_u.SetUsageLimit(*v)
-	}
-	return _u
-}
-
-// AddUsageLimit adds value to the "usage_limit" field.
-func (_u *MilestoneUpdateOne) AddUsageLimit(v int32) *MilestoneUpdateOne {
-	_u.mutation.AddUsageLimit(v)
 	return _u
 }
 
@@ -640,30 +521,34 @@ func (_u *MilestoneUpdateOne) AddStep(v int32) *MilestoneUpdateOne {
 	return _u
 }
 
-// SetCouponValue sets the "coupon_value" field.
-func (_u *MilestoneUpdateOne) SetCouponValue(v float64) *MilestoneUpdateOne {
-	_u.mutation.ResetCouponValue()
-	_u.mutation.SetCouponValue(v)
+// AddRewardIDs adds the "reward" edge to the Reward entity by IDs.
+func (_u *MilestoneUpdateOne) AddRewardIDs(ids ...uint64) *MilestoneUpdateOne {
+	_u.mutation.AddRewardIDs(ids...)
 	return _u
 }
 
-// SetNillableCouponValue sets the "coupon_value" field if the given value is not nil.
-func (_u *MilestoneUpdateOne) SetNillableCouponValue(v *float64) *MilestoneUpdateOne {
-	if v != nil {
-		_u.SetCouponValue(*v)
+// AddReward adds the "reward" edges to the Reward entity.
+func (_u *MilestoneUpdateOne) AddReward(v ...*Reward) *MilestoneUpdateOne {
+	ids := make([]uint64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
 	}
+	return _u.AddRewardIDs(ids...)
+}
+
+// AddProgresIDs adds the "progress" edge to the Progress entity by IDs.
+func (_u *MilestoneUpdateOne) AddProgresIDs(ids ...uint64) *MilestoneUpdateOne {
+	_u.mutation.AddProgresIDs(ids...)
 	return _u
 }
 
-// AddCouponValue adds value to the "coupon_value" field.
-func (_u *MilestoneUpdateOne) AddCouponValue(v float64) *MilestoneUpdateOne {
-	_u.mutation.AddCouponValue(v)
-	return _u
-}
-
-// SetCurrency sets the "currency" edge to the Currency entity.
-func (_u *MilestoneUpdateOne) SetCurrency(v *Currency) *MilestoneUpdateOne {
-	return _u.SetCurrencyID(v.ID)
+// AddProgress adds the "progress" edges to the Progress entity.
+func (_u *MilestoneUpdateOne) AddProgress(v ...*Progress) *MilestoneUpdateOne {
+	ids := make([]uint64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _u.AddProgresIDs(ids...)
 }
 
 // Mutation returns the MilestoneMutation object of the builder.
@@ -671,10 +556,46 @@ func (_u *MilestoneUpdateOne) Mutation() *MilestoneMutation {
 	return _u.mutation
 }
 
-// ClearCurrency clears the "currency" edge to the Currency entity.
-func (_u *MilestoneUpdateOne) ClearCurrency() *MilestoneUpdateOne {
-	_u.mutation.ClearCurrency()
+// ClearReward clears all "reward" edges to the Reward entity.
+func (_u *MilestoneUpdateOne) ClearReward() *MilestoneUpdateOne {
+	_u.mutation.ClearReward()
 	return _u
+}
+
+// RemoveRewardIDs removes the "reward" edge to Reward entities by IDs.
+func (_u *MilestoneUpdateOne) RemoveRewardIDs(ids ...uint64) *MilestoneUpdateOne {
+	_u.mutation.RemoveRewardIDs(ids...)
+	return _u
+}
+
+// RemoveReward removes "reward" edges to Reward entities.
+func (_u *MilestoneUpdateOne) RemoveReward(v ...*Reward) *MilestoneUpdateOne {
+	ids := make([]uint64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _u.RemoveRewardIDs(ids...)
+}
+
+// ClearProgress clears all "progress" edges to the Progress entity.
+func (_u *MilestoneUpdateOne) ClearProgress() *MilestoneUpdateOne {
+	_u.mutation.ClearProgress()
+	return _u
+}
+
+// RemoveProgresIDs removes the "progress" edge to Progress entities by IDs.
+func (_u *MilestoneUpdateOne) RemoveProgresIDs(ids ...uint64) *MilestoneUpdateOne {
+	_u.mutation.RemoveProgresIDs(ids...)
+	return _u
+}
+
+// RemoveProgress removes "progress" edges to Progress entities.
+func (_u *MilestoneUpdateOne) RemoveProgress(v ...*Progress) *MilestoneUpdateOne {
+	ids := make([]uint64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _u.RemoveProgresIDs(ids...)
 }
 
 // Where appends a list predicates to the MilestoneUpdate builder.
@@ -783,37 +704,11 @@ func (_u *MilestoneUpdateOne) sqlSave(ctx context.Context) (_node *Milestone, er
 	if value, ok := _u.mutation.StoreID(); ok {
 		_spec.SetField(milestone.FieldStoreID, field.TypeString, value)
 	}
-	if value, ok := _u.mutation.ExpireAt(); ok {
-		_spec.SetField(milestone.FieldExpireAt, field.TypeTime, value)
-	}
-	if _u.mutation.ExpireAtCleared() {
-		_spec.ClearField(milestone.FieldExpireAt, field.TypeTime)
-	}
-	if value, ok := _u.mutation.ServiceIds(); ok {
-		_spec.SetField(milestone.FieldServiceIds, field.TypeJSON, value)
-	}
-	if value, ok := _u.mutation.AppendedServiceIds(); ok {
-		_spec.AddModifier(func(u *sql.UpdateBuilder) {
-			sqljson.Append(u, milestone.FieldServiceIds, value)
-		})
-	}
-	if value, ok := _u.mutation.CouponType(); ok {
-		_spec.SetField(milestone.FieldCouponType, field.TypeInt32, value)
-	}
-	if value, ok := _u.mutation.AddedCouponType(); ok {
-		_spec.AddField(milestone.FieldCouponType, field.TypeInt32, value)
-	}
 	if value, ok := _u.mutation.MilestoneType(); ok {
 		_spec.SetField(milestone.FieldMilestoneType, field.TypeInt32, value)
 	}
 	if value, ok := _u.mutation.AddedMilestoneType(); ok {
 		_spec.AddField(milestone.FieldMilestoneType, field.TypeInt32, value)
-	}
-	if value, ok := _u.mutation.UsageLimit(); ok {
-		_spec.SetField(milestone.FieldUsageLimit, field.TypeInt32, value)
-	}
-	if value, ok := _u.mutation.AddedUsageLimit(); ok {
-		_spec.AddField(milestone.FieldUsageLimit, field.TypeInt32, value)
 	}
 	if value, ok := _u.mutation.Threshold(); ok {
 		_spec.SetField(milestone.FieldThreshold, field.TypeInt32, value)
@@ -827,34 +722,89 @@ func (_u *MilestoneUpdateOne) sqlSave(ctx context.Context) (_node *Milestone, er
 	if value, ok := _u.mutation.AddedStep(); ok {
 		_spec.AddField(milestone.FieldStep, field.TypeInt32, value)
 	}
-	if value, ok := _u.mutation.CouponValue(); ok {
-		_spec.SetField(milestone.FieldCouponValue, field.TypeFloat64, value)
-	}
-	if value, ok := _u.mutation.AddedCouponValue(); ok {
-		_spec.AddField(milestone.FieldCouponValue, field.TypeFloat64, value)
-	}
-	if _u.mutation.CurrencyCleared() {
+	if _u.mutation.RewardCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   milestone.CurrencyTable,
-			Columns: []string{milestone.CurrencyColumn},
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   milestone.RewardTable,
+			Columns: []string{milestone.RewardColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(currency.FieldID, field.TypeUint64),
+				IDSpec: sqlgraph.NewFieldSpec(reward.FieldID, field.TypeUint64),
 			},
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := _u.mutation.CurrencyIDs(); len(nodes) > 0 {
+	if nodes := _u.mutation.RemovedRewardIDs(); len(nodes) > 0 && !_u.mutation.RewardCleared() {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   milestone.CurrencyTable,
-			Columns: []string{milestone.CurrencyColumn},
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   milestone.RewardTable,
+			Columns: []string{milestone.RewardColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(currency.FieldID, field.TypeUint64),
+				IDSpec: sqlgraph.NewFieldSpec(reward.FieldID, field.TypeUint64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.RewardIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   milestone.RewardTable,
+			Columns: []string{milestone.RewardColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(reward.FieldID, field.TypeUint64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if _u.mutation.ProgressCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   milestone.ProgressTable,
+			Columns: []string{milestone.ProgressColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(progress.FieldID, field.TypeUint64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.RemovedProgressIDs(); len(nodes) > 0 && !_u.mutation.ProgressCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   milestone.ProgressTable,
+			Columns: []string{milestone.ProgressColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(progress.FieldID, field.TypeUint64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.ProgressIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   milestone.ProgressTable,
+			Columns: []string{milestone.ProgressColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(progress.FieldID, field.TypeUint64),
 			},
 		}
 		for _, k := range nodes {

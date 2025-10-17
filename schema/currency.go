@@ -25,6 +25,6 @@ func (Currency) Fields() []ent.Field {
 func (Currency) Edges() []ent.Edge {
 	return []ent.Edge{
 		edge.To("coupons", Coupon.Type),
-		edge.To("milestones", Milestone.Type),
+		edge.To("reward", Reward.Type),
 	}
 }

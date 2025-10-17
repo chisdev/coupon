@@ -76,31 +76,10 @@ func StoreID(v string) predicate.Milestone {
 	return predicate.Milestone(sql.FieldEQ(FieldStoreID, v))
 }
 
-// ExpireAt applies equality check predicate on the "expire_at" field. It's identical to ExpireAtEQ.
-func ExpireAt(v time.Time) predicate.Milestone {
-	return predicate.Milestone(sql.FieldEQ(FieldExpireAt, v))
-}
-
-// CouponType applies equality check predicate on the "coupon_type" field. It's identical to CouponTypeEQ.
-func CouponType(v coupon.CouponType) predicate.Milestone {
-	vc := int32(v)
-	return predicate.Milestone(sql.FieldEQ(FieldCouponType, vc))
-}
-
 // MilestoneType applies equality check predicate on the "milestone_type" field. It's identical to MilestoneTypeEQ.
 func MilestoneType(v coupon.MilestoneType) predicate.Milestone {
 	vc := int32(v)
 	return predicate.Milestone(sql.FieldEQ(FieldMilestoneType, vc))
-}
-
-// CurrencyID applies equality check predicate on the "currency_id" field. It's identical to CurrencyIDEQ.
-func CurrencyID(v uint64) predicate.Milestone {
-	return predicate.Milestone(sql.FieldEQ(FieldCurrencyID, v))
-}
-
-// UsageLimit applies equality check predicate on the "usage_limit" field. It's identical to UsageLimitEQ.
-func UsageLimit(v int32) predicate.Milestone {
-	return predicate.Milestone(sql.FieldEQ(FieldUsageLimit, v))
 }
 
 // Threshold applies equality check predicate on the "threshold" field. It's identical to ThresholdEQ.
@@ -111,11 +90,6 @@ func Threshold(v int32) predicate.Milestone {
 // Step applies equality check predicate on the "step" field. It's identical to StepEQ.
 func Step(v int32) predicate.Milestone {
 	return predicate.Milestone(sql.FieldEQ(FieldStep, v))
-}
-
-// CouponValue applies equality check predicate on the "coupon_value" field. It's identical to CouponValueEQ.
-func CouponValue(v float64) predicate.Milestone {
-	return predicate.Milestone(sql.FieldEQ(FieldCouponValue, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -338,110 +312,6 @@ func StoreIDContainsFold(v string) predicate.Milestone {
 	return predicate.Milestone(sql.FieldContainsFold(FieldStoreID, v))
 }
 
-// ExpireAtEQ applies the EQ predicate on the "expire_at" field.
-func ExpireAtEQ(v time.Time) predicate.Milestone {
-	return predicate.Milestone(sql.FieldEQ(FieldExpireAt, v))
-}
-
-// ExpireAtNEQ applies the NEQ predicate on the "expire_at" field.
-func ExpireAtNEQ(v time.Time) predicate.Milestone {
-	return predicate.Milestone(sql.FieldNEQ(FieldExpireAt, v))
-}
-
-// ExpireAtIn applies the In predicate on the "expire_at" field.
-func ExpireAtIn(vs ...time.Time) predicate.Milestone {
-	return predicate.Milestone(sql.FieldIn(FieldExpireAt, vs...))
-}
-
-// ExpireAtNotIn applies the NotIn predicate on the "expire_at" field.
-func ExpireAtNotIn(vs ...time.Time) predicate.Milestone {
-	return predicate.Milestone(sql.FieldNotIn(FieldExpireAt, vs...))
-}
-
-// ExpireAtGT applies the GT predicate on the "expire_at" field.
-func ExpireAtGT(v time.Time) predicate.Milestone {
-	return predicate.Milestone(sql.FieldGT(FieldExpireAt, v))
-}
-
-// ExpireAtGTE applies the GTE predicate on the "expire_at" field.
-func ExpireAtGTE(v time.Time) predicate.Milestone {
-	return predicate.Milestone(sql.FieldGTE(FieldExpireAt, v))
-}
-
-// ExpireAtLT applies the LT predicate on the "expire_at" field.
-func ExpireAtLT(v time.Time) predicate.Milestone {
-	return predicate.Milestone(sql.FieldLT(FieldExpireAt, v))
-}
-
-// ExpireAtLTE applies the LTE predicate on the "expire_at" field.
-func ExpireAtLTE(v time.Time) predicate.Milestone {
-	return predicate.Milestone(sql.FieldLTE(FieldExpireAt, v))
-}
-
-// ExpireAtIsNil applies the IsNil predicate on the "expire_at" field.
-func ExpireAtIsNil() predicate.Milestone {
-	return predicate.Milestone(sql.FieldIsNull(FieldExpireAt))
-}
-
-// ExpireAtNotNil applies the NotNil predicate on the "expire_at" field.
-func ExpireAtNotNil() predicate.Milestone {
-	return predicate.Milestone(sql.FieldNotNull(FieldExpireAt))
-}
-
-// CouponTypeEQ applies the EQ predicate on the "coupon_type" field.
-func CouponTypeEQ(v coupon.CouponType) predicate.Milestone {
-	vc := int32(v)
-	return predicate.Milestone(sql.FieldEQ(FieldCouponType, vc))
-}
-
-// CouponTypeNEQ applies the NEQ predicate on the "coupon_type" field.
-func CouponTypeNEQ(v coupon.CouponType) predicate.Milestone {
-	vc := int32(v)
-	return predicate.Milestone(sql.FieldNEQ(FieldCouponType, vc))
-}
-
-// CouponTypeIn applies the In predicate on the "coupon_type" field.
-func CouponTypeIn(vs ...coupon.CouponType) predicate.Milestone {
-	v := make([]any, len(vs))
-	for i := range v {
-		v[i] = int32(vs[i])
-	}
-	return predicate.Milestone(sql.FieldIn(FieldCouponType, v...))
-}
-
-// CouponTypeNotIn applies the NotIn predicate on the "coupon_type" field.
-func CouponTypeNotIn(vs ...coupon.CouponType) predicate.Milestone {
-	v := make([]any, len(vs))
-	for i := range v {
-		v[i] = int32(vs[i])
-	}
-	return predicate.Milestone(sql.FieldNotIn(FieldCouponType, v...))
-}
-
-// CouponTypeGT applies the GT predicate on the "coupon_type" field.
-func CouponTypeGT(v coupon.CouponType) predicate.Milestone {
-	vc := int32(v)
-	return predicate.Milestone(sql.FieldGT(FieldCouponType, vc))
-}
-
-// CouponTypeGTE applies the GTE predicate on the "coupon_type" field.
-func CouponTypeGTE(v coupon.CouponType) predicate.Milestone {
-	vc := int32(v)
-	return predicate.Milestone(sql.FieldGTE(FieldCouponType, vc))
-}
-
-// CouponTypeLT applies the LT predicate on the "coupon_type" field.
-func CouponTypeLT(v coupon.CouponType) predicate.Milestone {
-	vc := int32(v)
-	return predicate.Milestone(sql.FieldLT(FieldCouponType, vc))
-}
-
-// CouponTypeLTE applies the LTE predicate on the "coupon_type" field.
-func CouponTypeLTE(v coupon.CouponType) predicate.Milestone {
-	vc := int32(v)
-	return predicate.Milestone(sql.FieldLTE(FieldCouponType, vc))
-}
-
 // MilestoneTypeEQ applies the EQ predicate on the "milestone_type" field.
 func MilestoneTypeEQ(v coupon.MilestoneType) predicate.Milestone {
 	vc := int32(v)
@@ -494,76 +364,6 @@ func MilestoneTypeLT(v coupon.MilestoneType) predicate.Milestone {
 func MilestoneTypeLTE(v coupon.MilestoneType) predicate.Milestone {
 	vc := int32(v)
 	return predicate.Milestone(sql.FieldLTE(FieldMilestoneType, vc))
-}
-
-// CurrencyIDEQ applies the EQ predicate on the "currency_id" field.
-func CurrencyIDEQ(v uint64) predicate.Milestone {
-	return predicate.Milestone(sql.FieldEQ(FieldCurrencyID, v))
-}
-
-// CurrencyIDNEQ applies the NEQ predicate on the "currency_id" field.
-func CurrencyIDNEQ(v uint64) predicate.Milestone {
-	return predicate.Milestone(sql.FieldNEQ(FieldCurrencyID, v))
-}
-
-// CurrencyIDIn applies the In predicate on the "currency_id" field.
-func CurrencyIDIn(vs ...uint64) predicate.Milestone {
-	return predicate.Milestone(sql.FieldIn(FieldCurrencyID, vs...))
-}
-
-// CurrencyIDNotIn applies the NotIn predicate on the "currency_id" field.
-func CurrencyIDNotIn(vs ...uint64) predicate.Milestone {
-	return predicate.Milestone(sql.FieldNotIn(FieldCurrencyID, vs...))
-}
-
-// CurrencyIDIsNil applies the IsNil predicate on the "currency_id" field.
-func CurrencyIDIsNil() predicate.Milestone {
-	return predicate.Milestone(sql.FieldIsNull(FieldCurrencyID))
-}
-
-// CurrencyIDNotNil applies the NotNil predicate on the "currency_id" field.
-func CurrencyIDNotNil() predicate.Milestone {
-	return predicate.Milestone(sql.FieldNotNull(FieldCurrencyID))
-}
-
-// UsageLimitEQ applies the EQ predicate on the "usage_limit" field.
-func UsageLimitEQ(v int32) predicate.Milestone {
-	return predicate.Milestone(sql.FieldEQ(FieldUsageLimit, v))
-}
-
-// UsageLimitNEQ applies the NEQ predicate on the "usage_limit" field.
-func UsageLimitNEQ(v int32) predicate.Milestone {
-	return predicate.Milestone(sql.FieldNEQ(FieldUsageLimit, v))
-}
-
-// UsageLimitIn applies the In predicate on the "usage_limit" field.
-func UsageLimitIn(vs ...int32) predicate.Milestone {
-	return predicate.Milestone(sql.FieldIn(FieldUsageLimit, vs...))
-}
-
-// UsageLimitNotIn applies the NotIn predicate on the "usage_limit" field.
-func UsageLimitNotIn(vs ...int32) predicate.Milestone {
-	return predicate.Milestone(sql.FieldNotIn(FieldUsageLimit, vs...))
-}
-
-// UsageLimitGT applies the GT predicate on the "usage_limit" field.
-func UsageLimitGT(v int32) predicate.Milestone {
-	return predicate.Milestone(sql.FieldGT(FieldUsageLimit, v))
-}
-
-// UsageLimitGTE applies the GTE predicate on the "usage_limit" field.
-func UsageLimitGTE(v int32) predicate.Milestone {
-	return predicate.Milestone(sql.FieldGTE(FieldUsageLimit, v))
-}
-
-// UsageLimitLT applies the LT predicate on the "usage_limit" field.
-func UsageLimitLT(v int32) predicate.Milestone {
-	return predicate.Milestone(sql.FieldLT(FieldUsageLimit, v))
-}
-
-// UsageLimitLTE applies the LTE predicate on the "usage_limit" field.
-func UsageLimitLTE(v int32) predicate.Milestone {
-	return predicate.Milestone(sql.FieldLTE(FieldUsageLimit, v))
 }
 
 // ThresholdEQ applies the EQ predicate on the "threshold" field.
@@ -646,61 +446,44 @@ func StepLTE(v int32) predicate.Milestone {
 	return predicate.Milestone(sql.FieldLTE(FieldStep, v))
 }
 
-// CouponValueEQ applies the EQ predicate on the "coupon_value" field.
-func CouponValueEQ(v float64) predicate.Milestone {
-	return predicate.Milestone(sql.FieldEQ(FieldCouponValue, v))
-}
-
-// CouponValueNEQ applies the NEQ predicate on the "coupon_value" field.
-func CouponValueNEQ(v float64) predicate.Milestone {
-	return predicate.Milestone(sql.FieldNEQ(FieldCouponValue, v))
-}
-
-// CouponValueIn applies the In predicate on the "coupon_value" field.
-func CouponValueIn(vs ...float64) predicate.Milestone {
-	return predicate.Milestone(sql.FieldIn(FieldCouponValue, vs...))
-}
-
-// CouponValueNotIn applies the NotIn predicate on the "coupon_value" field.
-func CouponValueNotIn(vs ...float64) predicate.Milestone {
-	return predicate.Milestone(sql.FieldNotIn(FieldCouponValue, vs...))
-}
-
-// CouponValueGT applies the GT predicate on the "coupon_value" field.
-func CouponValueGT(v float64) predicate.Milestone {
-	return predicate.Milestone(sql.FieldGT(FieldCouponValue, v))
-}
-
-// CouponValueGTE applies the GTE predicate on the "coupon_value" field.
-func CouponValueGTE(v float64) predicate.Milestone {
-	return predicate.Milestone(sql.FieldGTE(FieldCouponValue, v))
-}
-
-// CouponValueLT applies the LT predicate on the "coupon_value" field.
-func CouponValueLT(v float64) predicate.Milestone {
-	return predicate.Milestone(sql.FieldLT(FieldCouponValue, v))
-}
-
-// CouponValueLTE applies the LTE predicate on the "coupon_value" field.
-func CouponValueLTE(v float64) predicate.Milestone {
-	return predicate.Milestone(sql.FieldLTE(FieldCouponValue, v))
-}
-
-// HasCurrency applies the HasEdge predicate on the "currency" edge.
-func HasCurrency() predicate.Milestone {
+// HasReward applies the HasEdge predicate on the "reward" edge.
+func HasReward() predicate.Milestone {
 	return predicate.Milestone(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, CurrencyTable, CurrencyColumn),
+			sqlgraph.Edge(sqlgraph.O2M, false, RewardTable, RewardColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasCurrencyWith applies the HasEdge predicate on the "currency" edge with a given conditions (other predicates).
-func HasCurrencyWith(preds ...predicate.Currency) predicate.Milestone {
+// HasRewardWith applies the HasEdge predicate on the "reward" edge with a given conditions (other predicates).
+func HasRewardWith(preds ...predicate.Reward) predicate.Milestone {
 	return predicate.Milestone(func(s *sql.Selector) {
-		step := newCurrencyStep()
+		step := newRewardStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasProgress applies the HasEdge predicate on the "progress" edge.
+func HasProgress() predicate.Milestone {
+	return predicate.Milestone(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, ProgressTable, ProgressColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasProgressWith applies the HasEdge predicate on the "progress" edge with a given conditions (other predicates).
+func HasProgressWith(preds ...predicate.Progress) predicate.Milestone {
+	return predicate.Milestone(func(s *sql.Selector) {
+		step := newProgressStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

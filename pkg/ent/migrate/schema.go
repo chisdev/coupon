@@ -60,27 +60,70 @@ var (
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "name", Type: field.TypeString, Nullable: true},
 		{Name: "store_id", Type: field.TypeString},
-		{Name: "expire_at", Type: field.TypeTime, Nullable: true},
-		{Name: "service_ids", Type: field.TypeJSON},
-		{Name: "coupon_type", Type: field.TypeInt32},
 		{Name: "milestone_type", Type: field.TypeInt32},
-		{Name: "usage_limit", Type: field.TypeInt32, Default: 1},
 		{Name: "threshold", Type: field.TypeInt32, Default: 0},
 		{Name: "step", Type: field.TypeInt32, Default: 0},
-		{Name: "coupon_value", Type: field.TypeFloat64, Default: 0},
-		{Name: "currency_id", Type: field.TypeUint64, Nullable: true},
 	}
 	// MilestonesTable holds the schema information for the "milestones" table.
 	MilestonesTable = &schema.Table{
 		Name:       "milestones",
 		Columns:    MilestonesColumns,
 		PrimaryKey: []*schema.Column{MilestonesColumns[0]},
+	}
+	// ProgressesColumns holds the columns for the "progresses" table.
+	ProgressesColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUint64, Increment: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "customer_id", Type: field.TypeString},
+		{Name: "progress", Type: field.TypeInt32, Default: 0},
+		{Name: "pass_count", Type: field.TypeInt32, Default: 0},
+		{Name: "milestone_id", Type: field.TypeUint64},
+	}
+	// ProgressesTable holds the schema information for the "progresses" table.
+	ProgressesTable = &schema.Table{
+		Name:       "progresses",
+		Columns:    ProgressesColumns,
+		PrimaryKey: []*schema.Column{ProgressesColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "milestones_currencies_milestones",
-				Columns:    []*schema.Column{MilestonesColumns[13]},
+				Symbol:     "progresses_milestones_progress",
+				Columns:    []*schema.Column{ProgressesColumns[6]},
+				RefColumns: []*schema.Column{MilestonesColumns[0]},
+				OnDelete:   schema.Cascade,
+			},
+		},
+	}
+	// RewardsColumns holds the columns for the "rewards" table.
+	RewardsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUint64, Increment: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "expired_duration", Type: field.TypeFloat64, Nullable: true},
+		{Name: "service_ids", Type: field.TypeJSON},
+		{Name: "coupon_type", Type: field.TypeInt32},
+		{Name: "usage_limit", Type: field.TypeInt32, Default: 1},
+		{Name: "coupon_value", Type: field.TypeFloat64, Default: 0},
+		{Name: "currency_id", Type: field.TypeUint64, Nullable: true},
+		{Name: "milestone_id", Type: field.TypeUint64},
+	}
+	// RewardsTable holds the schema information for the "rewards" table.
+	RewardsTable = &schema.Table{
+		Name:       "rewards",
+		Columns:    RewardsColumns,
+		PrimaryKey: []*schema.Column{RewardsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "rewards_currencies_reward",
+				Columns:    []*schema.Column{RewardsColumns[8]},
 				RefColumns: []*schema.Column{CurrenciesColumns[0]},
 				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "rewards_milestones_reward",
+				Columns:    []*schema.Column{RewardsColumns[9]},
+				RefColumns: []*schema.Column{MilestonesColumns[0]},
+				OnDelete:   schema.Cascade,
 			},
 		},
 	}
@@ -89,10 +132,14 @@ var (
 		CouponsTable,
 		CurrenciesTable,
 		MilestonesTable,
+		ProgressesTable,
+		RewardsTable,
 	}
 )
 
 func init() {
 	CouponsTable.ForeignKeys[0].RefTable = CurrenciesTable
-	MilestonesTable.ForeignKeys[0].RefTable = CurrenciesTable
+	ProgressesTable.ForeignKeys[0].RefTable = MilestonesTable
+	RewardsTable.ForeignKeys[0].RefTable = CurrenciesTable
+	RewardsTable.ForeignKeys[1].RefTable = MilestonesTable
 }

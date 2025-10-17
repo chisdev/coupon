@@ -12,8 +12,9 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
 	coupon "github.com/chisdev/coupon/api"
-	"github.com/chisdev/coupon/pkg/ent/currency"
 	"github.com/chisdev/coupon/pkg/ent/milestone"
+	"github.com/chisdev/coupon/pkg/ent/progress"
+	"github.com/chisdev/coupon/pkg/ent/reward"
 )
 
 // MilestoneCreate is the builder for creating a Milestone entity.
@@ -72,63 +73,9 @@ func (_c *MilestoneCreate) SetStoreID(v string) *MilestoneCreate {
 	return _c
 }
 
-// SetExpireAt sets the "expire_at" field.
-func (_c *MilestoneCreate) SetExpireAt(v time.Time) *MilestoneCreate {
-	_c.mutation.SetExpireAt(v)
-	return _c
-}
-
-// SetNillableExpireAt sets the "expire_at" field if the given value is not nil.
-func (_c *MilestoneCreate) SetNillableExpireAt(v *time.Time) *MilestoneCreate {
-	if v != nil {
-		_c.SetExpireAt(*v)
-	}
-	return _c
-}
-
-// SetServiceIds sets the "service_ids" field.
-func (_c *MilestoneCreate) SetServiceIds(v []string) *MilestoneCreate {
-	_c.mutation.SetServiceIds(v)
-	return _c
-}
-
-// SetCouponType sets the "coupon_type" field.
-func (_c *MilestoneCreate) SetCouponType(v coupon.CouponType) *MilestoneCreate {
-	_c.mutation.SetCouponType(v)
-	return _c
-}
-
 // SetMilestoneType sets the "milestone_type" field.
 func (_c *MilestoneCreate) SetMilestoneType(v coupon.MilestoneType) *MilestoneCreate {
 	_c.mutation.SetMilestoneType(v)
-	return _c
-}
-
-// SetCurrencyID sets the "currency_id" field.
-func (_c *MilestoneCreate) SetCurrencyID(v uint64) *MilestoneCreate {
-	_c.mutation.SetCurrencyID(v)
-	return _c
-}
-
-// SetNillableCurrencyID sets the "currency_id" field if the given value is not nil.
-func (_c *MilestoneCreate) SetNillableCurrencyID(v *uint64) *MilestoneCreate {
-	if v != nil {
-		_c.SetCurrencyID(*v)
-	}
-	return _c
-}
-
-// SetUsageLimit sets the "usage_limit" field.
-func (_c *MilestoneCreate) SetUsageLimit(v int32) *MilestoneCreate {
-	_c.mutation.SetUsageLimit(v)
-	return _c
-}
-
-// SetNillableUsageLimit sets the "usage_limit" field if the given value is not nil.
-func (_c *MilestoneCreate) SetNillableUsageLimit(v *int32) *MilestoneCreate {
-	if v != nil {
-		_c.SetUsageLimit(*v)
-	}
 	return _c
 }
 
@@ -160,29 +107,40 @@ func (_c *MilestoneCreate) SetNillableStep(v *int32) *MilestoneCreate {
 	return _c
 }
 
-// SetCouponValue sets the "coupon_value" field.
-func (_c *MilestoneCreate) SetCouponValue(v float64) *MilestoneCreate {
-	_c.mutation.SetCouponValue(v)
-	return _c
-}
-
-// SetNillableCouponValue sets the "coupon_value" field if the given value is not nil.
-func (_c *MilestoneCreate) SetNillableCouponValue(v *float64) *MilestoneCreate {
-	if v != nil {
-		_c.SetCouponValue(*v)
-	}
-	return _c
-}
-
 // SetID sets the "id" field.
 func (_c *MilestoneCreate) SetID(v uint64) *MilestoneCreate {
 	_c.mutation.SetID(v)
 	return _c
 }
 
-// SetCurrency sets the "currency" edge to the Currency entity.
-func (_c *MilestoneCreate) SetCurrency(v *Currency) *MilestoneCreate {
-	return _c.SetCurrencyID(v.ID)
+// AddRewardIDs adds the "reward" edge to the Reward entity by IDs.
+func (_c *MilestoneCreate) AddRewardIDs(ids ...uint64) *MilestoneCreate {
+	_c.mutation.AddRewardIDs(ids...)
+	return _c
+}
+
+// AddReward adds the "reward" edges to the Reward entity.
+func (_c *MilestoneCreate) AddReward(v ...*Reward) *MilestoneCreate {
+	ids := make([]uint64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _c.AddRewardIDs(ids...)
+}
+
+// AddProgresIDs adds the "progress" edge to the Progress entity by IDs.
+func (_c *MilestoneCreate) AddProgresIDs(ids ...uint64) *MilestoneCreate {
+	_c.mutation.AddProgresIDs(ids...)
+	return _c
+}
+
+// AddProgress adds the "progress" edges to the Progress entity.
+func (_c *MilestoneCreate) AddProgress(v ...*Progress) *MilestoneCreate {
+	ids := make([]uint64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _c.AddProgresIDs(ids...)
 }
 
 // Mutation returns the MilestoneMutation object of the builder.
@@ -228,14 +186,6 @@ func (_c *MilestoneCreate) defaults() {
 		v := milestone.DefaultUpdatedAt()
 		_c.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := _c.mutation.ServiceIds(); !ok {
-		v := milestone.DefaultServiceIds
-		_c.mutation.SetServiceIds(v)
-	}
-	if _, ok := _c.mutation.UsageLimit(); !ok {
-		v := milestone.DefaultUsageLimit
-		_c.mutation.SetUsageLimit(v)
-	}
 	if _, ok := _c.mutation.Threshold(); !ok {
 		v := milestone.DefaultThreshold
 		_c.mutation.SetThreshold(v)
@@ -243,10 +193,6 @@ func (_c *MilestoneCreate) defaults() {
 	if _, ok := _c.mutation.Step(); !ok {
 		v := milestone.DefaultStep
 		_c.mutation.SetStep(v)
-	}
-	if _, ok := _c.mutation.CouponValue(); !ok {
-		v := milestone.DefaultCouponValue
-		_c.mutation.SetCouponValue(v)
 	}
 }
 
@@ -266,26 +212,14 @@ func (_c *MilestoneCreate) check() error {
 			return &ValidationError{Name: "store_id", err: fmt.Errorf(`ent: validator failed for field "Milestone.store_id": %w`, err)}
 		}
 	}
-	if _, ok := _c.mutation.ServiceIds(); !ok {
-		return &ValidationError{Name: "service_ids", err: errors.New(`ent: missing required field "Milestone.service_ids"`)}
-	}
-	if _, ok := _c.mutation.CouponType(); !ok {
-		return &ValidationError{Name: "coupon_type", err: errors.New(`ent: missing required field "Milestone.coupon_type"`)}
-	}
 	if _, ok := _c.mutation.MilestoneType(); !ok {
 		return &ValidationError{Name: "milestone_type", err: errors.New(`ent: missing required field "Milestone.milestone_type"`)}
-	}
-	if _, ok := _c.mutation.UsageLimit(); !ok {
-		return &ValidationError{Name: "usage_limit", err: errors.New(`ent: missing required field "Milestone.usage_limit"`)}
 	}
 	if _, ok := _c.mutation.Threshold(); !ok {
 		return &ValidationError{Name: "threshold", err: errors.New(`ent: missing required field "Milestone.threshold"`)}
 	}
 	if _, ok := _c.mutation.Step(); !ok {
 		return &ValidationError{Name: "step", err: errors.New(`ent: missing required field "Milestone.step"`)}
-	}
-	if _, ok := _c.mutation.CouponValue(); !ok {
-		return &ValidationError{Name: "coupon_value", err: errors.New(`ent: missing required field "Milestone.coupon_value"`)}
 	}
 	return nil
 }
@@ -336,25 +270,9 @@ func (_c *MilestoneCreate) createSpec() (*Milestone, *sqlgraph.CreateSpec) {
 		_spec.SetField(milestone.FieldStoreID, field.TypeString, value)
 		_node.StoreID = value
 	}
-	if value, ok := _c.mutation.ExpireAt(); ok {
-		_spec.SetField(milestone.FieldExpireAt, field.TypeTime, value)
-		_node.ExpireAt = &value
-	}
-	if value, ok := _c.mutation.ServiceIds(); ok {
-		_spec.SetField(milestone.FieldServiceIds, field.TypeJSON, value)
-		_node.ServiceIds = value
-	}
-	if value, ok := _c.mutation.CouponType(); ok {
-		_spec.SetField(milestone.FieldCouponType, field.TypeInt32, value)
-		_node.CouponType = value
-	}
 	if value, ok := _c.mutation.MilestoneType(); ok {
 		_spec.SetField(milestone.FieldMilestoneType, field.TypeInt32, value)
 		_node.MilestoneType = value
-	}
-	if value, ok := _c.mutation.UsageLimit(); ok {
-		_spec.SetField(milestone.FieldUsageLimit, field.TypeInt32, value)
-		_node.UsageLimit = value
 	}
 	if value, ok := _c.mutation.Threshold(); ok {
 		_spec.SetField(milestone.FieldThreshold, field.TypeInt32, value)
@@ -364,25 +282,36 @@ func (_c *MilestoneCreate) createSpec() (*Milestone, *sqlgraph.CreateSpec) {
 		_spec.SetField(milestone.FieldStep, field.TypeInt32, value)
 		_node.Step = value
 	}
-	if value, ok := _c.mutation.CouponValue(); ok {
-		_spec.SetField(milestone.FieldCouponValue, field.TypeFloat64, value)
-		_node.CouponValue = value
-	}
-	if nodes := _c.mutation.CurrencyIDs(); len(nodes) > 0 {
+	if nodes := _c.mutation.RewardIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
-			Rel:     sqlgraph.M2O,
-			Inverse: true,
-			Table:   milestone.CurrencyTable,
-			Columns: []string{milestone.CurrencyColumn},
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   milestone.RewardTable,
+			Columns: []string{milestone.RewardColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(currency.FieldID, field.TypeUint64),
+				IDSpec: sqlgraph.NewFieldSpec(reward.FieldID, field.TypeUint64),
 			},
 		}
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.CurrencyID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := _c.mutation.ProgressIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   milestone.ProgressTable,
+			Columns: []string{milestone.ProgressColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(progress.FieldID, field.TypeUint64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
@@ -479,54 +408,6 @@ func (u *MilestoneUpsert) UpdateStoreID() *MilestoneUpsert {
 	return u
 }
 
-// SetExpireAt sets the "expire_at" field.
-func (u *MilestoneUpsert) SetExpireAt(v time.Time) *MilestoneUpsert {
-	u.Set(milestone.FieldExpireAt, v)
-	return u
-}
-
-// UpdateExpireAt sets the "expire_at" field to the value that was provided on create.
-func (u *MilestoneUpsert) UpdateExpireAt() *MilestoneUpsert {
-	u.SetExcluded(milestone.FieldExpireAt)
-	return u
-}
-
-// ClearExpireAt clears the value of the "expire_at" field.
-func (u *MilestoneUpsert) ClearExpireAt() *MilestoneUpsert {
-	u.SetNull(milestone.FieldExpireAt)
-	return u
-}
-
-// SetServiceIds sets the "service_ids" field.
-func (u *MilestoneUpsert) SetServiceIds(v []string) *MilestoneUpsert {
-	u.Set(milestone.FieldServiceIds, v)
-	return u
-}
-
-// UpdateServiceIds sets the "service_ids" field to the value that was provided on create.
-func (u *MilestoneUpsert) UpdateServiceIds() *MilestoneUpsert {
-	u.SetExcluded(milestone.FieldServiceIds)
-	return u
-}
-
-// SetCouponType sets the "coupon_type" field.
-func (u *MilestoneUpsert) SetCouponType(v coupon.CouponType) *MilestoneUpsert {
-	u.Set(milestone.FieldCouponType, v)
-	return u
-}
-
-// UpdateCouponType sets the "coupon_type" field to the value that was provided on create.
-func (u *MilestoneUpsert) UpdateCouponType() *MilestoneUpsert {
-	u.SetExcluded(milestone.FieldCouponType)
-	return u
-}
-
-// AddCouponType adds v to the "coupon_type" field.
-func (u *MilestoneUpsert) AddCouponType(v coupon.CouponType) *MilestoneUpsert {
-	u.Add(milestone.FieldCouponType, v)
-	return u
-}
-
 // SetMilestoneType sets the "milestone_type" field.
 func (u *MilestoneUpsert) SetMilestoneType(v coupon.MilestoneType) *MilestoneUpsert {
 	u.Set(milestone.FieldMilestoneType, v)
@@ -542,42 +423,6 @@ func (u *MilestoneUpsert) UpdateMilestoneType() *MilestoneUpsert {
 // AddMilestoneType adds v to the "milestone_type" field.
 func (u *MilestoneUpsert) AddMilestoneType(v coupon.MilestoneType) *MilestoneUpsert {
 	u.Add(milestone.FieldMilestoneType, v)
-	return u
-}
-
-// SetCurrencyID sets the "currency_id" field.
-func (u *MilestoneUpsert) SetCurrencyID(v uint64) *MilestoneUpsert {
-	u.Set(milestone.FieldCurrencyID, v)
-	return u
-}
-
-// UpdateCurrencyID sets the "currency_id" field to the value that was provided on create.
-func (u *MilestoneUpsert) UpdateCurrencyID() *MilestoneUpsert {
-	u.SetExcluded(milestone.FieldCurrencyID)
-	return u
-}
-
-// ClearCurrencyID clears the value of the "currency_id" field.
-func (u *MilestoneUpsert) ClearCurrencyID() *MilestoneUpsert {
-	u.SetNull(milestone.FieldCurrencyID)
-	return u
-}
-
-// SetUsageLimit sets the "usage_limit" field.
-func (u *MilestoneUpsert) SetUsageLimit(v int32) *MilestoneUpsert {
-	u.Set(milestone.FieldUsageLimit, v)
-	return u
-}
-
-// UpdateUsageLimit sets the "usage_limit" field to the value that was provided on create.
-func (u *MilestoneUpsert) UpdateUsageLimit() *MilestoneUpsert {
-	u.SetExcluded(milestone.FieldUsageLimit)
-	return u
-}
-
-// AddUsageLimit adds v to the "usage_limit" field.
-func (u *MilestoneUpsert) AddUsageLimit(v int32) *MilestoneUpsert {
-	u.Add(milestone.FieldUsageLimit, v)
 	return u
 }
 
@@ -614,24 +459,6 @@ func (u *MilestoneUpsert) UpdateStep() *MilestoneUpsert {
 // AddStep adds v to the "step" field.
 func (u *MilestoneUpsert) AddStep(v int32) *MilestoneUpsert {
 	u.Add(milestone.FieldStep, v)
-	return u
-}
-
-// SetCouponValue sets the "coupon_value" field.
-func (u *MilestoneUpsert) SetCouponValue(v float64) *MilestoneUpsert {
-	u.Set(milestone.FieldCouponValue, v)
-	return u
-}
-
-// UpdateCouponValue sets the "coupon_value" field to the value that was provided on create.
-func (u *MilestoneUpsert) UpdateCouponValue() *MilestoneUpsert {
-	u.SetExcluded(milestone.FieldCouponValue)
-	return u
-}
-
-// AddCouponValue adds v to the "coupon_value" field.
-func (u *MilestoneUpsert) AddCouponValue(v float64) *MilestoneUpsert {
-	u.Add(milestone.FieldCouponValue, v)
 	return u
 }
 
@@ -735,62 +562,6 @@ func (u *MilestoneUpsertOne) UpdateStoreID() *MilestoneUpsertOne {
 	})
 }
 
-// SetExpireAt sets the "expire_at" field.
-func (u *MilestoneUpsertOne) SetExpireAt(v time.Time) *MilestoneUpsertOne {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.SetExpireAt(v)
-	})
-}
-
-// UpdateExpireAt sets the "expire_at" field to the value that was provided on create.
-func (u *MilestoneUpsertOne) UpdateExpireAt() *MilestoneUpsertOne {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.UpdateExpireAt()
-	})
-}
-
-// ClearExpireAt clears the value of the "expire_at" field.
-func (u *MilestoneUpsertOne) ClearExpireAt() *MilestoneUpsertOne {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.ClearExpireAt()
-	})
-}
-
-// SetServiceIds sets the "service_ids" field.
-func (u *MilestoneUpsertOne) SetServiceIds(v []string) *MilestoneUpsertOne {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.SetServiceIds(v)
-	})
-}
-
-// UpdateServiceIds sets the "service_ids" field to the value that was provided on create.
-func (u *MilestoneUpsertOne) UpdateServiceIds() *MilestoneUpsertOne {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.UpdateServiceIds()
-	})
-}
-
-// SetCouponType sets the "coupon_type" field.
-func (u *MilestoneUpsertOne) SetCouponType(v coupon.CouponType) *MilestoneUpsertOne {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.SetCouponType(v)
-	})
-}
-
-// AddCouponType adds v to the "coupon_type" field.
-func (u *MilestoneUpsertOne) AddCouponType(v coupon.CouponType) *MilestoneUpsertOne {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.AddCouponType(v)
-	})
-}
-
-// UpdateCouponType sets the "coupon_type" field to the value that was provided on create.
-func (u *MilestoneUpsertOne) UpdateCouponType() *MilestoneUpsertOne {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.UpdateCouponType()
-	})
-}
-
 // SetMilestoneType sets the "milestone_type" field.
 func (u *MilestoneUpsertOne) SetMilestoneType(v coupon.MilestoneType) *MilestoneUpsertOne {
 	return u.Update(func(s *MilestoneUpsert) {
@@ -809,48 +580,6 @@ func (u *MilestoneUpsertOne) AddMilestoneType(v coupon.MilestoneType) *Milestone
 func (u *MilestoneUpsertOne) UpdateMilestoneType() *MilestoneUpsertOne {
 	return u.Update(func(s *MilestoneUpsert) {
 		s.UpdateMilestoneType()
-	})
-}
-
-// SetCurrencyID sets the "currency_id" field.
-func (u *MilestoneUpsertOne) SetCurrencyID(v uint64) *MilestoneUpsertOne {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.SetCurrencyID(v)
-	})
-}
-
-// UpdateCurrencyID sets the "currency_id" field to the value that was provided on create.
-func (u *MilestoneUpsertOne) UpdateCurrencyID() *MilestoneUpsertOne {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.UpdateCurrencyID()
-	})
-}
-
-// ClearCurrencyID clears the value of the "currency_id" field.
-func (u *MilestoneUpsertOne) ClearCurrencyID() *MilestoneUpsertOne {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.ClearCurrencyID()
-	})
-}
-
-// SetUsageLimit sets the "usage_limit" field.
-func (u *MilestoneUpsertOne) SetUsageLimit(v int32) *MilestoneUpsertOne {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.SetUsageLimit(v)
-	})
-}
-
-// AddUsageLimit adds v to the "usage_limit" field.
-func (u *MilestoneUpsertOne) AddUsageLimit(v int32) *MilestoneUpsertOne {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.AddUsageLimit(v)
-	})
-}
-
-// UpdateUsageLimit sets the "usage_limit" field to the value that was provided on create.
-func (u *MilestoneUpsertOne) UpdateUsageLimit() *MilestoneUpsertOne {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.UpdateUsageLimit()
 	})
 }
 
@@ -893,27 +622,6 @@ func (u *MilestoneUpsertOne) AddStep(v int32) *MilestoneUpsertOne {
 func (u *MilestoneUpsertOne) UpdateStep() *MilestoneUpsertOne {
 	return u.Update(func(s *MilestoneUpsert) {
 		s.UpdateStep()
-	})
-}
-
-// SetCouponValue sets the "coupon_value" field.
-func (u *MilestoneUpsertOne) SetCouponValue(v float64) *MilestoneUpsertOne {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.SetCouponValue(v)
-	})
-}
-
-// AddCouponValue adds v to the "coupon_value" field.
-func (u *MilestoneUpsertOne) AddCouponValue(v float64) *MilestoneUpsertOne {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.AddCouponValue(v)
-	})
-}
-
-// UpdateCouponValue sets the "coupon_value" field to the value that was provided on create.
-func (u *MilestoneUpsertOne) UpdateCouponValue() *MilestoneUpsertOne {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.UpdateCouponValue()
 	})
 }
 
@@ -1183,62 +891,6 @@ func (u *MilestoneUpsertBulk) UpdateStoreID() *MilestoneUpsertBulk {
 	})
 }
 
-// SetExpireAt sets the "expire_at" field.
-func (u *MilestoneUpsertBulk) SetExpireAt(v time.Time) *MilestoneUpsertBulk {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.SetExpireAt(v)
-	})
-}
-
-// UpdateExpireAt sets the "expire_at" field to the value that was provided on create.
-func (u *MilestoneUpsertBulk) UpdateExpireAt() *MilestoneUpsertBulk {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.UpdateExpireAt()
-	})
-}
-
-// ClearExpireAt clears the value of the "expire_at" field.
-func (u *MilestoneUpsertBulk) ClearExpireAt() *MilestoneUpsertBulk {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.ClearExpireAt()
-	})
-}
-
-// SetServiceIds sets the "service_ids" field.
-func (u *MilestoneUpsertBulk) SetServiceIds(v []string) *MilestoneUpsertBulk {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.SetServiceIds(v)
-	})
-}
-
-// UpdateServiceIds sets the "service_ids" field to the value that was provided on create.
-func (u *MilestoneUpsertBulk) UpdateServiceIds() *MilestoneUpsertBulk {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.UpdateServiceIds()
-	})
-}
-
-// SetCouponType sets the "coupon_type" field.
-func (u *MilestoneUpsertBulk) SetCouponType(v coupon.CouponType) *MilestoneUpsertBulk {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.SetCouponType(v)
-	})
-}
-
-// AddCouponType adds v to the "coupon_type" field.
-func (u *MilestoneUpsertBulk) AddCouponType(v coupon.CouponType) *MilestoneUpsertBulk {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.AddCouponType(v)
-	})
-}
-
-// UpdateCouponType sets the "coupon_type" field to the value that was provided on create.
-func (u *MilestoneUpsertBulk) UpdateCouponType() *MilestoneUpsertBulk {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.UpdateCouponType()
-	})
-}
-
 // SetMilestoneType sets the "milestone_type" field.
 func (u *MilestoneUpsertBulk) SetMilestoneType(v coupon.MilestoneType) *MilestoneUpsertBulk {
 	return u.Update(func(s *MilestoneUpsert) {
@@ -1257,48 +909,6 @@ func (u *MilestoneUpsertBulk) AddMilestoneType(v coupon.MilestoneType) *Mileston
 func (u *MilestoneUpsertBulk) UpdateMilestoneType() *MilestoneUpsertBulk {
 	return u.Update(func(s *MilestoneUpsert) {
 		s.UpdateMilestoneType()
-	})
-}
-
-// SetCurrencyID sets the "currency_id" field.
-func (u *MilestoneUpsertBulk) SetCurrencyID(v uint64) *MilestoneUpsertBulk {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.SetCurrencyID(v)
-	})
-}
-
-// UpdateCurrencyID sets the "currency_id" field to the value that was provided on create.
-func (u *MilestoneUpsertBulk) UpdateCurrencyID() *MilestoneUpsertBulk {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.UpdateCurrencyID()
-	})
-}
-
-// ClearCurrencyID clears the value of the "currency_id" field.
-func (u *MilestoneUpsertBulk) ClearCurrencyID() *MilestoneUpsertBulk {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.ClearCurrencyID()
-	})
-}
-
-// SetUsageLimit sets the "usage_limit" field.
-func (u *MilestoneUpsertBulk) SetUsageLimit(v int32) *MilestoneUpsertBulk {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.SetUsageLimit(v)
-	})
-}
-
-// AddUsageLimit adds v to the "usage_limit" field.
-func (u *MilestoneUpsertBulk) AddUsageLimit(v int32) *MilestoneUpsertBulk {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.AddUsageLimit(v)
-	})
-}
-
-// UpdateUsageLimit sets the "usage_limit" field to the value that was provided on create.
-func (u *MilestoneUpsertBulk) UpdateUsageLimit() *MilestoneUpsertBulk {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.UpdateUsageLimit()
 	})
 }
 
@@ -1341,27 +951,6 @@ func (u *MilestoneUpsertBulk) AddStep(v int32) *MilestoneUpsertBulk {
 func (u *MilestoneUpsertBulk) UpdateStep() *MilestoneUpsertBulk {
 	return u.Update(func(s *MilestoneUpsert) {
 		s.UpdateStep()
-	})
-}
-
-// SetCouponValue sets the "coupon_value" field.
-func (u *MilestoneUpsertBulk) SetCouponValue(v float64) *MilestoneUpsertBulk {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.SetCouponValue(v)
-	})
-}
-
-// AddCouponValue adds v to the "coupon_value" field.
-func (u *MilestoneUpsertBulk) AddCouponValue(v float64) *MilestoneUpsertBulk {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.AddCouponValue(v)
-	})
-}
-
-// UpdateCouponValue sets the "coupon_value" field to the value that was provided on create.
-func (u *MilestoneUpsertBulk) UpdateCouponValue() *MilestoneUpsertBulk {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.UpdateCouponValue()
 	})
 }
 

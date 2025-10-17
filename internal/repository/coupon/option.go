@@ -21,7 +21,7 @@ type CouponOpts struct {
 	Status        api.CouponStatus
 	Type          api.CouponType
 	CurrencyID    *uint64
-	ServiceIds    []string
+	ServiceIds    []uint64
 }
 
 type Option interface {
@@ -113,7 +113,7 @@ func WithUsageCount(usageCount int32) Option {
 	})
 }
 
-func WithServiceIds(serviceIds []string) Option {
+func WithServiceIds(serviceIds []uint64) Option {
 	return funcOption(func(co *CouponOpts) {
 		co.ServiceIds = serviceIds
 	})

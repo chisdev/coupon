@@ -13,7 +13,7 @@ import (
 	"entgo.io/ent/schema/field"
 	entcoupon "github.com/chisdev/coupon/pkg/ent/coupon"
 	"github.com/chisdev/coupon/pkg/ent/currency"
-	"github.com/chisdev/coupon/pkg/ent/milestone"
+	"github.com/chisdev/coupon/pkg/ent/reward"
 )
 
 // CurrencyCreate is the builder for creating a Currency entity.
@@ -79,19 +79,19 @@ func (_c *CurrencyCreate) AddCoupons(v ...*Coupon) *CurrencyCreate {
 	return _c.AddCouponIDs(ids...)
 }
 
-// AddMilestoneIDs adds the "milestones" edge to the Milestone entity by IDs.
-func (_c *CurrencyCreate) AddMilestoneIDs(ids ...uint64) *CurrencyCreate {
-	_c.mutation.AddMilestoneIDs(ids...)
+// AddRewardIDs adds the "reward" edge to the Reward entity by IDs.
+func (_c *CurrencyCreate) AddRewardIDs(ids ...uint64) *CurrencyCreate {
+	_c.mutation.AddRewardIDs(ids...)
 	return _c
 }
 
-// AddMilestones adds the "milestones" edges to the Milestone entity.
-func (_c *CurrencyCreate) AddMilestones(v ...*Milestone) *CurrencyCreate {
+// AddReward adds the "reward" edges to the Reward entity.
+func (_c *CurrencyCreate) AddReward(v ...*Reward) *CurrencyCreate {
 	ids := make([]uint64, len(v))
 	for i := range v {
 		ids[i] = v[i].ID
 	}
-	return _c.AddMilestoneIDs(ids...)
+	return _c.AddRewardIDs(ids...)
 }
 
 // Mutation returns the CurrencyMutation object of the builder.
@@ -211,15 +211,15 @@ func (_c *CurrencyCreate) createSpec() (*Currency, *sqlgraph.CreateSpec) {
 		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
-	if nodes := _c.mutation.MilestonesIDs(); len(nodes) > 0 {
+	if nodes := _c.mutation.RewardIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.O2M,
 			Inverse: false,
-			Table:   currency.MilestonesTable,
-			Columns: []string{currency.MilestonesColumn},
+			Table:   currency.RewardTable,
+			Columns: []string{currency.RewardColumn},
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
-				IDSpec: sqlgraph.NewFieldSpec(milestone.FieldID, field.TypeUint64),
+				IDSpec: sqlgraph.NewFieldSpec(reward.FieldID, field.TypeUint64),
 			},
 		}
 		for _, k := range nodes {

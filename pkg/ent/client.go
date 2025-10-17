@@ -18,6 +18,8 @@ import (
 	entcoupon "github.com/chisdev/coupon/pkg/ent/coupon"
 	"github.com/chisdev/coupon/pkg/ent/currency"
 	"github.com/chisdev/coupon/pkg/ent/milestone"
+	"github.com/chisdev/coupon/pkg/ent/progress"
+	"github.com/chisdev/coupon/pkg/ent/reward"
 )
 
 // Client is the client that holds all ent builders.
@@ -31,6 +33,10 @@ type Client struct {
 	Currency *CurrencyClient
 	// Milestone is the client for interacting with the Milestone builders.
 	Milestone *MilestoneClient
+	// Progress is the client for interacting with the Progress builders.
+	Progress *ProgressClient
+	// Reward is the client for interacting with the Reward builders.
+	Reward *RewardClient
 }
 
 // NewClient creates a new client configured with the given options.
@@ -45,6 +51,8 @@ func (c *Client) init() {
 	c.Coupon = NewCouponClient(c.config)
 	c.Currency = NewCurrencyClient(c.config)
 	c.Milestone = NewMilestoneClient(c.config)
+	c.Progress = NewProgressClient(c.config)
+	c.Reward = NewRewardClient(c.config)
 }
 
 type (
@@ -140,6 +148,8 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 		Coupon:    NewCouponClient(cfg),
 		Currency:  NewCurrencyClient(cfg),
 		Milestone: NewMilestoneClient(cfg),
+		Progress:  NewProgressClient(cfg),
+		Reward:    NewRewardClient(cfg),
 	}, nil
 }
 
@@ -162,6 +172,8 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 		Coupon:    NewCouponClient(cfg),
 		Currency:  NewCurrencyClient(cfg),
 		Milestone: NewMilestoneClient(cfg),
+		Progress:  NewProgressClient(cfg),
+		Reward:    NewRewardClient(cfg),
 	}, nil
 }
 
@@ -193,6 +205,8 @@ func (c *Client) Use(hooks ...Hook) {
 	c.Coupon.Use(hooks...)
 	c.Currency.Use(hooks...)
 	c.Milestone.Use(hooks...)
+	c.Progress.Use(hooks...)
+	c.Reward.Use(hooks...)
 }
 
 // Intercept adds the query interceptors to all the entity clients.
@@ -201,6 +215,8 @@ func (c *Client) Intercept(interceptors ...Interceptor) {
 	c.Coupon.Intercept(interceptors...)
 	c.Currency.Intercept(interceptors...)
 	c.Milestone.Intercept(interceptors...)
+	c.Progress.Intercept(interceptors...)
+	c.Reward.Intercept(interceptors...)
 }
 
 // Mutate implements the ent.Mutator interface.
@@ -212,6 +228,10 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 		return c.Currency.mutate(ctx, m)
 	case *MilestoneMutation:
 		return c.Milestone.mutate(ctx, m)
+	case *ProgressMutation:
+		return c.Progress.mutate(ctx, m)
+	case *RewardMutation:
+		return c.Reward.mutate(ctx, m)
 	default:
 		return nil, fmt.Errorf("ent: unknown mutation type %T", m)
 	}
@@ -490,15 +510,15 @@ func (c *CurrencyClient) QueryCoupons(_m *Currency) *CouponQuery {
 	return query
 }
 
-// QueryMilestones queries the milestones edge of a Currency.
-func (c *CurrencyClient) QueryMilestones(_m *Currency) *MilestoneQuery {
-	query := (&MilestoneClient{config: c.config}).Query()
+// QueryReward queries the reward edge of a Currency.
+func (c *CurrencyClient) QueryReward(_m *Currency) *RewardQuery {
+	query := (&RewardClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := _m.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(currency.Table, currency.FieldID, id),
-			sqlgraph.To(milestone.Table, milestone.FieldID),
-			sqlgraph.Edge(sqlgraph.O2M, false, currency.MilestonesTable, currency.MilestonesColumn),
+			sqlgraph.To(reward.Table, reward.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, currency.RewardTable, currency.RewardColumn),
 		)
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
@@ -639,15 +659,31 @@ func (c *MilestoneClient) GetX(ctx context.Context, id uint64) *Milestone {
 	return obj
 }
 
-// QueryCurrency queries the currency edge of a Milestone.
-func (c *MilestoneClient) QueryCurrency(_m *Milestone) *CurrencyQuery {
-	query := (&CurrencyClient{config: c.config}).Query()
+// QueryReward queries the reward edge of a Milestone.
+func (c *MilestoneClient) QueryReward(_m *Milestone) *RewardQuery {
+	query := (&RewardClient{config: c.config}).Query()
 	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
 		id := _m.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(milestone.Table, milestone.FieldID, id),
-			sqlgraph.To(currency.Table, currency.FieldID),
-			sqlgraph.Edge(sqlgraph.M2O, true, milestone.CurrencyTable, milestone.CurrencyColumn),
+			sqlgraph.To(reward.Table, reward.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, milestone.RewardTable, milestone.RewardColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryProgress queries the progress edge of a Milestone.
+func (c *MilestoneClient) QueryProgress(_m *Milestone) *ProgressQuery {
+	query := (&ProgressClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(milestone.Table, milestone.FieldID, id),
+			sqlgraph.To(progress.Table, progress.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, milestone.ProgressTable, milestone.ProgressColumn),
 		)
 		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
 		return fromV, nil
@@ -680,12 +716,326 @@ func (c *MilestoneClient) mutate(ctx context.Context, m *MilestoneMutation) (Val
 	}
 }
 
+// ProgressClient is a client for the Progress schema.
+type ProgressClient struct {
+	config
+}
+
+// NewProgressClient returns a client for the Progress from the given config.
+func NewProgressClient(c config) *ProgressClient {
+	return &ProgressClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `progress.Hooks(f(g(h())))`.
+func (c *ProgressClient) Use(hooks ...Hook) {
+	c.hooks.Progress = append(c.hooks.Progress, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `progress.Intercept(f(g(h())))`.
+func (c *ProgressClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Progress = append(c.inters.Progress, interceptors...)
+}
+
+// Create returns a builder for creating a Progress entity.
+func (c *ProgressClient) Create() *ProgressCreate {
+	mutation := newProgressMutation(c.config, OpCreate)
+	return &ProgressCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Progress entities.
+func (c *ProgressClient) CreateBulk(builders ...*ProgressCreate) *ProgressCreateBulk {
+	return &ProgressCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *ProgressClient) MapCreateBulk(slice any, setFunc func(*ProgressCreate, int)) *ProgressCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &ProgressCreateBulk{err: fmt.Errorf("calling to ProgressClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*ProgressCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &ProgressCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Progress.
+func (c *ProgressClient) Update() *ProgressUpdate {
+	mutation := newProgressMutation(c.config, OpUpdate)
+	return &ProgressUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *ProgressClient) UpdateOne(_m *Progress) *ProgressUpdateOne {
+	mutation := newProgressMutation(c.config, OpUpdateOne, withProgress(_m))
+	return &ProgressUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *ProgressClient) UpdateOneID(id uint64) *ProgressUpdateOne {
+	mutation := newProgressMutation(c.config, OpUpdateOne, withProgressID(id))
+	return &ProgressUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Progress.
+func (c *ProgressClient) Delete() *ProgressDelete {
+	mutation := newProgressMutation(c.config, OpDelete)
+	return &ProgressDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *ProgressClient) DeleteOne(_m *Progress) *ProgressDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *ProgressClient) DeleteOneID(id uint64) *ProgressDeleteOne {
+	builder := c.Delete().Where(progress.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &ProgressDeleteOne{builder}
+}
+
+// Query returns a query builder for Progress.
+func (c *ProgressClient) Query() *ProgressQuery {
+	return &ProgressQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeProgress},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Progress entity by its id.
+func (c *ProgressClient) Get(ctx context.Context, id uint64) (*Progress, error) {
+	return c.Query().Where(progress.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *ProgressClient) GetX(ctx context.Context, id uint64) *Progress {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryMilestone queries the milestone edge of a Progress.
+func (c *ProgressClient) QueryMilestone(_m *Progress) *MilestoneQuery {
+	query := (&MilestoneClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(progress.Table, progress.FieldID, id),
+			sqlgraph.To(milestone.Table, milestone.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, progress.MilestoneTable, progress.MilestoneColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *ProgressClient) Hooks() []Hook {
+	return c.hooks.Progress
+}
+
+// Interceptors returns the client interceptors.
+func (c *ProgressClient) Interceptors() []Interceptor {
+	return c.inters.Progress
+}
+
+func (c *ProgressClient) mutate(ctx context.Context, m *ProgressMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&ProgressCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&ProgressUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&ProgressUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&ProgressDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Progress mutation op: %q", m.Op())
+	}
+}
+
+// RewardClient is a client for the Reward schema.
+type RewardClient struct {
+	config
+}
+
+// NewRewardClient returns a client for the Reward from the given config.
+func NewRewardClient(c config) *RewardClient {
+	return &RewardClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `reward.Hooks(f(g(h())))`.
+func (c *RewardClient) Use(hooks ...Hook) {
+	c.hooks.Reward = append(c.hooks.Reward, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `reward.Intercept(f(g(h())))`.
+func (c *RewardClient) Intercept(interceptors ...Interceptor) {
+	c.inters.Reward = append(c.inters.Reward, interceptors...)
+}
+
+// Create returns a builder for creating a Reward entity.
+func (c *RewardClient) Create() *RewardCreate {
+	mutation := newRewardMutation(c.config, OpCreate)
+	return &RewardCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of Reward entities.
+func (c *RewardClient) CreateBulk(builders ...*RewardCreate) *RewardCreateBulk {
+	return &RewardCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *RewardClient) MapCreateBulk(slice any, setFunc func(*RewardCreate, int)) *RewardCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &RewardCreateBulk{err: fmt.Errorf("calling to RewardClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*RewardCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &RewardCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for Reward.
+func (c *RewardClient) Update() *RewardUpdate {
+	mutation := newRewardMutation(c.config, OpUpdate)
+	return &RewardUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *RewardClient) UpdateOne(_m *Reward) *RewardUpdateOne {
+	mutation := newRewardMutation(c.config, OpUpdateOne, withReward(_m))
+	return &RewardUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *RewardClient) UpdateOneID(id uint64) *RewardUpdateOne {
+	mutation := newRewardMutation(c.config, OpUpdateOne, withRewardID(id))
+	return &RewardUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for Reward.
+func (c *RewardClient) Delete() *RewardDelete {
+	mutation := newRewardMutation(c.config, OpDelete)
+	return &RewardDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *RewardClient) DeleteOne(_m *Reward) *RewardDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *RewardClient) DeleteOneID(id uint64) *RewardDeleteOne {
+	builder := c.Delete().Where(reward.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &RewardDeleteOne{builder}
+}
+
+// Query returns a query builder for Reward.
+func (c *RewardClient) Query() *RewardQuery {
+	return &RewardQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeReward},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a Reward entity by its id.
+func (c *RewardClient) Get(ctx context.Context, id uint64) (*Reward, error) {
+	return c.Query().Where(reward.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *RewardClient) GetX(ctx context.Context, id uint64) *Reward {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryCurrency queries the currency edge of a Reward.
+func (c *RewardClient) QueryCurrency(_m *Reward) *CurrencyQuery {
+	query := (&CurrencyClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(reward.Table, reward.FieldID, id),
+			sqlgraph.To(currency.Table, currency.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, reward.CurrencyTable, reward.CurrencyColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryMilestone queries the milestone edge of a Reward.
+func (c *RewardClient) QueryMilestone(_m *Reward) *MilestoneQuery {
+	query := (&MilestoneClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(reward.Table, reward.FieldID, id),
+			sqlgraph.To(milestone.Table, milestone.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, reward.MilestoneTable, reward.MilestoneColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *RewardClient) Hooks() []Hook {
+	return c.hooks.Reward
+}
+
+// Interceptors returns the client interceptors.
+func (c *RewardClient) Interceptors() []Interceptor {
+	return c.inters.Reward
+}
+
+func (c *RewardClient) mutate(ctx context.Context, m *RewardMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&RewardCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&RewardUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&RewardUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&RewardDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown Reward mutation op: %q", m.Op())
+	}
+}
+
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Coupon, Currency, Milestone []ent.Hook
+		Coupon, Currency, Milestone, Progress, Reward []ent.Hook
 	}
 	inters struct {
-		Coupon, Currency, Milestone []ent.Interceptor
+		Coupon, Currency, Milestone, Progress, Reward []ent.Interceptor
 	}
 )
