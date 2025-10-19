@@ -59,14 +59,6 @@ func (_c *MilestoneCreate) SetName(v string) *MilestoneCreate {
 	return _c
 }
 
-// SetNillableName sets the "name" field if the given value is not nil.
-func (_c *MilestoneCreate) SetNillableName(v *string) *MilestoneCreate {
-	if v != nil {
-		_c.SetName(*v)
-	}
-	return _c
-}
-
 // SetStoreID sets the "store_id" field.
 func (_c *MilestoneCreate) SetStoreID(v string) *MilestoneCreate {
 	_c.mutation.SetStoreID(v)
@@ -186,14 +178,6 @@ func (_c *MilestoneCreate) defaults() {
 		v := milestone.DefaultUpdatedAt()
 		_c.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := _c.mutation.Threshold(); !ok {
-		v := milestone.DefaultThreshold
-		_c.mutation.SetThreshold(v)
-	}
-	if _, ok := _c.mutation.Step(); !ok {
-		v := milestone.DefaultStep
-		_c.mutation.SetStep(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -203,6 +187,14 @@ func (_c *MilestoneCreate) check() error {
 	}
 	if _, ok := _c.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updated_at", err: errors.New(`ent: missing required field "Milestone.updated_at"`)}
+	}
+	if _, ok := _c.mutation.Name(); !ok {
+		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "Milestone.name"`)}
+	}
+	if v, ok := _c.mutation.Name(); ok {
+		if err := milestone.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "Milestone.name": %w`, err)}
+		}
 	}
 	if _, ok := _c.mutation.StoreID(); !ok {
 		return &ValidationError{Name: "store_id", err: errors.New(`ent: missing required field "Milestone.store_id"`)}
@@ -214,12 +206,6 @@ func (_c *MilestoneCreate) check() error {
 	}
 	if _, ok := _c.mutation.MilestoneType(); !ok {
 		return &ValidationError{Name: "milestone_type", err: errors.New(`ent: missing required field "Milestone.milestone_type"`)}
-	}
-	if _, ok := _c.mutation.Threshold(); !ok {
-		return &ValidationError{Name: "threshold", err: errors.New(`ent: missing required field "Milestone.threshold"`)}
-	}
-	if _, ok := _c.mutation.Step(); !ok {
-		return &ValidationError{Name: "step", err: errors.New(`ent: missing required field "Milestone.step"`)}
 	}
 	return nil
 }
@@ -264,7 +250,7 @@ func (_c *MilestoneCreate) createSpec() (*Milestone, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := _c.mutation.Name(); ok {
 		_spec.SetField(milestone.FieldName, field.TypeString, value)
-		_node.Name = &value
+		_node.Name = value
 	}
 	if value, ok := _c.mutation.StoreID(); ok {
 		_spec.SetField(milestone.FieldStoreID, field.TypeString, value)
@@ -276,11 +262,11 @@ func (_c *MilestoneCreate) createSpec() (*Milestone, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := _c.mutation.Threshold(); ok {
 		_spec.SetField(milestone.FieldThreshold, field.TypeInt32, value)
-		_node.Threshold = value
+		_node.Threshold = &value
 	}
 	if value, ok := _c.mutation.Step(); ok {
 		_spec.SetField(milestone.FieldStep, field.TypeInt32, value)
-		_node.Step = value
+		_node.Step = &value
 	}
 	if nodes := _c.mutation.RewardIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -390,12 +376,6 @@ func (u *MilestoneUpsert) UpdateName() *MilestoneUpsert {
 	return u
 }
 
-// ClearName clears the value of the "name" field.
-func (u *MilestoneUpsert) ClearName() *MilestoneUpsert {
-	u.SetNull(milestone.FieldName)
-	return u
-}
-
 // SetStoreID sets the "store_id" field.
 func (u *MilestoneUpsert) SetStoreID(v string) *MilestoneUpsert {
 	u.Set(milestone.FieldStoreID, v)
@@ -444,6 +424,12 @@ func (u *MilestoneUpsert) AddThreshold(v int32) *MilestoneUpsert {
 	return u
 }
 
+// ClearThreshold clears the value of the "threshold" field.
+func (u *MilestoneUpsert) ClearThreshold() *MilestoneUpsert {
+	u.SetNull(milestone.FieldThreshold)
+	return u
+}
+
 // SetStep sets the "step" field.
 func (u *MilestoneUpsert) SetStep(v int32) *MilestoneUpsert {
 	u.Set(milestone.FieldStep, v)
@@ -459,6 +445,12 @@ func (u *MilestoneUpsert) UpdateStep() *MilestoneUpsert {
 // AddStep adds v to the "step" field.
 func (u *MilestoneUpsert) AddStep(v int32) *MilestoneUpsert {
 	u.Add(milestone.FieldStep, v)
+	return u
+}
+
+// ClearStep clears the value of the "step" field.
+func (u *MilestoneUpsert) ClearStep() *MilestoneUpsert {
+	u.SetNull(milestone.FieldStep)
 	return u
 }
 
@@ -541,13 +533,6 @@ func (u *MilestoneUpsertOne) UpdateName() *MilestoneUpsertOne {
 	})
 }
 
-// ClearName clears the value of the "name" field.
-func (u *MilestoneUpsertOne) ClearName() *MilestoneUpsertOne {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.ClearName()
-	})
-}
-
 // SetStoreID sets the "store_id" field.
 func (u *MilestoneUpsertOne) SetStoreID(v string) *MilestoneUpsertOne {
 	return u.Update(func(s *MilestoneUpsert) {
@@ -604,6 +589,13 @@ func (u *MilestoneUpsertOne) UpdateThreshold() *MilestoneUpsertOne {
 	})
 }
 
+// ClearThreshold clears the value of the "threshold" field.
+func (u *MilestoneUpsertOne) ClearThreshold() *MilestoneUpsertOne {
+	return u.Update(func(s *MilestoneUpsert) {
+		s.ClearThreshold()
+	})
+}
+
 // SetStep sets the "step" field.
 func (u *MilestoneUpsertOne) SetStep(v int32) *MilestoneUpsertOne {
 	return u.Update(func(s *MilestoneUpsert) {
@@ -622,6 +614,13 @@ func (u *MilestoneUpsertOne) AddStep(v int32) *MilestoneUpsertOne {
 func (u *MilestoneUpsertOne) UpdateStep() *MilestoneUpsertOne {
 	return u.Update(func(s *MilestoneUpsert) {
 		s.UpdateStep()
+	})
+}
+
+// ClearStep clears the value of the "step" field.
+func (u *MilestoneUpsertOne) ClearStep() *MilestoneUpsertOne {
+	return u.Update(func(s *MilestoneUpsert) {
+		s.ClearStep()
 	})
 }
 
@@ -870,13 +869,6 @@ func (u *MilestoneUpsertBulk) UpdateName() *MilestoneUpsertBulk {
 	})
 }
 
-// ClearName clears the value of the "name" field.
-func (u *MilestoneUpsertBulk) ClearName() *MilestoneUpsertBulk {
-	return u.Update(func(s *MilestoneUpsert) {
-		s.ClearName()
-	})
-}
-
 // SetStoreID sets the "store_id" field.
 func (u *MilestoneUpsertBulk) SetStoreID(v string) *MilestoneUpsertBulk {
 	return u.Update(func(s *MilestoneUpsert) {
@@ -933,6 +925,13 @@ func (u *MilestoneUpsertBulk) UpdateThreshold() *MilestoneUpsertBulk {
 	})
 }
 
+// ClearThreshold clears the value of the "threshold" field.
+func (u *MilestoneUpsertBulk) ClearThreshold() *MilestoneUpsertBulk {
+	return u.Update(func(s *MilestoneUpsert) {
+		s.ClearThreshold()
+	})
+}
+
 // SetStep sets the "step" field.
 func (u *MilestoneUpsertBulk) SetStep(v int32) *MilestoneUpsertBulk {
 	return u.Update(func(s *MilestoneUpsert) {
@@ -951,6 +950,13 @@ func (u *MilestoneUpsertBulk) AddStep(v int32) *MilestoneUpsertBulk {
 func (u *MilestoneUpsertBulk) UpdateStep() *MilestoneUpsertBulk {
 	return u.Update(func(s *MilestoneUpsert) {
 		s.UpdateStep()
+	})
+}
+
+// ClearStep clears the value of the "step" field.
+func (u *MilestoneUpsertBulk) ClearStep() *MilestoneUpsertBulk {
+	return u.Update(func(s *MilestoneUpsert) {
+		s.ClearStep()
 	})
 }
 

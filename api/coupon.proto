@@ -6,32 +6,53 @@ option go_package = "github.com/chisdev/coupon/api;coupon";
 
 import "validate/validate.proto";
 import "google/protobuf/timestamp.proto";
-// import "google/protobuf/empty.proto";
+import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
 
 service Coupon {
-    // rpc HealCheck (HealCheckRequest) returns (HealCheckResponse) { option (google.api.http) = {
-    //   get: "/coupon/healcheck"
-    //     };
-    // }
-    rpc ReserveCoupon (ReserveCouponRequest) returns (ReserveCouponResponse);
-    rpc UnReserveCoupon (UnReserveCouponRequest) returns (UnReserveCouponResponse);
-    rpc UseCoupon (UseCouponRequest) returns (UseCouponResponse);
+    rpc HealCheck (HealCheckRequest) returns (HealCheckResponse) { option (google.api.http) = {
+      get: "/coupon/healcheck"
+        };
+    }
+    // rpc ReserveCoupon (ReserveCouponRequest) returns (ReserveCouponResponse);
+    // rpc UnReserveCoupon (UnReserveCouponRequest) returns (UnReserveCouponResponse);
+    // rpc UseCoupon (UseCouponRequest) returns (UseCouponResponse);
 
+}
+
+message HealCheckRequest {}
+message HealCheckResponse {
 }
 
 service CouponCms {
     // Milestone API
-    rpc CreateMileStone (CreateMileStoneRequest) returns (CreateMileStoneResponse);
-    rpc UpdateMileStone (UpdateMileStoneRequest) returns (UpdateMileStoneResponse);
-    rpc ListMileStone   (ListMileStoneRequest) returns (ListMileStoneResponse);
-    rpc DeleteMileStone (DeleteMileStoneRequest) returns (DeleteMileStoneResponse);
+    rpc CreateMileStone (CreateMileStoneRequest) returns (CreateMileStoneResponse) {
+      option (google.api.http) = {
+        post: "/couponcms/milestone"
+        body: "*"
+      };
+    }
+
+    rpc ListMileStone (ListMileStoneRequest) returns (ListMileStoneResponse) {
+      option (google.api.http) = {
+        get: "/couponcms/milestone"
+      };
+    }
+    // rpc UpdateMileStone (UpdateMileStoneRequest) returns (UpdateMileStoneResponse);
+    // rpc ListMileStone   (ListMileStoneRequest) returns (ListMileStoneResponse);
+    rpc DeleteMileStone (DeleteMileStoneRequest) returns (google.protobuf.Empty)
+    {
+         option (google.api.http) = {
+            post: "/couponcms/milestone/delete"
+            body: "*"   
+        };
+    };
 
     // Coupon API
-    rpc CreateCoupon (CreateCouponRequest) returns (CreateCouponResponse);
-    rpc ListCoupon (ListCouponRequest) returns (ListCouponResponse);
-    rpc DelteCoupon (DelteCouponRequest) returns (DelteCouponResponse);
-    rpc UpdateCoupon (UpdateCouponRequest) returns (UpdateCouponResponse);
+    // rpc CreateCoupon (CreateCouponRequest) returns (CreateCouponResponse);
+    // rpc ListCoupon (ListCouponRequest) returns (ListCouponResponse);
+    // rpc DelteCoupon (DelteCouponRequest) returns (DelteCouponResponse);
+    // rpc UpdateCoupon (UpdateCouponRequest) returns (UpdateCouponResponse);
 
 }
 
@@ -76,7 +97,7 @@ message Reward {
     double coupon_value = 2;
     optional double expired_duration = 3;
     optional uint64 currency_id = 4;
-    optional int32 usage_limit = 5;
+    int32 usage_limit = 5;
     uint64 milestone_id = 6;
     CouponType coupon_type = 7;
     repeated uint64 service_ids = 8;
@@ -87,7 +108,7 @@ message Milestone {
     MilestoneType type = 2;
     optional int32 threshold = 3;
     optional int32 step = 4;
-    uint64 store_id = 5;
+    string store_id = 5;
     repeated Reward  rewards = 6;
 }
 
@@ -110,4 +131,48 @@ message StoreCoupon {
 message MilestoneProgress {
     Milestone Milestone = 1;
     int32 progress = 2;
+}
+
+message CreateMileStoneRequest {
+    string name = 1 [(validate.rules).string = {min_len: 1}];
+    optional int32 threshold = 2;
+    optional int32 step = 3;
+    repeated MilestoneReward rewards = 4;
+    message MilestoneReward {
+        double coupon_value = 1;
+        optional double expired_duration = 2;
+        optional uint64 currency_id = 3;
+        optional int32 usage_limit = 4;
+        uint64 milestone_id = 5;
+        repeated uint64 service_ids = 6;
+    }
+}
+
+message CreateMileStoneResponse {
+    Milestone milestone = 1;
+}
+
+message GetMileStoneRequest{
+    uint64 id = 1;
+}
+
+message GetMileStoneResponse {
+    Milestone milestone = 1;
+}
+
+message ListMileStoneRequest {
+    int32 page_index = 1 [(validate.rules).int32 = {gte: 0}];
+    int32 page_size = 2 [(validate.rules).int32 = {gte: 0}];
+    repeated SortMethod sort_methods = 3;
+}
+
+message ListMileStoneResponse {
+    repeated Milestone milestones = 1;
+    int32 total_count = 2;
+    int32 total_pages = 3;
+    ListMileStoneRequest request = 4;
+}
+
+message DeleteMileStoneRequest {
+    repeated uint64 ids = 1;
 }

@@ -59,11 +59,11 @@ var (
 		{Name: "id", Type: field.TypeUint64, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
-		{Name: "name", Type: field.TypeString, Nullable: true},
+		{Name: "name", Type: field.TypeString},
 		{Name: "store_id", Type: field.TypeString},
 		{Name: "milestone_type", Type: field.TypeInt32},
-		{Name: "threshold", Type: field.TypeInt32, Default: 0},
-		{Name: "step", Type: field.TypeInt32, Default: 0},
+		{Name: "threshold", Type: field.TypeInt32, Nullable: true},
+		{Name: "step", Type: field.TypeInt32, Nullable: true},
 	}
 	// MilestonesTable holds the schema information for the "milestones" table.
 	MilestonesTable = &schema.Table{

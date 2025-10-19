@@ -454,7 +454,10 @@ func (_q *RewardQuery) loadCurrency(ctx context.Context, query *CurrencyQuery, n
 	ids := make([]uint64, 0, len(nodes))
 	nodeids := make(map[uint64][]*Reward)
 	for i := range nodes {
-		fk := nodes[i].CurrencyID
+		if nodes[i].CurrencyID == nil {
+			continue
+		}
+		fk := *nodes[i].CurrencyID
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}

@@ -52,12 +52,6 @@ func (_u *MilestoneUpdate) SetNillableName(v *string) *MilestoneUpdate {
 	return _u
 }
 
-// ClearName clears the value of the "name" field.
-func (_u *MilestoneUpdate) ClearName() *MilestoneUpdate {
-	_u.mutation.ClearName()
-	return _u
-}
-
 // SetStoreID sets the "store_id" field.
 func (_u *MilestoneUpdate) SetStoreID(v string) *MilestoneUpdate {
 	_u.mutation.SetStoreID(v)
@@ -114,6 +108,12 @@ func (_u *MilestoneUpdate) AddThreshold(v int32) *MilestoneUpdate {
 	return _u
 }
 
+// ClearThreshold clears the value of the "threshold" field.
+func (_u *MilestoneUpdate) ClearThreshold() *MilestoneUpdate {
+	_u.mutation.ClearThreshold()
+	return _u
+}
+
 // SetStep sets the "step" field.
 func (_u *MilestoneUpdate) SetStep(v int32) *MilestoneUpdate {
 	_u.mutation.ResetStep()
@@ -132,6 +132,12 @@ func (_u *MilestoneUpdate) SetNillableStep(v *int32) *MilestoneUpdate {
 // AddStep adds value to the "step" field.
 func (_u *MilestoneUpdate) AddStep(v int32) *MilestoneUpdate {
 	_u.mutation.AddStep(v)
+	return _u
+}
+
+// ClearStep clears the value of the "step" field.
+func (_u *MilestoneUpdate) ClearStep() *MilestoneUpdate {
+	_u.mutation.ClearStep()
 	return _u
 }
 
@@ -250,6 +256,11 @@ func (_u *MilestoneUpdate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (_u *MilestoneUpdate) check() error {
+	if v, ok := _u.mutation.Name(); ok {
+		if err := milestone.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "Milestone.name": %w`, err)}
+		}
+	}
 	if v, ok := _u.mutation.StoreID(); ok {
 		if err := milestone.StoreIDValidator(v); err != nil {
 			return &ValidationError{Name: "store_id", err: fmt.Errorf(`ent: validator failed for field "Milestone.store_id": %w`, err)}
@@ -282,9 +293,6 @@ func (_u *MilestoneUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	if value, ok := _u.mutation.Name(); ok {
 		_spec.SetField(milestone.FieldName, field.TypeString, value)
 	}
-	if _u.mutation.NameCleared() {
-		_spec.ClearField(milestone.FieldName, field.TypeString)
-	}
 	if value, ok := _u.mutation.StoreID(); ok {
 		_spec.SetField(milestone.FieldStoreID, field.TypeString, value)
 	}
@@ -300,11 +308,17 @@ func (_u *MilestoneUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	if value, ok := _u.mutation.AddedThreshold(); ok {
 		_spec.AddField(milestone.FieldThreshold, field.TypeInt32, value)
 	}
+	if _u.mutation.ThresholdCleared() {
+		_spec.ClearField(milestone.FieldThreshold, field.TypeInt32)
+	}
 	if value, ok := _u.mutation.Step(); ok {
 		_spec.SetField(milestone.FieldStep, field.TypeInt32, value)
 	}
 	if value, ok := _u.mutation.AddedStep(); ok {
 		_spec.AddField(milestone.FieldStep, field.TypeInt32, value)
+	}
+	if _u.mutation.StepCleared() {
+		_spec.ClearField(milestone.FieldStep, field.TypeInt32)
 	}
 	if _u.mutation.RewardCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -438,12 +452,6 @@ func (_u *MilestoneUpdateOne) SetNillableName(v *string) *MilestoneUpdateOne {
 	return _u
 }
 
-// ClearName clears the value of the "name" field.
-func (_u *MilestoneUpdateOne) ClearName() *MilestoneUpdateOne {
-	_u.mutation.ClearName()
-	return _u
-}
-
 // SetStoreID sets the "store_id" field.
 func (_u *MilestoneUpdateOne) SetStoreID(v string) *MilestoneUpdateOne {
 	_u.mutation.SetStoreID(v)
@@ -500,6 +508,12 @@ func (_u *MilestoneUpdateOne) AddThreshold(v int32) *MilestoneUpdateOne {
 	return _u
 }
 
+// ClearThreshold clears the value of the "threshold" field.
+func (_u *MilestoneUpdateOne) ClearThreshold() *MilestoneUpdateOne {
+	_u.mutation.ClearThreshold()
+	return _u
+}
+
 // SetStep sets the "step" field.
 func (_u *MilestoneUpdateOne) SetStep(v int32) *MilestoneUpdateOne {
 	_u.mutation.ResetStep()
@@ -518,6 +532,12 @@ func (_u *MilestoneUpdateOne) SetNillableStep(v *int32) *MilestoneUpdateOne {
 // AddStep adds value to the "step" field.
 func (_u *MilestoneUpdateOne) AddStep(v int32) *MilestoneUpdateOne {
 	_u.mutation.AddStep(v)
+	return _u
+}
+
+// ClearStep clears the value of the "step" field.
+func (_u *MilestoneUpdateOne) ClearStep() *MilestoneUpdateOne {
+	_u.mutation.ClearStep()
 	return _u
 }
 
@@ -649,6 +669,11 @@ func (_u *MilestoneUpdateOne) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (_u *MilestoneUpdateOne) check() error {
+	if v, ok := _u.mutation.Name(); ok {
+		if err := milestone.NameValidator(v); err != nil {
+			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "Milestone.name": %w`, err)}
+		}
+	}
 	if v, ok := _u.mutation.StoreID(); ok {
 		if err := milestone.StoreIDValidator(v); err != nil {
 			return &ValidationError{Name: "store_id", err: fmt.Errorf(`ent: validator failed for field "Milestone.store_id": %w`, err)}
@@ -698,9 +723,6 @@ func (_u *MilestoneUpdateOne) sqlSave(ctx context.Context) (_node *Milestone, er
 	if value, ok := _u.mutation.Name(); ok {
 		_spec.SetField(milestone.FieldName, field.TypeString, value)
 	}
-	if _u.mutation.NameCleared() {
-		_spec.ClearField(milestone.FieldName, field.TypeString)
-	}
 	if value, ok := _u.mutation.StoreID(); ok {
 		_spec.SetField(milestone.FieldStoreID, field.TypeString, value)
 	}
@@ -716,11 +738,17 @@ func (_u *MilestoneUpdateOne) sqlSave(ctx context.Context) (_node *Milestone, er
 	if value, ok := _u.mutation.AddedThreshold(); ok {
 		_spec.AddField(milestone.FieldThreshold, field.TypeInt32, value)
 	}
+	if _u.mutation.ThresholdCleared() {
+		_spec.ClearField(milestone.FieldThreshold, field.TypeInt32)
+	}
 	if value, ok := _u.mutation.Step(); ok {
 		_spec.SetField(milestone.FieldStep, field.TypeInt32, value)
 	}
 	if value, ok := _u.mutation.AddedStep(); ok {
 		_spec.AddField(milestone.FieldStep, field.TypeInt32, value)
+	}
+	if _u.mutation.StepCleared() {
+		_spec.ClearField(milestone.FieldStep, field.TypeInt32)
 	}
 	if _u.mutation.RewardCleared() {
 		edge := &sqlgraph.EdgeSpec{

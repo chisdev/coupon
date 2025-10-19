@@ -23,15 +23,15 @@ type Milestone struct {
 	// UpdatedAt holds the value of the "updated_at" field.
 	UpdatedAt time.Time `json:"updated_at,omitempty"`
 	// Name holds the value of the "name" field.
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 	// StoreID holds the value of the "store_id" field.
 	StoreID string `json:"store_id,omitempty"`
 	// MilestoneType holds the value of the "milestone_type" field.
 	MilestoneType coupon.MilestoneType `json:"milestone_type,omitempty"`
 	// Threshold holds the value of the "threshold" field.
-	Threshold int32 `json:"threshold,omitempty"`
+	Threshold *int32 `json:"threshold,omitempty"`
 	// Step holds the value of the "step" field.
-	Step int32 `json:"step,omitempty"`
+	Step *int32 `json:"step,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the MilestoneQuery when eager-loading is set.
 	Edges        MilestoneEdges `json:"edges"`
@@ -115,8 +115,7 @@ func (_m *Milestone) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
 			} else if value.Valid {
-				_m.Name = new(string)
-				*_m.Name = value.String
+				_m.Name = value.String
 			}
 		case milestone.FieldStoreID:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -134,13 +133,15 @@ func (_m *Milestone) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field threshold", values[i])
 			} else if value.Valid {
-				_m.Threshold = int32(value.Int64)
+				_m.Threshold = new(int32)
+				*_m.Threshold = int32(value.Int64)
 			}
 		case milestone.FieldStep:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field step", values[i])
 			} else if value.Valid {
-				_m.Step = int32(value.Int64)
+				_m.Step = new(int32)
+				*_m.Step = int32(value.Int64)
 			}
 		default:
 			_m.selectValues.Set(columns[i], values[i])
@@ -194,10 +195,8 @@ func (_m *Milestone) String() string {
 	builder.WriteString("updated_at=")
 	builder.WriteString(_m.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	if v := _m.Name; v != nil {
-		builder.WriteString("name=")
-		builder.WriteString(*v)
-	}
+	builder.WriteString("name=")
+	builder.WriteString(_m.Name)
 	builder.WriteString(", ")
 	builder.WriteString("store_id=")
 	builder.WriteString(_m.StoreID)
@@ -205,11 +204,15 @@ func (_m *Milestone) String() string {
 	builder.WriteString("milestone_type=")
 	builder.WriteString(fmt.Sprintf("%v", _m.MilestoneType))
 	builder.WriteString(", ")
-	builder.WriteString("threshold=")
-	builder.WriteString(fmt.Sprintf("%v", _m.Threshold))
+	if v := _m.Threshold; v != nil {
+		builder.WriteString("threshold=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteString(", ")
-	builder.WriteString("step=")
-	builder.WriteString(fmt.Sprintf("%v", _m.Step))
+	if v := _m.Step; v != nil {
+		builder.WriteString("step=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteByte(')')
 	return builder.String()
 }

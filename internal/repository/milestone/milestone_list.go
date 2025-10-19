@@ -47,7 +47,7 @@ func (m *milestone) List(ctx context.Context, opts ...Option) ([]*ent.Milestone,
 		totalPage = paging.GetPagingData(int32(totalCount), mOpts.Limit)
 	}
 
-	milestones, err := query.All(ctx)
+	milestones, err := query.WithReward().All(ctx)
 	if err != nil {
 		return nil, 0, 0, err
 	}

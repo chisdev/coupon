@@ -301,7 +301,7 @@ func (_c *RewardCreate) createSpec() (*Reward, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.CurrencyID = nodes[0]
+		_node.CurrencyID = &nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	if nodes := _c.mutation.MilestoneIDs(); len(nodes) > 0 {

@@ -42,7 +42,7 @@ func (r *reward) Update(ctx context.Context, tx tx.Tx, id uint64, opts ...Option
 			if opt.CurrencyID == nil {
 				return errMissingCurrencyID
 			}
-			reward.CurrencyID = *opt.CurrencyID
+			reward.CurrencyID = opt.CurrencyID
 			reward.CouponType = opt.CouponType
 			return reward.Update().Exec(ctx)
 		case coupon.CouponType_COUPON_TYPE_PERCENTAGE:

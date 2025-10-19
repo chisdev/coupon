@@ -34,7 +34,7 @@ type Reward struct {
 	// CouponType holds the value of the "coupon_type" field.
 	CouponType coupon.CouponType `json:"coupon_type,omitempty"`
 	// CurrencyID holds the value of the "currency_id" field.
-	CurrencyID uint64 `json:"currency_id,omitempty"`
+	CurrencyID *uint64 `json:"currency_id,omitempty"`
 	// UsageLimit holds the value of the "usage_limit" field.
 	UsageLimit int32 `json:"usage_limit,omitempty"`
 	// CouponValue holds the value of the "coupon_value" field.
@@ -155,7 +155,8 @@ func (_m *Reward) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field currency_id", values[i])
 			} else if value.Valid {
-				_m.CurrencyID = uint64(value.Int64)
+				_m.CurrencyID = new(uint64)
+				*_m.CurrencyID = uint64(value.Int64)
 			}
 		case reward.FieldUsageLimit:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -235,8 +236,10 @@ func (_m *Reward) String() string {
 	builder.WriteString("coupon_type=")
 	builder.WriteString(fmt.Sprintf("%v", _m.CouponType))
 	builder.WriteString(", ")
-	builder.WriteString("currency_id=")
-	builder.WriteString(fmt.Sprintf("%v", _m.CurrencyID))
+	if v := _m.CurrencyID; v != nil {
+		builder.WriteString("currency_id=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteString(", ")
 	builder.WriteString("usage_limit=")
 	builder.WriteString(fmt.Sprintf("%v", _m.UsageLimit))

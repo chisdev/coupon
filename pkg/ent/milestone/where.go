@@ -227,16 +227,6 @@ func NameHasSuffix(v string) predicate.Milestone {
 	return predicate.Milestone(sql.FieldHasSuffix(FieldName, v))
 }
 
-// NameIsNil applies the IsNil predicate on the "name" field.
-func NameIsNil() predicate.Milestone {
-	return predicate.Milestone(sql.FieldIsNull(FieldName))
-}
-
-// NameNotNil applies the NotNil predicate on the "name" field.
-func NameNotNil() predicate.Milestone {
-	return predicate.Milestone(sql.FieldNotNull(FieldName))
-}
-
 // NameEqualFold applies the EqualFold predicate on the "name" field.
 func NameEqualFold(v string) predicate.Milestone {
 	return predicate.Milestone(sql.FieldEqualFold(FieldName, v))
@@ -406,6 +396,16 @@ func ThresholdLTE(v int32) predicate.Milestone {
 	return predicate.Milestone(sql.FieldLTE(FieldThreshold, v))
 }
 
+// ThresholdIsNil applies the IsNil predicate on the "threshold" field.
+func ThresholdIsNil() predicate.Milestone {
+	return predicate.Milestone(sql.FieldIsNull(FieldThreshold))
+}
+
+// ThresholdNotNil applies the NotNil predicate on the "threshold" field.
+func ThresholdNotNil() predicate.Milestone {
+	return predicate.Milestone(sql.FieldNotNull(FieldThreshold))
+}
+
 // StepEQ applies the EQ predicate on the "step" field.
 func StepEQ(v int32) predicate.Milestone {
 	return predicate.Milestone(sql.FieldEQ(FieldStep, v))
@@ -444,6 +444,16 @@ func StepLT(v int32) predicate.Milestone {
 // StepLTE applies the LTE predicate on the "step" field.
 func StepLTE(v int32) predicate.Milestone {
 	return predicate.Milestone(sql.FieldLTE(FieldStep, v))
+}
+
+// StepIsNil applies the IsNil predicate on the "step" field.
+func StepIsNil() predicate.Milestone {
+	return predicate.Milestone(sql.FieldIsNull(FieldStep))
+}
+
+// StepNotNil applies the NotNil predicate on the "step" field.
+func StepNotNil() predicate.Milestone {
+	return predicate.Milestone(sql.FieldNotNull(FieldStep))
 }
 
 // HasReward applies the HasEdge predicate on the "reward" edge.

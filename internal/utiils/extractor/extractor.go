@@ -26,6 +26,7 @@ type Extractor interface {
 	GetXTotalDeposit(ctx context.Context) string
 	GetXTotalWithdraw(ctx context.Context) string
 	GetAppID(ctx context.Context) string
+	GetStoreID(ctx context.Context) string
 }
 
 type extractor struct {
@@ -139,4 +140,8 @@ func (t *extractor) GetXTotalWithdraw(ctx context.Context) string {
 
 func (t *extractor) GetAppID(ctx context.Context) string {
 	return t.GetFirst(ctx, XAppID)
+}
+
+func (t *extractor) GetStoreID(ctx context.Context) string {
+	return t.GetFirst(ctx, XStoreID)
 }

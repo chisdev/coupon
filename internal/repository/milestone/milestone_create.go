@@ -10,9 +10,7 @@ import (
 
 func (m *milestone) Create(ctx context.Context, tx tx.Tx, storeID string, opts ...Option) (*ent.Milestone, error) {
 
-	milestoneOpts := &MilestoneOption{
-		MilestoneType: coupon.MilestoneType_MILESTONE_TYPE_FIXED,
-	}
+	milestoneOpts := &MilestoneOption{}
 	for _, opt := range opts {
 		opt.Apply(milestoneOpts)
 	}
@@ -20,22 +18,26 @@ func (m *milestone) Create(ctx context.Context, tx tx.Tx, storeID string, opts .
 	query := m.ent.Milestone.Create().
 		SetStoreID(storeID)
 
-	if milestoneOpts.Name != nil {
-		query = query.SetName(*milestoneOpts.Name)
+	if milestoneOpts.Name != "" {
+		query = query.SetName(milestoneOpts.Name)
 	}
 
 	switch milestoneOpts.MilestoneType {
 	case coupon.MilestoneType_MILESTONE_TYPE_RECURRING:
-		if milestoneOpts.Step == 0 {
+		if milestoneOpts.Step == nil {
 			return nil, errMissingStep
 		}
-		query = query.SetStep(milestoneOpts.Step)
+		query = query.SetStep(*milestoneOpts.Step)
 	case coupon.MilestoneType_MILESTONE_TYPE_FIXED:
-		if milestoneOpts.Threshold == 0 {
-			return nil, errMisstingThreshold
+		if milestoneOpts.Threshold == nil {
+			return nil, errMissingThreshold
 		}
+		query = query.SetThreshold(*milestoneOpts.Threshold)
+	default:
+		return nil, errInvalidMilestoneType
 	}
-	query = query.SetThreshold(milestoneOpts.Threshold)
+
+	query = query.SetMilestoneType(milestoneOpts.MilestoneType)
 
 	return query.Save(ctx)
 }

@@ -16,4 +16,5 @@ const (
 	XTotalDeposit      = "x-total-deposit"
 	XTotalWithdraw     = "x-total-withdraw"
 	XAppID             = "x-app-id"
+	XStoreID           = "x-store-id"
 )

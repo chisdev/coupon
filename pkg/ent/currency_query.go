@@ -505,9 +505,12 @@ func (_q *CurrencyQuery) loadReward(ctx context.Context, query *RewardQuery, nod
 	}
 	for _, n := range neighbors {
 		fk := n.CurrencyID
-		node, ok := nodeids[fk]
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "currency_id" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
 		if !ok {
-			return fmt.Errorf(`unexpected referenced foreign-key "currency_id" returned %v for node %v`, fk, n.ID)
+			return fmt.Errorf(`unexpected referenced foreign-key "currency_id" returned %v for node %v`, *fk, n.ID)
 		}
 		assign(node, n)
 	}

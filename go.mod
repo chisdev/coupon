@@ -5,6 +5,7 @@ go 1.24.4
 require (
 	entgo.io/ent v0.14.5
 	github.com/ChisTrun/carbon v1.0.3
+	github.com/ChisTrun/database v1.0.3
 	github.com/ChisTrun/grpc v0.0.0-20250810180513-657d6e12dbc4
 	github.com/ChisTrun/logger v1.0.3
 	github.com/ChisTrun/trunkit v1.0.6
@@ -34,6 +35,7 @@ require (
 	github.com/DataDog/datadog-agent/pkg/util/scrubber v0.66.1 // indirect
 	github.com/DataDog/datadog-agent/pkg/version v0.66.1 // indirect
 	github.com/DataDog/datadog-go/v5 v5.6.0 // indirect
+	github.com/DataDog/dd-trace-go/contrib/database/sql/v2 v2.1.0 // indirect
 	github.com/DataDog/dd-trace-go/contrib/google.golang.org/grpc/v2 v2.1.0 // indirect
 	github.com/DataDog/dd-trace-go/contrib/net/http/v2 v2.1.0 // indirect
 	github.com/DataDog/dd-trace-go/instrumentation/testutils/grpc/v2 v2.1.0 // indirect
@@ -52,6 +54,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.30.3 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.18.3 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.18.2 // indirect
+	github.com/aws/aws-sdk-go-v2/feature/rds/auth v1.6.2 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.4.2 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.7.2 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.8.3 // indirect

@@ -20,34 +20,34 @@ func (m *milestone) Update(ctx context.Context, tx tx.Tx, id uint64, opts ...Opt
 		return err
 	}
 
-	if mOpt.Name != nil {
+	if mOpt.Name != "" {
 		milestone.Name = mOpt.Name
 	}
 
 	if mOpt.MilestoneType != 0 && milestone.MilestoneType != mOpt.MilestoneType {
 		switch mOpt.MilestoneType {
 		case coupon.MilestoneType_MILESTONE_TYPE_RECURRING:
-			if mOpt.Step == 0 {
+			if mOpt.Step == nil {
 				return errMissingStep
 			}
 			milestone.Step = mOpt.Step
-			milestone.Threshold = 0
+			milestone.Threshold = nil
 		case coupon.MilestoneType_MILESTONE_TYPE_FIXED:
-			if mOpt.Threshold == 0 {
-				return errMisstingThreshold
+			if mOpt.Threshold == nil {
+				return errMissingThreshold
 			}
 			milestone.Threshold = mOpt.Threshold
-			milestone.Step = 0
+			milestone.Step = nil
 		}
 		milestone.MilestoneType = mOpt.MilestoneType
 	} else {
 		switch mOpt.MilestoneType {
 		case coupon.MilestoneType_MILESTONE_TYPE_RECURRING:
-			if mOpt.Step != 0 && mOpt.Step != milestone.Step {
+			if mOpt.Step != nil && *mOpt.Step != *milestone.Step {
 				milestone.Step = mOpt.Step
 			}
 		case coupon.MilestoneType_MILESTONE_TYPE_FIXED:
-			if mOpt.Threshold != 0 && mOpt.Threshold != milestone.Threshold {
+			if mOpt.Threshold != nil && *mOpt.Threshold != *milestone.Threshold {
 				milestone.Threshold = mOpt.Threshold
 			}
 		}

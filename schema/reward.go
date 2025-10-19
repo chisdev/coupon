@@ -23,7 +23,7 @@ func (Reward) Fields() []ent.Field {
 		field.Float("expired_duration").Optional().Nillable(),
 		field.JSON("service_ids", []uint64{}).Default([]uint64{}),
 		field.Int32("coupon_type").GoType(coupon.CouponType(0)),
-		field.Uint64("currency_id").Optional(),
+		field.Uint64("currency_id").Optional().Nillable(),
 		field.Int32("usage_limit").Default(1),
 		field.Float("coupon_value").Default(0.0),
 	}

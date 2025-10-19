@@ -20,11 +20,11 @@ func (Milestone) Mixin() []ent.Mixin {
 
 func (Milestone) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("name").Optional().Nillable(),
+		field.String("name").NotEmpty(),
 		field.String("store_id").NotEmpty(),
 		field.Int32("milestone_type").GoType(coupon.MilestoneType(0)),
-		field.Int32("threshold").Default(0),
-		field.Int32("step").Default(0),
+		field.Int32("threshold").Optional().Nillable(),
+		field.Int32("step").Optional().Nillable(),
 	}
 }
 

@@ -12,7 +12,6 @@ type RewardOption struct {
 	ServiceIds      []uint64
 	CouponType      coupon.CouponType
 	IDs             []uint64
-	ID              *uint64
 	MilestoneID     *uint64
 }
 
@@ -58,12 +57,6 @@ func WithServiceIds(serviceIds []uint64) Option {
 func WithCouponType(CouponType coupon.CouponType) Option {
 	return funcOption(func(mo *RewardOption) {
 		mo.CouponType = CouponType
-	})
-}
-
-func WithID(id *uint64) Option {
-	return funcOption(func(mo *RewardOption) {
-		mo.ID = id
 	})
 }
 

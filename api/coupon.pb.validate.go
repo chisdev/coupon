@@ -35,6 +35,208 @@ var (
 	_ = sort.Sort
 )
 
+// Validate checks the field values on HealCheckRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *HealCheckRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on HealCheckRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// HealCheckRequestMultiError, or nil if none found.
+func (m *HealCheckRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *HealCheckRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return HealCheckRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// HealCheckRequestMultiError is an error wrapping multiple validation errors
+// returned by HealCheckRequest.ValidateAll() if the designated constraints
+// aren't met.
+type HealCheckRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m HealCheckRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m HealCheckRequestMultiError) AllErrors() []error { return m }
+
+// HealCheckRequestValidationError is the validation error returned by
+// HealCheckRequest.Validate if the designated constraints aren't met.
+type HealCheckRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e HealCheckRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e HealCheckRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e HealCheckRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e HealCheckRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e HealCheckRequestValidationError) ErrorName() string { return "HealCheckRequestValidationError" }
+
+// Error satisfies the builtin error interface
+func (e HealCheckRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sHealCheckRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = HealCheckRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = HealCheckRequestValidationError{}
+
+// Validate checks the field values on HealCheckResponse with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *HealCheckResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on HealCheckResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// HealCheckResponseMultiError, or nil if none found.
+func (m *HealCheckResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *HealCheckResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return HealCheckResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// HealCheckResponseMultiError is an error wrapping multiple validation errors
+// returned by HealCheckResponse.ValidateAll() if the designated constraints
+// aren't met.
+type HealCheckResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m HealCheckResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m HealCheckResponseMultiError) AllErrors() []error { return m }
+
+// HealCheckResponseValidationError is the validation error returned by
+// HealCheckResponse.Validate if the designated constraints aren't met.
+type HealCheckResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e HealCheckResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e HealCheckResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e HealCheckResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e HealCheckResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e HealCheckResponseValidationError) ErrorName() string {
+	return "HealCheckResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e HealCheckResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sHealCheckResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = HealCheckResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = HealCheckResponseValidationError{}
+
 // Validate checks the field values on SortMethod with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -172,6 +374,8 @@ func (m *Reward) validate(all bool) error {
 
 	// no validation rules for CouponValue
 
+	// no validation rules for UsageLimit
+
 	// no validation rules for MilestoneId
 
 	// no validation rules for CouponType
@@ -182,10 +386,6 @@ func (m *Reward) validate(all bool) error {
 
 	if m.CurrencyId != nil {
 		// no validation rules for CurrencyId
-	}
-
-	if m.UsageLimit != nil {
-		// no validation rules for UsageLimit
 	}
 
 	if len(errors) > 0 {
@@ -567,3 +767,1208 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = StoreCouponValidationError{}
+
+// Validate checks the field values on MilestoneProgress with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *MilestoneProgress) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on MilestoneProgress with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// MilestoneProgressMultiError, or nil if none found.
+func (m *MilestoneProgress) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *MilestoneProgress) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetMilestone()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, MilestoneProgressValidationError{
+					field:  "Milestone",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, MilestoneProgressValidationError{
+					field:  "Milestone",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetMilestone()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return MilestoneProgressValidationError{
+				field:  "Milestone",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for Progress
+
+	if len(errors) > 0 {
+		return MilestoneProgressMultiError(errors)
+	}
+
+	return nil
+}
+
+// MilestoneProgressMultiError is an error wrapping multiple validation errors
+// returned by MilestoneProgress.ValidateAll() if the designated constraints
+// aren't met.
+type MilestoneProgressMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m MilestoneProgressMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m MilestoneProgressMultiError) AllErrors() []error { return m }
+
+// MilestoneProgressValidationError is the validation error returned by
+// MilestoneProgress.Validate if the designated constraints aren't met.
+type MilestoneProgressValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e MilestoneProgressValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e MilestoneProgressValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e MilestoneProgressValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e MilestoneProgressValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e MilestoneProgressValidationError) ErrorName() string {
+	return "MilestoneProgressValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e MilestoneProgressValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sMilestoneProgress.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = MilestoneProgressValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = MilestoneProgressValidationError{}
+
+// Validate checks the field values on CreateMileStoneRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CreateMileStoneRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateMileStoneRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CreateMileStoneRequestMultiError, or nil if none found.
+func (m *CreateMileStoneRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateMileStoneRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetName()) < 1 {
+		err := CreateMileStoneRequestValidationError{
+			field:  "Name",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	for idx, item := range m.GetRewards() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CreateMileStoneRequestValidationError{
+						field:  fmt.Sprintf("Rewards[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CreateMileStoneRequestValidationError{
+						field:  fmt.Sprintf("Rewards[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CreateMileStoneRequestValidationError{
+					field:  fmt.Sprintf("Rewards[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if m.Threshold != nil {
+		// no validation rules for Threshold
+	}
+
+	if m.Step != nil {
+		// no validation rules for Step
+	}
+
+	if len(errors) > 0 {
+		return CreateMileStoneRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateMileStoneRequestMultiError is an error wrapping multiple validation
+// errors returned by CreateMileStoneRequest.ValidateAll() if the designated
+// constraints aren't met.
+type CreateMileStoneRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateMileStoneRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateMileStoneRequestMultiError) AllErrors() []error { return m }
+
+// CreateMileStoneRequestValidationError is the validation error returned by
+// CreateMileStoneRequest.Validate if the designated constraints aren't met.
+type CreateMileStoneRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateMileStoneRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateMileStoneRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateMileStoneRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateMileStoneRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateMileStoneRequestValidationError) ErrorName() string {
+	return "CreateMileStoneRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateMileStoneRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateMileStoneRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateMileStoneRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateMileStoneRequestValidationError{}
+
+// Validate checks the field values on CreateMileStoneResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *CreateMileStoneResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CreateMileStoneResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// CreateMileStoneResponseMultiError, or nil if none found.
+func (m *CreateMileStoneResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateMileStoneResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetMilestone()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, CreateMileStoneResponseValidationError{
+					field:  "Milestone",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, CreateMileStoneResponseValidationError{
+					field:  "Milestone",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetMilestone()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return CreateMileStoneResponseValidationError{
+				field:  "Milestone",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return CreateMileStoneResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateMileStoneResponseMultiError is an error wrapping multiple validation
+// errors returned by CreateMileStoneResponse.ValidateAll() if the designated
+// constraints aren't met.
+type CreateMileStoneResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateMileStoneResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateMileStoneResponseMultiError) AllErrors() []error { return m }
+
+// CreateMileStoneResponseValidationError is the validation error returned by
+// CreateMileStoneResponse.Validate if the designated constraints aren't met.
+type CreateMileStoneResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateMileStoneResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateMileStoneResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateMileStoneResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateMileStoneResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateMileStoneResponseValidationError) ErrorName() string {
+	return "CreateMileStoneResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateMileStoneResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateMileStoneResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateMileStoneResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateMileStoneResponseValidationError{}
+
+// Validate checks the field values on GetMileStoneRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetMileStoneRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetMileStoneRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetMileStoneRequestMultiError, or nil if none found.
+func (m *GetMileStoneRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetMileStoneRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	if len(errors) > 0 {
+		return GetMileStoneRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetMileStoneRequestMultiError is an error wrapping multiple validation
+// errors returned by GetMileStoneRequest.ValidateAll() if the designated
+// constraints aren't met.
+type GetMileStoneRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetMileStoneRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetMileStoneRequestMultiError) AllErrors() []error { return m }
+
+// GetMileStoneRequestValidationError is the validation error returned by
+// GetMileStoneRequest.Validate if the designated constraints aren't met.
+type GetMileStoneRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetMileStoneRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetMileStoneRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetMileStoneRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetMileStoneRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetMileStoneRequestValidationError) ErrorName() string {
+	return "GetMileStoneRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetMileStoneRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetMileStoneRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetMileStoneRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetMileStoneRequestValidationError{}
+
+// Validate checks the field values on GetMileStoneResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetMileStoneResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetMileStoneResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetMileStoneResponseMultiError, or nil if none found.
+func (m *GetMileStoneResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetMileStoneResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if all {
+		switch v := interface{}(m.GetMilestone()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, GetMileStoneResponseValidationError{
+					field:  "Milestone",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, GetMileStoneResponseValidationError{
+					field:  "Milestone",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetMilestone()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetMileStoneResponseValidationError{
+				field:  "Milestone",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return GetMileStoneResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetMileStoneResponseMultiError is an error wrapping multiple validation
+// errors returned by GetMileStoneResponse.ValidateAll() if the designated
+// constraints aren't met.
+type GetMileStoneResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetMileStoneResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetMileStoneResponseMultiError) AllErrors() []error { return m }
+
+// GetMileStoneResponseValidationError is the validation error returned by
+// GetMileStoneResponse.Validate if the designated constraints aren't met.
+type GetMileStoneResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetMileStoneResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetMileStoneResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetMileStoneResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetMileStoneResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetMileStoneResponseValidationError) ErrorName() string {
+	return "GetMileStoneResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetMileStoneResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetMileStoneResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetMileStoneResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetMileStoneResponseValidationError{}
+
+// Validate checks the field values on ListMileStoneRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListMileStoneRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListMileStoneRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListMileStoneRequestMultiError, or nil if none found.
+func (m *ListMileStoneRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListMileStoneRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetPageIndex() < 0 {
+		err := ListMileStoneRequestValidationError{
+			field:  "PageIndex",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetPageSize() < 0 {
+		err := ListMileStoneRequestValidationError{
+			field:  "PageSize",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	for idx, item := range m.GetSortMethods() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListMileStoneRequestValidationError{
+						field:  fmt.Sprintf("SortMethods[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListMileStoneRequestValidationError{
+						field:  fmt.Sprintf("SortMethods[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListMileStoneRequestValidationError{
+					field:  fmt.Sprintf("SortMethods[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return ListMileStoneRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListMileStoneRequestMultiError is an error wrapping multiple validation
+// errors returned by ListMileStoneRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ListMileStoneRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListMileStoneRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListMileStoneRequestMultiError) AllErrors() []error { return m }
+
+// ListMileStoneRequestValidationError is the validation error returned by
+// ListMileStoneRequest.Validate if the designated constraints aren't met.
+type ListMileStoneRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListMileStoneRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListMileStoneRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListMileStoneRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListMileStoneRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListMileStoneRequestValidationError) ErrorName() string {
+	return "ListMileStoneRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListMileStoneRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListMileStoneRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListMileStoneRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListMileStoneRequestValidationError{}
+
+// Validate checks the field values on ListMileStoneResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListMileStoneResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListMileStoneResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListMileStoneResponseMultiError, or nil if none found.
+func (m *ListMileStoneResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListMileStoneResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetMilestones() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListMileStoneResponseValidationError{
+						field:  fmt.Sprintf("Milestones[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListMileStoneResponseValidationError{
+						field:  fmt.Sprintf("Milestones[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListMileStoneResponseValidationError{
+					field:  fmt.Sprintf("Milestones[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for TotalCount
+
+	// no validation rules for TotalPages
+
+	if all {
+		switch v := interface{}(m.GetRequest()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ListMileStoneResponseValidationError{
+					field:  "Request",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ListMileStoneResponseValidationError{
+					field:  "Request",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetRequest()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ListMileStoneResponseValidationError{
+				field:  "Request",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ListMileStoneResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListMileStoneResponseMultiError is an error wrapping multiple validation
+// errors returned by ListMileStoneResponse.ValidateAll() if the designated
+// constraints aren't met.
+type ListMileStoneResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListMileStoneResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListMileStoneResponseMultiError) AllErrors() []error { return m }
+
+// ListMileStoneResponseValidationError is the validation error returned by
+// ListMileStoneResponse.Validate if the designated constraints aren't met.
+type ListMileStoneResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListMileStoneResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListMileStoneResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListMileStoneResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListMileStoneResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListMileStoneResponseValidationError) ErrorName() string {
+	return "ListMileStoneResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListMileStoneResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListMileStoneResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListMileStoneResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListMileStoneResponseValidationError{}
+
+// Validate checks the field values on DeleteMileStoneRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *DeleteMileStoneRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on DeleteMileStoneRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// DeleteMileStoneRequestMultiError, or nil if none found.
+func (m *DeleteMileStoneRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *DeleteMileStoneRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return DeleteMileStoneRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// DeleteMileStoneRequestMultiError is an error wrapping multiple validation
+// errors returned by DeleteMileStoneRequest.ValidateAll() if the designated
+// constraints aren't met.
+type DeleteMileStoneRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m DeleteMileStoneRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m DeleteMileStoneRequestMultiError) AllErrors() []error { return m }
+
+// DeleteMileStoneRequestValidationError is the validation error returned by
+// DeleteMileStoneRequest.Validate if the designated constraints aren't met.
+type DeleteMileStoneRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e DeleteMileStoneRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e DeleteMileStoneRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e DeleteMileStoneRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e DeleteMileStoneRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e DeleteMileStoneRequestValidationError) ErrorName() string {
+	return "DeleteMileStoneRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e DeleteMileStoneRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sDeleteMileStoneRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = DeleteMileStoneRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = DeleteMileStoneRequestValidationError{}
+
+// Validate checks the field values on CreateMileStoneRequest_MilestoneReward
+// with the rules defined in the proto definition for this message. If any
+// rules are violated, the first error encountered is returned, or nil if
+// there are no violations.
+func (m *CreateMileStoneRequest_MilestoneReward) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on
+// CreateMileStoneRequest_MilestoneReward with the rules defined in the proto
+// definition for this message. If any rules are violated, the result is a
+// list of violation errors wrapped in
+// CreateMileStoneRequest_MilestoneRewardMultiError, or nil if none found.
+func (m *CreateMileStoneRequest_MilestoneReward) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CreateMileStoneRequest_MilestoneReward) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for CouponValue
+
+	// no validation rules for MilestoneId
+
+	if m.ExpiredDuration != nil {
+		// no validation rules for ExpiredDuration
+	}
+
+	if m.CurrencyId != nil {
+		// no validation rules for CurrencyId
+	}
+
+	if m.UsageLimit != nil {
+		// no validation rules for UsageLimit
+	}
+
+	if len(errors) > 0 {
+		return CreateMileStoneRequest_MilestoneRewardMultiError(errors)
+	}
+
+	return nil
+}
+
+// CreateMileStoneRequest_MilestoneRewardMultiError is an error wrapping
+// multiple validation errors returned by
+// CreateMileStoneRequest_MilestoneReward.ValidateAll() if the designated
+// constraints aren't met.
+type CreateMileStoneRequest_MilestoneRewardMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CreateMileStoneRequest_MilestoneRewardMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CreateMileStoneRequest_MilestoneRewardMultiError) AllErrors() []error { return m }
+
+// CreateMileStoneRequest_MilestoneRewardValidationError is the validation
+// error returned by CreateMileStoneRequest_MilestoneReward.Validate if the
+// designated constraints aren't met.
+type CreateMileStoneRequest_MilestoneRewardValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CreateMileStoneRequest_MilestoneRewardValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CreateMileStoneRequest_MilestoneRewardValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CreateMileStoneRequest_MilestoneRewardValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CreateMileStoneRequest_MilestoneRewardValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CreateMileStoneRequest_MilestoneRewardValidationError) ErrorName() string {
+	return "CreateMileStoneRequest_MilestoneRewardValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e CreateMileStoneRequest_MilestoneRewardValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCreateMileStoneRequest_MilestoneReward.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CreateMileStoneRequest_MilestoneRewardValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CreateMileStoneRequest_MilestoneRewardValidationError{}

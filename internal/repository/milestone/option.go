@@ -5,10 +5,10 @@ import (
 )
 
 type MilestoneOption struct {
-	Name          *string
-	Step          int32
+	Name          string
+	Step          *int32
 	PageIndex     int32
-	Threshold     int32
+	Threshold     *int32
 	Limit         int32
 	MilestoneType coupon.MilestoneType
 	StoreIDs      []string
@@ -25,19 +25,19 @@ func (f funcOption) Apply(o *MilestoneOption) {
 	f(o)
 }
 
-func WithStep(step int32) Option {
+func WithStep(step *int32) Option {
 	return funcOption(func(mo *MilestoneOption) {
 		mo.Step = step
 	})
 }
 
-func WithThreshold(threshold int32) Option {
+func WithThreshold(threshold *int32) Option {
 	return funcOption(func(mo *MilestoneOption) {
 		mo.Threshold = threshold
 	})
 }
 
-func WithName(name *string) Option {
+func WithName(name string) Option {
 	return funcOption(func(mo *MilestoneOption) {
 		mo.Name = name
 	})

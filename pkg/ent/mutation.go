@@ -2292,7 +2292,7 @@ func (m *MilestoneMutation) Name() (r string, exists bool) {
 // OldName returns the old "name" field's value of the Milestone entity.
 // If the Milestone object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MilestoneMutation) OldName(ctx context.Context) (v *string, err error) {
+func (m *MilestoneMutation) OldName(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldName is only allowed on UpdateOne operations")
 	}
@@ -2306,22 +2306,9 @@ func (m *MilestoneMutation) OldName(ctx context.Context) (v *string, err error) 
 	return oldValue.Name, nil
 }
 
-// ClearName clears the value of the "name" field.
-func (m *MilestoneMutation) ClearName() {
-	m.name = nil
-	m.clearedFields[milestone.FieldName] = struct{}{}
-}
-
-// NameCleared returns if the "name" field was cleared in this mutation.
-func (m *MilestoneMutation) NameCleared() bool {
-	_, ok := m.clearedFields[milestone.FieldName]
-	return ok
-}
-
 // ResetName resets all changes to the "name" field.
 func (m *MilestoneMutation) ResetName() {
 	m.name = nil
-	delete(m.clearedFields, milestone.FieldName)
 }
 
 // SetStoreID sets the "store_id" field.
@@ -2434,7 +2421,7 @@ func (m *MilestoneMutation) Threshold() (r int32, exists bool) {
 // OldThreshold returns the old "threshold" field's value of the Milestone entity.
 // If the Milestone object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MilestoneMutation) OldThreshold(ctx context.Context) (v int32, err error) {
+func (m *MilestoneMutation) OldThreshold(ctx context.Context) (v *int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldThreshold is only allowed on UpdateOne operations")
 	}
@@ -2466,10 +2453,24 @@ func (m *MilestoneMutation) AddedThreshold() (r int32, exists bool) {
 	return *v, true
 }
 
+// ClearThreshold clears the value of the "threshold" field.
+func (m *MilestoneMutation) ClearThreshold() {
+	m.threshold = nil
+	m.addthreshold = nil
+	m.clearedFields[milestone.FieldThreshold] = struct{}{}
+}
+
+// ThresholdCleared returns if the "threshold" field was cleared in this mutation.
+func (m *MilestoneMutation) ThresholdCleared() bool {
+	_, ok := m.clearedFields[milestone.FieldThreshold]
+	return ok
+}
+
 // ResetThreshold resets all changes to the "threshold" field.
 func (m *MilestoneMutation) ResetThreshold() {
 	m.threshold = nil
 	m.addthreshold = nil
+	delete(m.clearedFields, milestone.FieldThreshold)
 }
 
 // SetStep sets the "step" field.
@@ -2490,7 +2491,7 @@ func (m *MilestoneMutation) Step() (r int32, exists bool) {
 // OldStep returns the old "step" field's value of the Milestone entity.
 // If the Milestone object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *MilestoneMutation) OldStep(ctx context.Context) (v int32, err error) {
+func (m *MilestoneMutation) OldStep(ctx context.Context) (v *int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldStep is only allowed on UpdateOne operations")
 	}
@@ -2522,10 +2523,24 @@ func (m *MilestoneMutation) AddedStep() (r int32, exists bool) {
 	return *v, true
 }
 
+// ClearStep clears the value of the "step" field.
+func (m *MilestoneMutation) ClearStep() {
+	m.step = nil
+	m.addstep = nil
+	m.clearedFields[milestone.FieldStep] = struct{}{}
+}
+
+// StepCleared returns if the "step" field was cleared in this mutation.
+func (m *MilestoneMutation) StepCleared() bool {
+	_, ok := m.clearedFields[milestone.FieldStep]
+	return ok
+}
+
 // ResetStep resets all changes to the "step" field.
 func (m *MilestoneMutation) ResetStep() {
 	m.step = nil
 	m.addstep = nil
+	delete(m.clearedFields, milestone.FieldStep)
 }
 
 // AddRewardIDs adds the "reward" edge to the Reward entity by ids.
@@ -2864,8 +2879,11 @@ func (m *MilestoneMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *MilestoneMutation) ClearedFields() []string {
 	var fields []string
-	if m.FieldCleared(milestone.FieldName) {
-		fields = append(fields, milestone.FieldName)
+	if m.FieldCleared(milestone.FieldThreshold) {
+		fields = append(fields, milestone.FieldThreshold)
+	}
+	if m.FieldCleared(milestone.FieldStep) {
+		fields = append(fields, milestone.FieldStep)
 	}
 	return fields
 }
@@ -2881,8 +2899,11 @@ func (m *MilestoneMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *MilestoneMutation) ClearField(name string) error {
 	switch name {
-	case milestone.FieldName:
-		m.ClearName()
+	case milestone.FieldThreshold:
+		m.ClearThreshold()
+		return nil
+	case milestone.FieldStep:
+		m.ClearStep()
 		return nil
 	}
 	return fmt.Errorf("unknown Milestone nullable field %s", name)
@@ -4186,7 +4207,7 @@ func (m *RewardMutation) CurrencyID() (r uint64, exists bool) {
 // OldCurrencyID returns the old "currency_id" field's value of the Reward entity.
 // If the Reward object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *RewardMutation) OldCurrencyID(ctx context.Context) (v uint64, err error) {
+func (m *RewardMutation) OldCurrencyID(ctx context.Context) (v *uint64, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCurrencyID is only allowed on UpdateOne operations")
 	}

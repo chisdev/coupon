@@ -65,7 +65,8 @@ func (r *reward) CreateBulk(ctx context.Context, tx tx.Tx, entities []*RewardEnt
 		query := tx.Client().Reward.Create().
 			SetMilestoneID(entity.MilestoneID).
 			SetCouponValue(entity.CouponValue).
-			SetCouponType(coupon.CouponType_COUPON_TYPE_PERCENTAGE)
+			SetCouponType(coupon.CouponType_COUPON_TYPE_PERCENTAGE).
+			SetServiceIds(entity.ServiceIds)
 
 		if entity.ExpiredDuration != nil {
 			if *entity.ExpiredDuration < 0 {
