@@ -8,9 +8,11 @@ import (
 )
 
 type CouponBooking interface {
-	Create(ctx context.Context, couponCode string, bookingID uint64) error
-	UpdateStatus(ctx context.Context, couponCode string, bookingID uint64, status coupon.CouponUsedStatus) error
-	Delete(ctx context.Context, couponCode string, bookingID uint64) error
+	Create(ctx context.Context, storeId, couponCode, bookingID, userID string, serviceIds []string) error
+	UpdateStatus(ctx context.Context, storeId, customerID, couponCode, bookingID string, status coupon.CouponUsedStatus) error
+	UpdateStatusV2(ctx context.Context, storeId, bookingID string, status, newStatus coupon.CouponUsedStatus) error
+	Delete(ctx context.Context, storeId, couponCode, bookingID, userID string) error
+	DeleteV2(ctx context.Context, storeId, bookingID string) error
 }
 
 type couponBooking struct {

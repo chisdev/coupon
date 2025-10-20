@@ -1684,6 +1684,10 @@ func (m *ReserveCouponRequest) validate(all bool) error {
 
 	// no validation rules for BookingId
 
+	// no validation rules for CustomerId
+
+	// no validation rules for StoreId
+
 	if len(errors) > 0 {
 		return ReserveCouponRequestMultiError(errors)
 	}
@@ -1786,18 +1790,9 @@ func (m *UnReserveCouponRequest) validate(all bool) error {
 
 	var errors []error
 
-	if utf8.RuneCountInString(m.GetCode()) < 1 {
-		err := UnReserveCouponRequestValidationError{
-			field:  "Code",
-			reason: "value length must be at least 1 runes",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
 	// no validation rules for BookingId
+
+	// no validation rules for StoreId
 
 	if len(errors) > 0 {
 		return UnReserveCouponRequestMultiError(errors)
@@ -1901,18 +1896,9 @@ func (m *ConfirmCouponUsageRequest) validate(all bool) error {
 
 	var errors []error
 
-	if utf8.RuneCountInString(m.GetCode()) < 1 {
-		err := ConfirmCouponUsageRequestValidationError{
-			field:  "Code",
-			reason: "value length must be at least 1 runes",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
 	// no validation rules for BookingId
+
+	// no validation rules for StoreId
 
 	if len(errors) > 0 {
 		return ConfirmCouponUsageRequestMultiError(errors)

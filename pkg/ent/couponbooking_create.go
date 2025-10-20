@@ -59,7 +59,7 @@ func (_c *CouponBookingCreate) SetCouponID(v uint64) *CouponBookingCreate {
 }
 
 // SetBookingID sets the "booking_id" field.
-func (_c *CouponBookingCreate) SetBookingID(v uint64) *CouponBookingCreate {
+func (_c *CouponBookingCreate) SetBookingID(v string) *CouponBookingCreate {
 	_c.mutation.SetBookingID(v)
 	return _c
 }
@@ -67,6 +67,18 @@ func (_c *CouponBookingCreate) SetBookingID(v uint64) *CouponBookingCreate {
 // SetStatus sets the "status" field.
 func (_c *CouponBookingCreate) SetStatus(v coupon.CouponUsedStatus) *CouponBookingCreate {
 	_c.mutation.SetStatus(v)
+	return _c
+}
+
+// SetServiceIds sets the "service_ids" field.
+func (_c *CouponBookingCreate) SetServiceIds(v []string) *CouponBookingCreate {
+	_c.mutation.SetServiceIds(v)
+	return _c
+}
+
+// SetCustomerID sets the "customer_id" field.
+func (_c *CouponBookingCreate) SetCustomerID(v string) *CouponBookingCreate {
+	_c.mutation.SetCustomerID(v)
 	return _c
 }
 
@@ -143,6 +155,12 @@ func (_c *CouponBookingCreate) check() error {
 	if _, ok := _c.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "CouponBooking.status"`)}
 	}
+	if _, ok := _c.mutation.ServiceIds(); !ok {
+		return &ValidationError{Name: "service_ids", err: errors.New(`ent: missing required field "CouponBooking.service_ids"`)}
+	}
+	if _, ok := _c.mutation.CustomerID(); !ok {
+		return &ValidationError{Name: "customer_id", err: errors.New(`ent: missing required field "CouponBooking.customer_id"`)}
+	}
 	if len(_c.mutation.CouponIDs()) == 0 {
 		return &ValidationError{Name: "coupon", err: errors.New(`ent: missing required edge "CouponBooking.coupon"`)}
 	}
@@ -188,12 +206,20 @@ func (_c *CouponBookingCreate) createSpec() (*CouponBooking, *sqlgraph.CreateSpe
 		_node.UpdatedAt = value
 	}
 	if value, ok := _c.mutation.BookingID(); ok {
-		_spec.SetField(couponbooking.FieldBookingID, field.TypeUint64, value)
+		_spec.SetField(couponbooking.FieldBookingID, field.TypeString, value)
 		_node.BookingID = value
 	}
 	if value, ok := _c.mutation.Status(); ok {
 		_spec.SetField(couponbooking.FieldStatus, field.TypeInt32, value)
 		_node.Status = value
+	}
+	if value, ok := _c.mutation.ServiceIds(); ok {
+		_spec.SetField(couponbooking.FieldServiceIds, field.TypeJSON, value)
+		_node.ServiceIds = value
+	}
+	if value, ok := _c.mutation.CustomerID(); ok {
+		_spec.SetField(couponbooking.FieldCustomerID, field.TypeString, value)
+		_node.CustomerID = value
 	}
 	if nodes := _c.mutation.CouponIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -289,7 +315,7 @@ func (u *CouponBookingUpsert) UpdateCouponID() *CouponBookingUpsert {
 }
 
 // SetBookingID sets the "booking_id" field.
-func (u *CouponBookingUpsert) SetBookingID(v uint64) *CouponBookingUpsert {
+func (u *CouponBookingUpsert) SetBookingID(v string) *CouponBookingUpsert {
 	u.Set(couponbooking.FieldBookingID, v)
 	return u
 }
@@ -297,12 +323,6 @@ func (u *CouponBookingUpsert) SetBookingID(v uint64) *CouponBookingUpsert {
 // UpdateBookingID sets the "booking_id" field to the value that was provided on create.
 func (u *CouponBookingUpsert) UpdateBookingID() *CouponBookingUpsert {
 	u.SetExcluded(couponbooking.FieldBookingID)
-	return u
-}
-
-// AddBookingID adds v to the "booking_id" field.
-func (u *CouponBookingUpsert) AddBookingID(v uint64) *CouponBookingUpsert {
-	u.Add(couponbooking.FieldBookingID, v)
 	return u
 }
 
@@ -321,6 +341,30 @@ func (u *CouponBookingUpsert) UpdateStatus() *CouponBookingUpsert {
 // AddStatus adds v to the "status" field.
 func (u *CouponBookingUpsert) AddStatus(v coupon.CouponUsedStatus) *CouponBookingUpsert {
 	u.Add(couponbooking.FieldStatus, v)
+	return u
+}
+
+// SetServiceIds sets the "service_ids" field.
+func (u *CouponBookingUpsert) SetServiceIds(v []string) *CouponBookingUpsert {
+	u.Set(couponbooking.FieldServiceIds, v)
+	return u
+}
+
+// UpdateServiceIds sets the "service_ids" field to the value that was provided on create.
+func (u *CouponBookingUpsert) UpdateServiceIds() *CouponBookingUpsert {
+	u.SetExcluded(couponbooking.FieldServiceIds)
+	return u
+}
+
+// SetCustomerID sets the "customer_id" field.
+func (u *CouponBookingUpsert) SetCustomerID(v string) *CouponBookingUpsert {
+	u.Set(couponbooking.FieldCustomerID, v)
+	return u
+}
+
+// UpdateCustomerID sets the "customer_id" field to the value that was provided on create.
+func (u *CouponBookingUpsert) UpdateCustomerID() *CouponBookingUpsert {
+	u.SetExcluded(couponbooking.FieldCustomerID)
 	return u
 }
 
@@ -404,16 +448,9 @@ func (u *CouponBookingUpsertOne) UpdateCouponID() *CouponBookingUpsertOne {
 }
 
 // SetBookingID sets the "booking_id" field.
-func (u *CouponBookingUpsertOne) SetBookingID(v uint64) *CouponBookingUpsertOne {
+func (u *CouponBookingUpsertOne) SetBookingID(v string) *CouponBookingUpsertOne {
 	return u.Update(func(s *CouponBookingUpsert) {
 		s.SetBookingID(v)
-	})
-}
-
-// AddBookingID adds v to the "booking_id" field.
-func (u *CouponBookingUpsertOne) AddBookingID(v uint64) *CouponBookingUpsertOne {
-	return u.Update(func(s *CouponBookingUpsert) {
-		s.AddBookingID(v)
 	})
 }
 
@@ -442,6 +479,34 @@ func (u *CouponBookingUpsertOne) AddStatus(v coupon.CouponUsedStatus) *CouponBoo
 func (u *CouponBookingUpsertOne) UpdateStatus() *CouponBookingUpsertOne {
 	return u.Update(func(s *CouponBookingUpsert) {
 		s.UpdateStatus()
+	})
+}
+
+// SetServiceIds sets the "service_ids" field.
+func (u *CouponBookingUpsertOne) SetServiceIds(v []string) *CouponBookingUpsertOne {
+	return u.Update(func(s *CouponBookingUpsert) {
+		s.SetServiceIds(v)
+	})
+}
+
+// UpdateServiceIds sets the "service_ids" field to the value that was provided on create.
+func (u *CouponBookingUpsertOne) UpdateServiceIds() *CouponBookingUpsertOne {
+	return u.Update(func(s *CouponBookingUpsert) {
+		s.UpdateServiceIds()
+	})
+}
+
+// SetCustomerID sets the "customer_id" field.
+func (u *CouponBookingUpsertOne) SetCustomerID(v string) *CouponBookingUpsertOne {
+	return u.Update(func(s *CouponBookingUpsert) {
+		s.SetCustomerID(v)
+	})
+}
+
+// UpdateCustomerID sets the "customer_id" field to the value that was provided on create.
+func (u *CouponBookingUpsertOne) UpdateCustomerID() *CouponBookingUpsertOne {
+	return u.Update(func(s *CouponBookingUpsert) {
+		s.UpdateCustomerID()
 	})
 }
 
@@ -691,16 +756,9 @@ func (u *CouponBookingUpsertBulk) UpdateCouponID() *CouponBookingUpsertBulk {
 }
 
 // SetBookingID sets the "booking_id" field.
-func (u *CouponBookingUpsertBulk) SetBookingID(v uint64) *CouponBookingUpsertBulk {
+func (u *CouponBookingUpsertBulk) SetBookingID(v string) *CouponBookingUpsertBulk {
 	return u.Update(func(s *CouponBookingUpsert) {
 		s.SetBookingID(v)
-	})
-}
-
-// AddBookingID adds v to the "booking_id" field.
-func (u *CouponBookingUpsertBulk) AddBookingID(v uint64) *CouponBookingUpsertBulk {
-	return u.Update(func(s *CouponBookingUpsert) {
-		s.AddBookingID(v)
 	})
 }
 
@@ -729,6 +787,34 @@ func (u *CouponBookingUpsertBulk) AddStatus(v coupon.CouponUsedStatus) *CouponBo
 func (u *CouponBookingUpsertBulk) UpdateStatus() *CouponBookingUpsertBulk {
 	return u.Update(func(s *CouponBookingUpsert) {
 		s.UpdateStatus()
+	})
+}
+
+// SetServiceIds sets the "service_ids" field.
+func (u *CouponBookingUpsertBulk) SetServiceIds(v []string) *CouponBookingUpsertBulk {
+	return u.Update(func(s *CouponBookingUpsert) {
+		s.SetServiceIds(v)
+	})
+}
+
+// UpdateServiceIds sets the "service_ids" field to the value that was provided on create.
+func (u *CouponBookingUpsertBulk) UpdateServiceIds() *CouponBookingUpsertBulk {
+	return u.Update(func(s *CouponBookingUpsert) {
+		s.UpdateServiceIds()
+	})
+}
+
+// SetCustomerID sets the "customer_id" field.
+func (u *CouponBookingUpsertBulk) SetCustomerID(v string) *CouponBookingUpsertBulk {
+	return u.Update(func(s *CouponBookingUpsert) {
+		s.SetCustomerID(v)
+	})
+}
+
+// UpdateCustomerID sets the "customer_id" field to the value that was provided on create.
+func (u *CouponBookingUpsertBulk) UpdateCustomerID() *CouponBookingUpsertBulk {
+	return u.Update(func(s *CouponBookingUpsert) {
+		s.UpdateCustomerID()
 	})
 }
 

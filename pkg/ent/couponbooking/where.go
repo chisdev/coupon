@@ -72,7 +72,7 @@ func CouponID(v uint64) predicate.CouponBooking {
 }
 
 // BookingID applies equality check predicate on the "booking_id" field. It's identical to BookingIDEQ.
-func BookingID(v uint64) predicate.CouponBooking {
+func BookingID(v string) predicate.CouponBooking {
 	return predicate.CouponBooking(sql.FieldEQ(FieldBookingID, v))
 }
 
@@ -80,6 +80,11 @@ func BookingID(v uint64) predicate.CouponBooking {
 func Status(v coupon.CouponUsedStatus) predicate.CouponBooking {
 	vc := int32(v)
 	return predicate.CouponBooking(sql.FieldEQ(FieldStatus, vc))
+}
+
+// CustomerID applies equality check predicate on the "customer_id" field. It's identical to CustomerIDEQ.
+func CustomerID(v string) predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldEQ(FieldCustomerID, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -183,43 +188,68 @@ func CouponIDNotIn(vs ...uint64) predicate.CouponBooking {
 }
 
 // BookingIDEQ applies the EQ predicate on the "booking_id" field.
-func BookingIDEQ(v uint64) predicate.CouponBooking {
+func BookingIDEQ(v string) predicate.CouponBooking {
 	return predicate.CouponBooking(sql.FieldEQ(FieldBookingID, v))
 }
 
 // BookingIDNEQ applies the NEQ predicate on the "booking_id" field.
-func BookingIDNEQ(v uint64) predicate.CouponBooking {
+func BookingIDNEQ(v string) predicate.CouponBooking {
 	return predicate.CouponBooking(sql.FieldNEQ(FieldBookingID, v))
 }
 
 // BookingIDIn applies the In predicate on the "booking_id" field.
-func BookingIDIn(vs ...uint64) predicate.CouponBooking {
+func BookingIDIn(vs ...string) predicate.CouponBooking {
 	return predicate.CouponBooking(sql.FieldIn(FieldBookingID, vs...))
 }
 
 // BookingIDNotIn applies the NotIn predicate on the "booking_id" field.
-func BookingIDNotIn(vs ...uint64) predicate.CouponBooking {
+func BookingIDNotIn(vs ...string) predicate.CouponBooking {
 	return predicate.CouponBooking(sql.FieldNotIn(FieldBookingID, vs...))
 }
 
 // BookingIDGT applies the GT predicate on the "booking_id" field.
-func BookingIDGT(v uint64) predicate.CouponBooking {
+func BookingIDGT(v string) predicate.CouponBooking {
 	return predicate.CouponBooking(sql.FieldGT(FieldBookingID, v))
 }
 
 // BookingIDGTE applies the GTE predicate on the "booking_id" field.
-func BookingIDGTE(v uint64) predicate.CouponBooking {
+func BookingIDGTE(v string) predicate.CouponBooking {
 	return predicate.CouponBooking(sql.FieldGTE(FieldBookingID, v))
 }
 
 // BookingIDLT applies the LT predicate on the "booking_id" field.
-func BookingIDLT(v uint64) predicate.CouponBooking {
+func BookingIDLT(v string) predicate.CouponBooking {
 	return predicate.CouponBooking(sql.FieldLT(FieldBookingID, v))
 }
 
 // BookingIDLTE applies the LTE predicate on the "booking_id" field.
-func BookingIDLTE(v uint64) predicate.CouponBooking {
+func BookingIDLTE(v string) predicate.CouponBooking {
 	return predicate.CouponBooking(sql.FieldLTE(FieldBookingID, v))
+}
+
+// BookingIDContains applies the Contains predicate on the "booking_id" field.
+func BookingIDContains(v string) predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldContains(FieldBookingID, v))
+}
+
+// BookingIDHasPrefix applies the HasPrefix predicate on the "booking_id" field.
+func BookingIDHasPrefix(v string) predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldHasPrefix(FieldBookingID, v))
+}
+
+// BookingIDHasSuffix applies the HasSuffix predicate on the "booking_id" field.
+func BookingIDHasSuffix(v string) predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldHasSuffix(FieldBookingID, v))
+}
+
+// BookingIDEqualFold applies the EqualFold predicate on the "booking_id" field.
+func BookingIDEqualFold(v string) predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldEqualFold(FieldBookingID, v))
+}
+
+// BookingIDContainsFold applies the ContainsFold predicate on the "booking_id" field.
+func BookingIDContainsFold(v string) predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldContainsFold(FieldBookingID, v))
 }
 
 // StatusEQ applies the EQ predicate on the "status" field.
@@ -274,6 +304,71 @@ func StatusLT(v coupon.CouponUsedStatus) predicate.CouponBooking {
 func StatusLTE(v coupon.CouponUsedStatus) predicate.CouponBooking {
 	vc := int32(v)
 	return predicate.CouponBooking(sql.FieldLTE(FieldStatus, vc))
+}
+
+// CustomerIDEQ applies the EQ predicate on the "customer_id" field.
+func CustomerIDEQ(v string) predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldEQ(FieldCustomerID, v))
+}
+
+// CustomerIDNEQ applies the NEQ predicate on the "customer_id" field.
+func CustomerIDNEQ(v string) predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldNEQ(FieldCustomerID, v))
+}
+
+// CustomerIDIn applies the In predicate on the "customer_id" field.
+func CustomerIDIn(vs ...string) predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldIn(FieldCustomerID, vs...))
+}
+
+// CustomerIDNotIn applies the NotIn predicate on the "customer_id" field.
+func CustomerIDNotIn(vs ...string) predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldNotIn(FieldCustomerID, vs...))
+}
+
+// CustomerIDGT applies the GT predicate on the "customer_id" field.
+func CustomerIDGT(v string) predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldGT(FieldCustomerID, v))
+}
+
+// CustomerIDGTE applies the GTE predicate on the "customer_id" field.
+func CustomerIDGTE(v string) predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldGTE(FieldCustomerID, v))
+}
+
+// CustomerIDLT applies the LT predicate on the "customer_id" field.
+func CustomerIDLT(v string) predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldLT(FieldCustomerID, v))
+}
+
+// CustomerIDLTE applies the LTE predicate on the "customer_id" field.
+func CustomerIDLTE(v string) predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldLTE(FieldCustomerID, v))
+}
+
+// CustomerIDContains applies the Contains predicate on the "customer_id" field.
+func CustomerIDContains(v string) predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldContains(FieldCustomerID, v))
+}
+
+// CustomerIDHasPrefix applies the HasPrefix predicate on the "customer_id" field.
+func CustomerIDHasPrefix(v string) predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldHasPrefix(FieldCustomerID, v))
+}
+
+// CustomerIDHasSuffix applies the HasSuffix predicate on the "customer_id" field.
+func CustomerIDHasSuffix(v string) predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldHasSuffix(FieldCustomerID, v))
+}
+
+// CustomerIDEqualFold applies the EqualFold predicate on the "customer_id" field.
+func CustomerIDEqualFold(v string) predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldEqualFold(FieldCustomerID, v))
+}
+
+// CustomerIDContainsFold applies the ContainsFold predicate on the "customer_id" field.
+func CustomerIDContainsFold(v string) predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldContainsFold(FieldCustomerID, v))
 }
 
 // HasCoupon applies the HasEdge predicate on the "coupon" edge.

@@ -25,13 +25,11 @@ func (Coupon) Fields() []ent.Field {
 		field.String("store_id").NotEmpty(),
 		field.Time("expire_at").Optional().Nillable(),
 		field.String("customer_id").Optional().Nillable(),
-		field.JSON("service_ids", []uint64{}).Default([]uint64{}),
+		field.Strings("service_ids"),
 		field.Int32("type").GoType(coupon.CouponType(1)),
 		field.Uint64("currency_id").Optional(),
 		field.Int32("usage_limit").Default(1),
-		// field.Int32("used_count").Default(0),
 		field.Int32("status").GoType(coupon.CouponStatus(0)),
-		// field.Int32("reserved_count").Default(0),
 	}
 }
 

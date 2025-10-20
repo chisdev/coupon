@@ -108,7 +108,7 @@ func (_c *CouponCreate) SetNillableCustomerID(v *string) *CouponCreate {
 }
 
 // SetServiceIds sets the "service_ids" field.
-func (_c *CouponCreate) SetServiceIds(v []uint64) *CouponCreate {
+func (_c *CouponCreate) SetServiceIds(v []string) *CouponCreate {
 	_c.mutation.SetServiceIds(v)
 	return _c
 }
@@ -225,10 +225,6 @@ func (_c *CouponCreate) defaults() {
 	if _, ok := _c.mutation.Value(); !ok {
 		v := entcoupon.DefaultValue
 		_c.mutation.SetValue(v)
-	}
-	if _, ok := _c.mutation.ServiceIds(); !ok {
-		v := entcoupon.DefaultServiceIds
-		_c.mutation.SetServiceIds(v)
 	}
 	if _, ok := _c.mutation.UsageLimit(); !ok {
 		v := entcoupon.DefaultUsageLimit
@@ -523,7 +519,7 @@ func (u *CouponUpsert) ClearCustomerID() *CouponUpsert {
 }
 
 // SetServiceIds sets the "service_ids" field.
-func (u *CouponUpsert) SetServiceIds(v []uint64) *CouponUpsert {
+func (u *CouponUpsert) SetServiceIds(v []string) *CouponUpsert {
 	u.Set(entcoupon.FieldServiceIds, v)
 	return u
 }
@@ -763,7 +759,7 @@ func (u *CouponUpsertOne) ClearCustomerID() *CouponUpsertOne {
 }
 
 // SetServiceIds sets the "service_ids" field.
-func (u *CouponUpsertOne) SetServiceIds(v []uint64) *CouponUpsertOne {
+func (u *CouponUpsertOne) SetServiceIds(v []string) *CouponUpsertOne {
 	return u.Update(func(s *CouponUpsert) {
 		s.SetServiceIds(v)
 	})
@@ -1183,7 +1179,7 @@ func (u *CouponUpsertBulk) ClearCustomerID() *CouponUpsertBulk {
 }
 
 // SetServiceIds sets the "service_ids" field.
-func (u *CouponUpsertBulk) SetServiceIds(v []uint64) *CouponUpsertBulk {
+func (u *CouponUpsertBulk) SetServiceIds(v []string) *CouponUpsertBulk {
 	return u.Update(func(s *CouponUpsert) {
 		s.SetServiceIds(v)
 	})

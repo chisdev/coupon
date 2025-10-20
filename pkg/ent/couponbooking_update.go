@@ -10,6 +10,7 @@ import (
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"entgo.io/ent/dialect/sql/sqljson"
 	"entgo.io/ent/schema/field"
 	coupon "github.com/chisdev/coupon/api"
 	entcoupon "github.com/chisdev/coupon/pkg/ent/coupon"
@@ -52,23 +53,16 @@ func (_u *CouponBookingUpdate) SetNillableCouponID(v *uint64) *CouponBookingUpda
 }
 
 // SetBookingID sets the "booking_id" field.
-func (_u *CouponBookingUpdate) SetBookingID(v uint64) *CouponBookingUpdate {
-	_u.mutation.ResetBookingID()
+func (_u *CouponBookingUpdate) SetBookingID(v string) *CouponBookingUpdate {
 	_u.mutation.SetBookingID(v)
 	return _u
 }
 
 // SetNillableBookingID sets the "booking_id" field if the given value is not nil.
-func (_u *CouponBookingUpdate) SetNillableBookingID(v *uint64) *CouponBookingUpdate {
+func (_u *CouponBookingUpdate) SetNillableBookingID(v *string) *CouponBookingUpdate {
 	if v != nil {
 		_u.SetBookingID(*v)
 	}
-	return _u
-}
-
-// AddBookingID adds value to the "booking_id" field.
-func (_u *CouponBookingUpdate) AddBookingID(v int64) *CouponBookingUpdate {
-	_u.mutation.AddBookingID(v)
 	return _u
 }
 
@@ -90,6 +84,32 @@ func (_u *CouponBookingUpdate) SetNillableStatus(v *coupon.CouponUsedStatus) *Co
 // AddStatus adds value to the "status" field.
 func (_u *CouponBookingUpdate) AddStatus(v coupon.CouponUsedStatus) *CouponBookingUpdate {
 	_u.mutation.AddStatus(v)
+	return _u
+}
+
+// SetServiceIds sets the "service_ids" field.
+func (_u *CouponBookingUpdate) SetServiceIds(v []string) *CouponBookingUpdate {
+	_u.mutation.SetServiceIds(v)
+	return _u
+}
+
+// AppendServiceIds appends value to the "service_ids" field.
+func (_u *CouponBookingUpdate) AppendServiceIds(v []string) *CouponBookingUpdate {
+	_u.mutation.AppendServiceIds(v)
+	return _u
+}
+
+// SetCustomerID sets the "customer_id" field.
+func (_u *CouponBookingUpdate) SetCustomerID(v string) *CouponBookingUpdate {
+	_u.mutation.SetCustomerID(v)
+	return _u
+}
+
+// SetNillableCustomerID sets the "customer_id" field if the given value is not nil.
+func (_u *CouponBookingUpdate) SetNillableCustomerID(v *string) *CouponBookingUpdate {
+	if v != nil {
+		_u.SetCustomerID(*v)
+	}
 	return _u
 }
 
@@ -175,16 +195,24 @@ func (_u *CouponBookingUpdate) sqlSave(ctx context.Context) (_node int, err erro
 		_spec.SetField(couponbooking.FieldUpdatedAt, field.TypeTime, value)
 	}
 	if value, ok := _u.mutation.BookingID(); ok {
-		_spec.SetField(couponbooking.FieldBookingID, field.TypeUint64, value)
-	}
-	if value, ok := _u.mutation.AddedBookingID(); ok {
-		_spec.AddField(couponbooking.FieldBookingID, field.TypeUint64, value)
+		_spec.SetField(couponbooking.FieldBookingID, field.TypeString, value)
 	}
 	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(couponbooking.FieldStatus, field.TypeInt32, value)
 	}
 	if value, ok := _u.mutation.AddedStatus(); ok {
 		_spec.AddField(couponbooking.FieldStatus, field.TypeInt32, value)
+	}
+	if value, ok := _u.mutation.ServiceIds(); ok {
+		_spec.SetField(couponbooking.FieldServiceIds, field.TypeJSON, value)
+	}
+	if value, ok := _u.mutation.AppendedServiceIds(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, couponbooking.FieldServiceIds, value)
+		})
+	}
+	if value, ok := _u.mutation.CustomerID(); ok {
+		_spec.SetField(couponbooking.FieldCustomerID, field.TypeString, value)
 	}
 	if _u.mutation.CouponCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -258,23 +286,16 @@ func (_u *CouponBookingUpdateOne) SetNillableCouponID(v *uint64) *CouponBookingU
 }
 
 // SetBookingID sets the "booking_id" field.
-func (_u *CouponBookingUpdateOne) SetBookingID(v uint64) *CouponBookingUpdateOne {
-	_u.mutation.ResetBookingID()
+func (_u *CouponBookingUpdateOne) SetBookingID(v string) *CouponBookingUpdateOne {
 	_u.mutation.SetBookingID(v)
 	return _u
 }
 
 // SetNillableBookingID sets the "booking_id" field if the given value is not nil.
-func (_u *CouponBookingUpdateOne) SetNillableBookingID(v *uint64) *CouponBookingUpdateOne {
+func (_u *CouponBookingUpdateOne) SetNillableBookingID(v *string) *CouponBookingUpdateOne {
 	if v != nil {
 		_u.SetBookingID(*v)
 	}
-	return _u
-}
-
-// AddBookingID adds value to the "booking_id" field.
-func (_u *CouponBookingUpdateOne) AddBookingID(v int64) *CouponBookingUpdateOne {
-	_u.mutation.AddBookingID(v)
 	return _u
 }
 
@@ -296,6 +317,32 @@ func (_u *CouponBookingUpdateOne) SetNillableStatus(v *coupon.CouponUsedStatus) 
 // AddStatus adds value to the "status" field.
 func (_u *CouponBookingUpdateOne) AddStatus(v coupon.CouponUsedStatus) *CouponBookingUpdateOne {
 	_u.mutation.AddStatus(v)
+	return _u
+}
+
+// SetServiceIds sets the "service_ids" field.
+func (_u *CouponBookingUpdateOne) SetServiceIds(v []string) *CouponBookingUpdateOne {
+	_u.mutation.SetServiceIds(v)
+	return _u
+}
+
+// AppendServiceIds appends value to the "service_ids" field.
+func (_u *CouponBookingUpdateOne) AppendServiceIds(v []string) *CouponBookingUpdateOne {
+	_u.mutation.AppendServiceIds(v)
+	return _u
+}
+
+// SetCustomerID sets the "customer_id" field.
+func (_u *CouponBookingUpdateOne) SetCustomerID(v string) *CouponBookingUpdateOne {
+	_u.mutation.SetCustomerID(v)
+	return _u
+}
+
+// SetNillableCustomerID sets the "customer_id" field if the given value is not nil.
+func (_u *CouponBookingUpdateOne) SetNillableCustomerID(v *string) *CouponBookingUpdateOne {
+	if v != nil {
+		_u.SetCustomerID(*v)
+	}
 	return _u
 }
 
@@ -411,16 +458,24 @@ func (_u *CouponBookingUpdateOne) sqlSave(ctx context.Context) (_node *CouponBoo
 		_spec.SetField(couponbooking.FieldUpdatedAt, field.TypeTime, value)
 	}
 	if value, ok := _u.mutation.BookingID(); ok {
-		_spec.SetField(couponbooking.FieldBookingID, field.TypeUint64, value)
-	}
-	if value, ok := _u.mutation.AddedBookingID(); ok {
-		_spec.AddField(couponbooking.FieldBookingID, field.TypeUint64, value)
+		_spec.SetField(couponbooking.FieldBookingID, field.TypeString, value)
 	}
 	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(couponbooking.FieldStatus, field.TypeInt32, value)
 	}
 	if value, ok := _u.mutation.AddedStatus(); ok {
 		_spec.AddField(couponbooking.FieldStatus, field.TypeInt32, value)
+	}
+	if value, ok := _u.mutation.ServiceIds(); ok {
+		_spec.SetField(couponbooking.FieldServiceIds, field.TypeJSON, value)
+	}
+	if value, ok := _u.mutation.AppendedServiceIds(); ok {
+		_spec.AddModifier(func(u *sql.UpdateBuilder) {
+			sqljson.Append(u, couponbooking.FieldServiceIds, value)
+		})
+	}
+	if value, ok := _u.mutation.CustomerID(); ok {
+		_spec.SetField(couponbooking.FieldCustomerID, field.TypeString, value)
 	}
 	if _u.mutation.CouponCleared() {
 		edge := &sqlgraph.EdgeSpec{

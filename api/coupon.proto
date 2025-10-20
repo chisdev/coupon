@@ -10,18 +10,7 @@ import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
 
 service Coupon {
-    rpc ReserveCoupon (ReserveCouponRequest) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            post: "/coupon/reserve"
-            body: "*"
-        };
-    };
-    rpc UnReserveCoupon (UnReserveCouponRequest) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            post: "/coupon/unreserve"
-            body: "*"
-        };
-    };
+
 }
 
 
@@ -49,12 +38,8 @@ service CouponCms {
         };
     };
 
-    rpc ConfirmCouponUsage (ConfirmCouponUsageRequest) returns (google.protobuf.Empty) {
-        option (google.api.http) = {
-            post: "/couponcms/confirm-usage"
-            body: "*"
-        };
-    };
+
+
 
 
 
@@ -66,6 +51,30 @@ service CouponCms {
     // rpc DelteCoupon (DelteCouponRequest) returns (DelteCouponResponse);
     // rpc UpdateCoupon (UpdateCouponRequest) returns (UpdateCouponResponse);
 
+}
+
+service CouponInternal {
+    rpc ReserveCoupon (ReserveCouponRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/couponint/reserve"
+            body: "*"
+        };
+    };
+
+    rpc UnReserveCoupon (UnReserveCouponRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/couponint/unreserve"
+            body: "*"
+        };
+    };
+        rpc ConfirmCouponUsage (ConfirmCouponUsageRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/couponcms/confirm-usage"
+            body: "*"
+        };
+    };
+
+    
 }
 
 enum CouponUsedStatus {
@@ -197,16 +206,18 @@ message DeleteMileStoneRequest {
 
 message ReserveCouponRequest {
     string code = 1 [(validate.rules).string = {min_len: 1}];
-    uint64 booking_id = 2;
-    repeated uint64 service_ids = 3;    
+    string booking_id = 2;
+    repeated string service_ids = 3;    
+    string customer_id = 4;
+    string store_id = 6;
 }
 
 message UnReserveCouponRequest {
-    string code = 1 [(validate.rules).string = {min_len: 1}];
-    uint64 booking_id = 2;
+    string booking_id = 1;
+    string store_id = 2;
 }
 
 message ConfirmCouponUsageRequest {
-    string code = 1 [(validate.rules).string = {min_len: 1}];
-    uint64 booking_id = 2;
+    string booking_id = 1;
+    string store_id = 2;
 }

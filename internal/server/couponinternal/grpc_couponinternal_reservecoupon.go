@@ -1,4 +1,4 @@
-package coupon
+package couponinternal
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"github.com/chisdev/coupon/api"
 )
 
-func (s *couponServer) UnReserveCoupon(ctx context.Context, request *coupon.UnReserveCouponRequest) (*emptypb.Empty, error) {
+func (s *couponInternalServer) ReserveCoupon(ctx context.Context, request *coupon.ReserveCouponRequest) (*emptypb.Empty, error) {
 	if err := request.Validate(); err != nil {
 		return nil, err
 	}

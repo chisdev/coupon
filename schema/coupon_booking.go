@@ -20,8 +20,10 @@ func (CouponBooking) Mixin() []ent.Mixin {
 func (CouponBooking) Fields() []ent.Field {
 	return []ent.Field{
 		field.Uint64("coupon_id"),
-		field.Uint64("booking_id"),
+		field.String("booking_id"),
 		field.Int32("status").GoType(coupon.CouponUsedStatus(1)),
+		field.Strings("service_ids"),
+		field.String("customer_id"),
 	}
 }
 

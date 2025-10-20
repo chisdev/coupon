@@ -43,8 +43,10 @@ var (
 		{Name: "id", Type: field.TypeUint64, Increment: true},
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
-		{Name: "booking_id", Type: field.TypeUint64},
+		{Name: "booking_id", Type: field.TypeString},
 		{Name: "status", Type: field.TypeInt32},
+		{Name: "service_ids", Type: field.TypeJSON},
+		{Name: "customer_id", Type: field.TypeString},
 		{Name: "coupon_id", Type: field.TypeUint64},
 	}
 	// CouponBookingsTable holds the schema information for the "coupon_bookings" table.
@@ -55,7 +57,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "coupon_bookings_coupons_coupon_bookings",
-				Columns:    []*schema.Column{CouponBookingsColumns[5]},
+				Columns:    []*schema.Column{CouponBookingsColumns[7]},
 				RefColumns: []*schema.Column{CouponsColumns[0]},
 				OnDelete:   schema.Cascade,
 			},

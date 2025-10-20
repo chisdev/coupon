@@ -3,6 +3,7 @@
 package ent
 
 import (
+	"encoding/json"
 	"fmt"
 	"strings"
 	"time"
@@ -26,9 +27,13 @@ type CouponBooking struct {
 	// CouponID holds the value of the "coupon_id" field.
 	CouponID uint64 `json:"coupon_id,omitempty"`
 	// BookingID holds the value of the "booking_id" field.
-	BookingID uint64 `json:"booking_id,omitempty"`
+	BookingID string `json:"booking_id,omitempty"`
 	// Status holds the value of the "status" field.
 	Status coupon.CouponUsedStatus `json:"status,omitempty"`
+	// ServiceIds holds the value of the "service_ids" field.
+	ServiceIds []string `json:"service_ids,omitempty"`
+	// CustomerID holds the value of the "customer_id" field.
+	CustomerID string `json:"customer_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CouponBookingQuery when eager-loading is set.
 	Edges        CouponBookingEdges `json:"edges"`
@@ -60,8 +65,12 @@ func (*CouponBooking) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case couponbooking.FieldID, couponbooking.FieldCouponID, couponbooking.FieldBookingID, couponbooking.FieldStatus:
+		case couponbooking.FieldServiceIds:
+			values[i] = new([]byte)
+		case couponbooking.FieldID, couponbooking.FieldCouponID, couponbooking.FieldStatus:
 			values[i] = new(sql.NullInt64)
+		case couponbooking.FieldBookingID, couponbooking.FieldCustomerID:
+			values[i] = new(sql.NullString)
 		case couponbooking.FieldCreatedAt, couponbooking.FieldUpdatedAt:
 			values[i] = new(sql.NullTime)
 		default:
@@ -104,16 +113,30 @@ func (_m *CouponBooking) assignValues(columns []string, values []any) error {
 				_m.CouponID = uint64(value.Int64)
 			}
 		case couponbooking.FieldBookingID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
+			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field booking_id", values[i])
 			} else if value.Valid {
-				_m.BookingID = uint64(value.Int64)
+				_m.BookingID = value.String
 			}
 		case couponbooking.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
 				_m.Status = coupon.CouponUsedStatus(value.Int64)
+			}
+		case couponbooking.FieldServiceIds:
+			if value, ok := values[i].(*[]byte); !ok {
+				return fmt.Errorf("unexpected type %T for field service_ids", values[i])
+			} else if value != nil && len(*value) > 0 {
+				if err := json.Unmarshal(*value, &_m.ServiceIds); err != nil {
+					return fmt.Errorf("unmarshal field service_ids: %w", err)
+				}
+			}
+		case couponbooking.FieldCustomerID:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field customer_id", values[i])
+			} else if value.Valid {
+				_m.CustomerID = value.String
 			}
 		default:
 			_m.selectValues.Set(columns[i], values[i])
@@ -166,10 +189,16 @@ func (_m *CouponBooking) String() string {
 	builder.WriteString(fmt.Sprintf("%v", _m.CouponID))
 	builder.WriteString(", ")
 	builder.WriteString("booking_id=")
-	builder.WriteString(fmt.Sprintf("%v", _m.BookingID))
+	builder.WriteString(_m.BookingID)
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", _m.Status))
+	builder.WriteString(", ")
+	builder.WriteString("service_ids=")
+	builder.WriteString(fmt.Sprintf("%v", _m.ServiceIds))
+	builder.WriteString(", ")
+	builder.WriteString("customer_id=")
+	builder.WriteString(_m.CustomerID)
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -24,6 +24,10 @@ const (
 	FieldBookingID = "booking_id"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
+	// FieldServiceIds holds the string denoting the service_ids field in the database.
+	FieldServiceIds = "service_ids"
+	// FieldCustomerID holds the string denoting the customer_id field in the database.
+	FieldCustomerID = "customer_id"
 	// EdgeCoupon holds the string denoting the coupon edge name in mutations.
 	EdgeCoupon = "coupon"
 	// Table holds the table name of the couponbooking in the database.
@@ -45,6 +49,8 @@ var Columns = []string{
 	FieldCouponID,
 	FieldBookingID,
 	FieldStatus,
+	FieldServiceIds,
+	FieldCustomerID,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -97,6 +103,11 @@ func ByBookingID(opts ...sql.OrderTermOption) OrderOption {
 // ByStatus orders the results by the status field.
 func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
+}
+
+// ByCustomerID orders the results by the customer_id field.
+func ByCustomerID(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCustomerID, opts...).ToFunc()
 }
 
 // ByCouponField orders the results by coupon field.

@@ -19,7 +19,7 @@ type CouponOpts struct {
 	Status        api.CouponStatus
 	Type          api.CouponType
 	CurrencyID    *uint64
-	ServiceIds    []uint64
+	ServiceIds    []string
 	SortMethods   []*api.SortMethod
 }
 
@@ -100,7 +100,7 @@ func WithUsageCount(usageCount int32) Option {
 	})
 }
 
-func WithServiceIds(serviceIds []uint64) Option {
+func WithServiceIds(serviceIds []string) Option {
 	return funcOption(func(co *CouponOpts) {
 		co.ServiceIds = serviceIds
 	})

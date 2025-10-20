@@ -41,10 +41,6 @@ func init() {
 	entcouponDescStoreID := entcouponFields[2].Descriptor()
 	// entcoupon.StoreIDValidator is a validator for the "store_id" field. It is called by the builders before save.
 	entcoupon.StoreIDValidator = entcouponDescStoreID.Validators[0].(func(string) error)
-	// entcouponDescServiceIds is the schema descriptor for service_ids field.
-	entcouponDescServiceIds := entcouponFields[5].Descriptor()
-	// entcoupon.DefaultServiceIds holds the default value on creation for the service_ids field.
-	entcoupon.DefaultServiceIds = entcouponDescServiceIds.Default.([]uint64)
 	// entcouponDescUsageLimit is the schema descriptor for usage_limit field.
 	entcouponDescUsageLimit := entcouponFields[8].Descriptor()
 	// entcoupon.DefaultUsageLimit holds the default value on creation for the usage_limit field.
