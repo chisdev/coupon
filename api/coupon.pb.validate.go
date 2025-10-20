@@ -35,208 +35,6 @@ var (
 	_ = sort.Sort
 )
 
-// Validate checks the field values on HealCheckRequest with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *HealCheckRequest) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on HealCheckRequest with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// HealCheckRequestMultiError, or nil if none found.
-func (m *HealCheckRequest) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *HealCheckRequest) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	if len(errors) > 0 {
-		return HealCheckRequestMultiError(errors)
-	}
-
-	return nil
-}
-
-// HealCheckRequestMultiError is an error wrapping multiple validation errors
-// returned by HealCheckRequest.ValidateAll() if the designated constraints
-// aren't met.
-type HealCheckRequestMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m HealCheckRequestMultiError) Error() string {
-	msgs := make([]string, 0, len(m))
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m HealCheckRequestMultiError) AllErrors() []error { return m }
-
-// HealCheckRequestValidationError is the validation error returned by
-// HealCheckRequest.Validate if the designated constraints aren't met.
-type HealCheckRequestValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e HealCheckRequestValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e HealCheckRequestValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e HealCheckRequestValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e HealCheckRequestValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e HealCheckRequestValidationError) ErrorName() string { return "HealCheckRequestValidationError" }
-
-// Error satisfies the builtin error interface
-func (e HealCheckRequestValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sHealCheckRequest.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = HealCheckRequestValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = HealCheckRequestValidationError{}
-
-// Validate checks the field values on HealCheckResponse with the rules defined
-// in the proto definition for this message. If any rules are violated, the
-// first error encountered is returned, or nil if there are no violations.
-func (m *HealCheckResponse) Validate() error {
-	return m.validate(false)
-}
-
-// ValidateAll checks the field values on HealCheckResponse with the rules
-// defined in the proto definition for this message. If any rules are
-// violated, the result is a list of violation errors wrapped in
-// HealCheckResponseMultiError, or nil if none found.
-func (m *HealCheckResponse) ValidateAll() error {
-	return m.validate(true)
-}
-
-func (m *HealCheckResponse) validate(all bool) error {
-	if m == nil {
-		return nil
-	}
-
-	var errors []error
-
-	if len(errors) > 0 {
-		return HealCheckResponseMultiError(errors)
-	}
-
-	return nil
-}
-
-// HealCheckResponseMultiError is an error wrapping multiple validation errors
-// returned by HealCheckResponse.ValidateAll() if the designated constraints
-// aren't met.
-type HealCheckResponseMultiError []error
-
-// Error returns a concatenation of all the error messages it wraps.
-func (m HealCheckResponseMultiError) Error() string {
-	msgs := make([]string, 0, len(m))
-	for _, err := range m {
-		msgs = append(msgs, err.Error())
-	}
-	return strings.Join(msgs, "; ")
-}
-
-// AllErrors returns a list of validation violation errors.
-func (m HealCheckResponseMultiError) AllErrors() []error { return m }
-
-// HealCheckResponseValidationError is the validation error returned by
-// HealCheckResponse.Validate if the designated constraints aren't met.
-type HealCheckResponseValidationError struct {
-	field  string
-	reason string
-	cause  error
-	key    bool
-}
-
-// Field function returns field value.
-func (e HealCheckResponseValidationError) Field() string { return e.field }
-
-// Reason function returns reason value.
-func (e HealCheckResponseValidationError) Reason() string { return e.reason }
-
-// Cause function returns cause value.
-func (e HealCheckResponseValidationError) Cause() error { return e.cause }
-
-// Key function returns key value.
-func (e HealCheckResponseValidationError) Key() bool { return e.key }
-
-// ErrorName returns error name.
-func (e HealCheckResponseValidationError) ErrorName() string {
-	return "HealCheckResponseValidationError"
-}
-
-// Error satisfies the builtin error interface
-func (e HealCheckResponseValidationError) Error() string {
-	cause := ""
-	if e.cause != nil {
-		cause = fmt.Sprintf(" | caused by: %v", e.cause)
-	}
-
-	key := ""
-	if e.key {
-		key = "key for "
-	}
-
-	return fmt.Sprintf(
-		"invalid %sHealCheckResponse.%s: %s%s",
-		key,
-		e.field,
-		e.reason,
-		cause)
-}
-
-var _ error = HealCheckResponseValidationError{}
-
-var _ interface {
-	Field() string
-	Reason() string
-	Key() bool
-	Cause() error
-	ErrorName() string
-} = HealCheckResponseValidationError{}
-
 // Validate checks the field values on SortMethod with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -1850,6 +1648,351 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = DeleteMileStoneRequestValidationError{}
+
+// Validate checks the field values on ReserveCouponRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ReserveCouponRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ReserveCouponRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ReserveCouponRequestMultiError, or nil if none found.
+func (m *ReserveCouponRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ReserveCouponRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetCode()) < 1 {
+		err := ReserveCouponRequestValidationError{
+			field:  "Code",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for BookingId
+
+	if len(errors) > 0 {
+		return ReserveCouponRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ReserveCouponRequestMultiError is an error wrapping multiple validation
+// errors returned by ReserveCouponRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ReserveCouponRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ReserveCouponRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ReserveCouponRequestMultiError) AllErrors() []error { return m }
+
+// ReserveCouponRequestValidationError is the validation error returned by
+// ReserveCouponRequest.Validate if the designated constraints aren't met.
+type ReserveCouponRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ReserveCouponRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ReserveCouponRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ReserveCouponRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ReserveCouponRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ReserveCouponRequestValidationError) ErrorName() string {
+	return "ReserveCouponRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ReserveCouponRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sReserveCouponRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ReserveCouponRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ReserveCouponRequestValidationError{}
+
+// Validate checks the field values on UnReserveCouponRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *UnReserveCouponRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on UnReserveCouponRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// UnReserveCouponRequestMultiError, or nil if none found.
+func (m *UnReserveCouponRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *UnReserveCouponRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetCode()) < 1 {
+		err := UnReserveCouponRequestValidationError{
+			field:  "Code",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for BookingId
+
+	if len(errors) > 0 {
+		return UnReserveCouponRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// UnReserveCouponRequestMultiError is an error wrapping multiple validation
+// errors returned by UnReserveCouponRequest.ValidateAll() if the designated
+// constraints aren't met.
+type UnReserveCouponRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m UnReserveCouponRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m UnReserveCouponRequestMultiError) AllErrors() []error { return m }
+
+// UnReserveCouponRequestValidationError is the validation error returned by
+// UnReserveCouponRequest.Validate if the designated constraints aren't met.
+type UnReserveCouponRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e UnReserveCouponRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e UnReserveCouponRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e UnReserveCouponRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e UnReserveCouponRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e UnReserveCouponRequestValidationError) ErrorName() string {
+	return "UnReserveCouponRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e UnReserveCouponRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sUnReserveCouponRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = UnReserveCouponRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = UnReserveCouponRequestValidationError{}
+
+// Validate checks the field values on ConfirmCouponUsageRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ConfirmCouponUsageRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ConfirmCouponUsageRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ConfirmCouponUsageRequestMultiError, or nil if none found.
+func (m *ConfirmCouponUsageRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ConfirmCouponUsageRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if utf8.RuneCountInString(m.GetCode()) < 1 {
+		err := ConfirmCouponUsageRequestValidationError{
+			field:  "Code",
+			reason: "value length must be at least 1 runes",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	// no validation rules for BookingId
+
+	if len(errors) > 0 {
+		return ConfirmCouponUsageRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ConfirmCouponUsageRequestMultiError is an error wrapping multiple validation
+// errors returned by ConfirmCouponUsageRequest.ValidateAll() if the
+// designated constraints aren't met.
+type ConfirmCouponUsageRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ConfirmCouponUsageRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ConfirmCouponUsageRequestMultiError) AllErrors() []error { return m }
+
+// ConfirmCouponUsageRequestValidationError is the validation error returned by
+// ConfirmCouponUsageRequest.Validate if the designated constraints aren't met.
+type ConfirmCouponUsageRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ConfirmCouponUsageRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ConfirmCouponUsageRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ConfirmCouponUsageRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ConfirmCouponUsageRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ConfirmCouponUsageRequestValidationError) ErrorName() string {
+	return "ConfirmCouponUsageRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ConfirmCouponUsageRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sConfirmCouponUsageRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ConfirmCouponUsageRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ConfirmCouponUsageRequestValidationError{}
 
 // Validate checks the field values on CreateMileStoneRequest_MilestoneReward
 // with the rules defined in the proto definition for this message. If any

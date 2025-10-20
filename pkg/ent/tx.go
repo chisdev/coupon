@@ -14,6 +14,8 @@ type Tx struct {
 	config
 	// Coupon is the client for interacting with the Coupon builders.
 	Coupon *CouponClient
+	// CouponBooking is the client for interacting with the CouponBooking builders.
+	CouponBooking *CouponBookingClient
 	// Currency is the client for interacting with the Currency builders.
 	Currency *CurrencyClient
 	// Milestone is the client for interacting with the Milestone builders.
@@ -154,6 +156,7 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.Coupon = NewCouponClient(tx.config)
+	tx.CouponBooking = NewCouponBookingClient(tx.config)
 	tx.Currency = NewCurrencyClient(tx.config)
 	tx.Milestone = NewMilestoneClient(tx.config)
 	tx.Progress = NewProgressClient(tx.config)

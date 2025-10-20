@@ -36,14 +36,12 @@ const (
 	FieldCurrencyID = "currency_id"
 	// FieldUsageLimit holds the string denoting the usage_limit field in the database.
 	FieldUsageLimit = "usage_limit"
-	// FieldUsedCount holds the string denoting the used_count field in the database.
-	FieldUsedCount = "used_count"
 	// FieldStatus holds the string denoting the status field in the database.
 	FieldStatus = "status"
-	// FieldReservedCount holds the string denoting the reserved_count field in the database.
-	FieldReservedCount = "reserved_count"
 	// EdgeCurrency holds the string denoting the currency edge name in mutations.
 	EdgeCurrency = "currency"
+	// EdgeCouponBookings holds the string denoting the coupon_bookings edge name in mutations.
+	EdgeCouponBookings = "coupon_bookings"
 	// Table holds the table name of the coupon in the database.
 	Table = "coupons"
 	// CurrencyTable is the table that holds the currency relation/edge.
@@ -53,6 +51,13 @@ const (
 	CurrencyInverseTable = "currencies"
 	// CurrencyColumn is the table column denoting the currency relation/edge.
 	CurrencyColumn = "currency_id"
+	// CouponBookingsTable is the table that holds the coupon_bookings relation/edge.
+	CouponBookingsTable = "coupon_bookings"
+	// CouponBookingsInverseTable is the table name for the CouponBooking entity.
+	// It exists in this package in order to avoid circular dependency with the "couponbooking" package.
+	CouponBookingsInverseTable = "coupon_bookings"
+	// CouponBookingsColumn is the table column denoting the coupon_bookings relation/edge.
+	CouponBookingsColumn = "coupon_id"
 )
 
 // Columns holds all SQL columns for coupon fields.
@@ -69,9 +74,7 @@ var Columns = []string{
 	FieldType,
 	FieldCurrencyID,
 	FieldUsageLimit,
-	FieldUsedCount,
 	FieldStatus,
-	FieldReservedCount,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -99,10 +102,6 @@ var (
 	DefaultServiceIds []uint64
 	// DefaultUsageLimit holds the default value on creation for the "usage_limit" field.
 	DefaultUsageLimit int32
-	// DefaultUsedCount holds the default value on creation for the "used_count" field.
-	DefaultUsedCount int32
-	// DefaultReservedCount holds the default value on creation for the "reserved_count" field.
-	DefaultReservedCount int32
 )
 
 // OrderOption defines the ordering options for the Coupon queries.
@@ -163,19 +162,9 @@ func ByUsageLimit(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldUsageLimit, opts...).ToFunc()
 }
 
-// ByUsedCount orders the results by the used_count field.
-func ByUsedCount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUsedCount, opts...).ToFunc()
-}
-
 // ByStatus orders the results by the status field.
 func ByStatus(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldStatus, opts...).ToFunc()
-}
-
-// ByReservedCount orders the results by the reserved_count field.
-func ByReservedCount(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldReservedCount, opts...).ToFunc()
 }
 
 // ByCurrencyField orders the results by currency field.
@@ -184,10 +173,31 @@ func ByCurrencyField(field string, opts ...sql.OrderTermOption) OrderOption {
 		sqlgraph.OrderByNeighborTerms(s, newCurrencyStep(), sql.OrderByField(field, opts...))
 	}
 }
+
+// ByCouponBookingsCount orders the results by coupon_bookings count.
+func ByCouponBookingsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newCouponBookingsStep(), opts...)
+	}
+}
+
+// ByCouponBookings orders the results by coupon_bookings terms.
+func ByCouponBookings(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCouponBookingsStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
 func newCurrencyStep() *sqlgraph.Step {
 	return sqlgraph.NewStep(
 		sqlgraph.From(Table, FieldID),
 		sqlgraph.To(CurrencyInverseTable, FieldID),
 		sqlgraph.Edge(sqlgraph.M2O, true, CurrencyTable, CurrencyColumn),
+	)
+}
+func newCouponBookingsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(CouponBookingsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, CouponBookingsTable, CouponBookingsColumn),
 	)
 }

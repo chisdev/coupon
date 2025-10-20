@@ -10,19 +10,21 @@ import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
 
 service Coupon {
-    rpc HealCheck (HealCheckRequest) returns (HealCheckResponse) { option (google.api.http) = {
-      get: "/coupon/healcheck"
+    rpc ReserveCoupon (ReserveCouponRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/coupon/reserve"
+            body: "*"
         };
-    }
-    // rpc ReserveCoupon (ReserveCouponRequest) returns (ReserveCouponResponse);
-    // rpc UnReserveCoupon (UnReserveCouponRequest) returns (UnReserveCouponResponse);
-    // rpc UseCoupon (UseCouponRequest) returns (UseCouponResponse);
-
+    };
+    rpc UnReserveCoupon (UnReserveCouponRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/coupon/unreserve"
+            body: "*"
+        };
+    };
 }
 
-message HealCheckRequest {}
-message HealCheckResponse {
-}
+
 
 service CouponCms {
     // Milestone API
@@ -38,8 +40,7 @@ service CouponCms {
         get: "/couponcms/milestone"
       };
     }
-    // rpc UpdateMileStone (UpdateMileStoneRequest) returns (UpdateMileStoneResponse);
-    // rpc ListMileStone   (ListMileStoneRequest) returns (ListMileStoneResponse);
+ 
     rpc DeleteMileStone (DeleteMileStoneRequest) returns (google.protobuf.Empty)
     {
          option (google.api.http) = {
@@ -48,12 +49,29 @@ service CouponCms {
         };
     };
 
+    rpc ConfirmCouponUsage (ConfirmCouponUsageRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/couponcms/confirm-usage"
+            body: "*"
+        };
+    };
+
+
+
+    // rpc UpdateMileStone (UpdateMileStoneRequest) returns (UpdateMileStoneResponse);
+
     // Coupon API
     // rpc CreateCoupon (CreateCouponRequest) returns (CreateCouponResponse);
     // rpc ListCoupon (ListCouponRequest) returns (ListCouponResponse);
     // rpc DelteCoupon (DelteCouponRequest) returns (DelteCouponResponse);
     // rpc UpdateCoupon (UpdateCouponRequest) returns (UpdateCouponResponse);
 
+}
+
+enum CouponUsedStatus {
+    COUPON_USED_STATUS_UNKNOWN = 0;
+    COUPON_USED_STATUS_RESERVED = 1;
+    COUPON_USED_STATUS_USED = 2;
 }
 
 enum SortType {
@@ -70,10 +88,10 @@ enum CouponType {
 
 enum CouponStatus {
     COUPON_STATUS_UNKNOWN = 0;
-    COUPON_STATUS_USED = 1;
-    COUPON_STATUS_RESERVED  = 2;
-    COUPON_STATUS_ACTIVE  = 3;
-    COUPON_STATUS_EXPIRED  = 4;
+    COUPON_STATUS_ACTIVE  = 1;
+    COUPON_STATUS_USED  = 2;
+    COUPON_STATUS_EXPIRED  = 3;
+    COUPON_STATUS_DISABLED  = 4;
 }
 
 enum MilestoneType {
@@ -175,4 +193,20 @@ message ListMileStoneResponse {
 
 message DeleteMileStoneRequest {
     repeated uint64 ids = 1;
+}
+
+message ReserveCouponRequest {
+    string code = 1 [(validate.rules).string = {min_len: 1}];
+    uint64 booking_id = 2;
+    repeated uint64 service_ids = 3;    
+}
+
+message UnReserveCouponRequest {
+    string code = 1 [(validate.rules).string = {min_len: 1}];
+    uint64 booking_id = 2;
+}
+
+message ConfirmCouponUsageRequest {
+    string code = 1 [(validate.rules).string = {min_len: 1}];
+    uint64 booking_id = 2;
 }

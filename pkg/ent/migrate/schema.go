@@ -21,9 +21,7 @@ var (
 		{Name: "service_ids", Type: field.TypeJSON},
 		{Name: "type", Type: field.TypeInt32},
 		{Name: "usage_limit", Type: field.TypeInt32, Default: 1},
-		{Name: "used_count", Type: field.TypeInt32, Default: 0},
 		{Name: "status", Type: field.TypeInt32},
-		{Name: "reserved_count", Type: field.TypeInt32, Default: 0},
 		{Name: "currency_id", Type: field.TypeUint64, Nullable: true},
 	}
 	// CouponsTable holds the schema information for the "coupons" table.
@@ -34,9 +32,32 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "coupons_currencies_coupons",
-				Columns:    []*schema.Column{CouponsColumns[14]},
+				Columns:    []*schema.Column{CouponsColumns[12]},
 				RefColumns: []*schema.Column{CurrenciesColumns[0]},
 				OnDelete:   schema.SetNull,
+			},
+		},
+	}
+	// CouponBookingsColumns holds the columns for the "coupon_bookings" table.
+	CouponBookingsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeUint64, Increment: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "booking_id", Type: field.TypeUint64},
+		{Name: "status", Type: field.TypeInt32},
+		{Name: "coupon_id", Type: field.TypeUint64},
+	}
+	// CouponBookingsTable holds the schema information for the "coupon_bookings" table.
+	CouponBookingsTable = &schema.Table{
+		Name:       "coupon_bookings",
+		Columns:    CouponBookingsColumns,
+		PrimaryKey: []*schema.Column{CouponBookingsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "coupon_bookings_coupons_coupon_bookings",
+				Columns:    []*schema.Column{CouponBookingsColumns[5]},
+				RefColumns: []*schema.Column{CouponsColumns[0]},
+				OnDelete:   schema.Cascade,
 			},
 		},
 	}
@@ -131,6 +152,7 @@ var (
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		CouponsTable,
+		CouponBookingsTable,
 		CurrenciesTable,
 		MilestonesTable,
 		ProgressesTable,
@@ -140,6 +162,7 @@ var (
 
 func init() {
 	CouponsTable.ForeignKeys[0].RefTable = CurrenciesTable
+	CouponBookingsTable.ForeignKeys[0].RefTable = CouponsTable
 	ProgressesTable.ForeignKeys[0].RefTable = MilestonesTable
 	RewardsTable.ForeignKeys[0].RefTable = CurrenciesTable
 	RewardsTable.ForeignKeys[1].RefTable = MilestonesTable

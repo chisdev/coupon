@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/schema/field"
 	coupon "github.com/chisdev/coupon/api"
 	entcoupon "github.com/chisdev/coupon/pkg/ent/coupon"
+	"github.com/chisdev/coupon/pkg/ent/couponbooking"
 	"github.com/chisdev/coupon/pkg/ent/currency"
 )
 
@@ -146,37 +147,9 @@ func (_c *CouponCreate) SetNillableUsageLimit(v *int32) *CouponCreate {
 	return _c
 }
 
-// SetUsedCount sets the "used_count" field.
-func (_c *CouponCreate) SetUsedCount(v int32) *CouponCreate {
-	_c.mutation.SetUsedCount(v)
-	return _c
-}
-
-// SetNillableUsedCount sets the "used_count" field if the given value is not nil.
-func (_c *CouponCreate) SetNillableUsedCount(v *int32) *CouponCreate {
-	if v != nil {
-		_c.SetUsedCount(*v)
-	}
-	return _c
-}
-
 // SetStatus sets the "status" field.
 func (_c *CouponCreate) SetStatus(v coupon.CouponStatus) *CouponCreate {
 	_c.mutation.SetStatus(v)
-	return _c
-}
-
-// SetReservedCount sets the "reserved_count" field.
-func (_c *CouponCreate) SetReservedCount(v int32) *CouponCreate {
-	_c.mutation.SetReservedCount(v)
-	return _c
-}
-
-// SetNillableReservedCount sets the "reserved_count" field if the given value is not nil.
-func (_c *CouponCreate) SetNillableReservedCount(v *int32) *CouponCreate {
-	if v != nil {
-		_c.SetReservedCount(*v)
-	}
 	return _c
 }
 
@@ -189,6 +162,21 @@ func (_c *CouponCreate) SetID(v uint64) *CouponCreate {
 // SetCurrency sets the "currency" edge to the Currency entity.
 func (_c *CouponCreate) SetCurrency(v *Currency) *CouponCreate {
 	return _c.SetCurrencyID(v.ID)
+}
+
+// AddCouponBookingIDs adds the "coupon_bookings" edge to the CouponBooking entity by IDs.
+func (_c *CouponCreate) AddCouponBookingIDs(ids ...uint64) *CouponCreate {
+	_c.mutation.AddCouponBookingIDs(ids...)
+	return _c
+}
+
+// AddCouponBookings adds the "coupon_bookings" edges to the CouponBooking entity.
+func (_c *CouponCreate) AddCouponBookings(v ...*CouponBooking) *CouponCreate {
+	ids := make([]uint64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _c.AddCouponBookingIDs(ids...)
 }
 
 // Mutation returns the CouponMutation object of the builder.
@@ -246,14 +234,6 @@ func (_c *CouponCreate) defaults() {
 		v := entcoupon.DefaultUsageLimit
 		_c.mutation.SetUsageLimit(v)
 	}
-	if _, ok := _c.mutation.UsedCount(); !ok {
-		v := entcoupon.DefaultUsedCount
-		_c.mutation.SetUsedCount(v)
-	}
-	if _, ok := _c.mutation.ReservedCount(); !ok {
-		v := entcoupon.DefaultReservedCount
-		_c.mutation.SetReservedCount(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -287,14 +267,8 @@ func (_c *CouponCreate) check() error {
 	if _, ok := _c.mutation.UsageLimit(); !ok {
 		return &ValidationError{Name: "usage_limit", err: errors.New(`ent: missing required field "Coupon.usage_limit"`)}
 	}
-	if _, ok := _c.mutation.UsedCount(); !ok {
-		return &ValidationError{Name: "used_count", err: errors.New(`ent: missing required field "Coupon.used_count"`)}
-	}
 	if _, ok := _c.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Coupon.status"`)}
-	}
-	if _, ok := _c.mutation.ReservedCount(); !ok {
-		return &ValidationError{Name: "reserved_count", err: errors.New(`ent: missing required field "Coupon.reserved_count"`)}
 	}
 	return nil
 }
@@ -369,17 +343,9 @@ func (_c *CouponCreate) createSpec() (*Coupon, *sqlgraph.CreateSpec) {
 		_spec.SetField(entcoupon.FieldUsageLimit, field.TypeInt32, value)
 		_node.UsageLimit = value
 	}
-	if value, ok := _c.mutation.UsedCount(); ok {
-		_spec.SetField(entcoupon.FieldUsedCount, field.TypeInt32, value)
-		_node.UsedCount = value
-	}
 	if value, ok := _c.mutation.Status(); ok {
 		_spec.SetField(entcoupon.FieldStatus, field.TypeInt32, value)
 		_node.Status = value
-	}
-	if value, ok := _c.mutation.ReservedCount(); ok {
-		_spec.SetField(entcoupon.FieldReservedCount, field.TypeInt32, value)
-		_node.ReservedCount = value
 	}
 	if nodes := _c.mutation.CurrencyIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -396,6 +362,22 @@ func (_c *CouponCreate) createSpec() (*Coupon, *sqlgraph.CreateSpec) {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
 		_node.CurrencyID = nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := _c.mutation.CouponBookingsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcoupon.CouponBookingsTable,
+			Columns: []string{entcoupon.CouponBookingsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(couponbooking.FieldID, field.TypeUint64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
@@ -606,24 +588,6 @@ func (u *CouponUpsert) AddUsageLimit(v int32) *CouponUpsert {
 	return u
 }
 
-// SetUsedCount sets the "used_count" field.
-func (u *CouponUpsert) SetUsedCount(v int32) *CouponUpsert {
-	u.Set(entcoupon.FieldUsedCount, v)
-	return u
-}
-
-// UpdateUsedCount sets the "used_count" field to the value that was provided on create.
-func (u *CouponUpsert) UpdateUsedCount() *CouponUpsert {
-	u.SetExcluded(entcoupon.FieldUsedCount)
-	return u
-}
-
-// AddUsedCount adds v to the "used_count" field.
-func (u *CouponUpsert) AddUsedCount(v int32) *CouponUpsert {
-	u.Add(entcoupon.FieldUsedCount, v)
-	return u
-}
-
 // SetStatus sets the "status" field.
 func (u *CouponUpsert) SetStatus(v coupon.CouponStatus) *CouponUpsert {
 	u.Set(entcoupon.FieldStatus, v)
@@ -639,24 +603,6 @@ func (u *CouponUpsert) UpdateStatus() *CouponUpsert {
 // AddStatus adds v to the "status" field.
 func (u *CouponUpsert) AddStatus(v coupon.CouponStatus) *CouponUpsert {
 	u.Add(entcoupon.FieldStatus, v)
-	return u
-}
-
-// SetReservedCount sets the "reserved_count" field.
-func (u *CouponUpsert) SetReservedCount(v int32) *CouponUpsert {
-	u.Set(entcoupon.FieldReservedCount, v)
-	return u
-}
-
-// UpdateReservedCount sets the "reserved_count" field to the value that was provided on create.
-func (u *CouponUpsert) UpdateReservedCount() *CouponUpsert {
-	u.SetExcluded(entcoupon.FieldReservedCount)
-	return u
-}
-
-// AddReservedCount adds v to the "reserved_count" field.
-func (u *CouponUpsert) AddReservedCount(v int32) *CouponUpsert {
-	u.Add(entcoupon.FieldReservedCount, v)
 	return u
 }
 
@@ -893,27 +839,6 @@ func (u *CouponUpsertOne) UpdateUsageLimit() *CouponUpsertOne {
 	})
 }
 
-// SetUsedCount sets the "used_count" field.
-func (u *CouponUpsertOne) SetUsedCount(v int32) *CouponUpsertOne {
-	return u.Update(func(s *CouponUpsert) {
-		s.SetUsedCount(v)
-	})
-}
-
-// AddUsedCount adds v to the "used_count" field.
-func (u *CouponUpsertOne) AddUsedCount(v int32) *CouponUpsertOne {
-	return u.Update(func(s *CouponUpsert) {
-		s.AddUsedCount(v)
-	})
-}
-
-// UpdateUsedCount sets the "used_count" field to the value that was provided on create.
-func (u *CouponUpsertOne) UpdateUsedCount() *CouponUpsertOne {
-	return u.Update(func(s *CouponUpsert) {
-		s.UpdateUsedCount()
-	})
-}
-
 // SetStatus sets the "status" field.
 func (u *CouponUpsertOne) SetStatus(v coupon.CouponStatus) *CouponUpsertOne {
 	return u.Update(func(s *CouponUpsert) {
@@ -932,27 +857,6 @@ func (u *CouponUpsertOne) AddStatus(v coupon.CouponStatus) *CouponUpsertOne {
 func (u *CouponUpsertOne) UpdateStatus() *CouponUpsertOne {
 	return u.Update(func(s *CouponUpsert) {
 		s.UpdateStatus()
-	})
-}
-
-// SetReservedCount sets the "reserved_count" field.
-func (u *CouponUpsertOne) SetReservedCount(v int32) *CouponUpsertOne {
-	return u.Update(func(s *CouponUpsert) {
-		s.SetReservedCount(v)
-	})
-}
-
-// AddReservedCount adds v to the "reserved_count" field.
-func (u *CouponUpsertOne) AddReservedCount(v int32) *CouponUpsertOne {
-	return u.Update(func(s *CouponUpsert) {
-		s.AddReservedCount(v)
-	})
-}
-
-// UpdateReservedCount sets the "reserved_count" field to the value that was provided on create.
-func (u *CouponUpsertOne) UpdateReservedCount() *CouponUpsertOne {
-	return u.Update(func(s *CouponUpsert) {
-		s.UpdateReservedCount()
 	})
 }
 
@@ -1355,27 +1259,6 @@ func (u *CouponUpsertBulk) UpdateUsageLimit() *CouponUpsertBulk {
 	})
 }
 
-// SetUsedCount sets the "used_count" field.
-func (u *CouponUpsertBulk) SetUsedCount(v int32) *CouponUpsertBulk {
-	return u.Update(func(s *CouponUpsert) {
-		s.SetUsedCount(v)
-	})
-}
-
-// AddUsedCount adds v to the "used_count" field.
-func (u *CouponUpsertBulk) AddUsedCount(v int32) *CouponUpsertBulk {
-	return u.Update(func(s *CouponUpsert) {
-		s.AddUsedCount(v)
-	})
-}
-
-// UpdateUsedCount sets the "used_count" field to the value that was provided on create.
-func (u *CouponUpsertBulk) UpdateUsedCount() *CouponUpsertBulk {
-	return u.Update(func(s *CouponUpsert) {
-		s.UpdateUsedCount()
-	})
-}
-
 // SetStatus sets the "status" field.
 func (u *CouponUpsertBulk) SetStatus(v coupon.CouponStatus) *CouponUpsertBulk {
 	return u.Update(func(s *CouponUpsert) {
@@ -1394,27 +1277,6 @@ func (u *CouponUpsertBulk) AddStatus(v coupon.CouponStatus) *CouponUpsertBulk {
 func (u *CouponUpsertBulk) UpdateStatus() *CouponUpsertBulk {
 	return u.Update(func(s *CouponUpsert) {
 		s.UpdateStatus()
-	})
-}
-
-// SetReservedCount sets the "reserved_count" field.
-func (u *CouponUpsertBulk) SetReservedCount(v int32) *CouponUpsertBulk {
-	return u.Update(func(s *CouponUpsert) {
-		s.SetReservedCount(v)
-	})
-}
-
-// AddReservedCount adds v to the "reserved_count" field.
-func (u *CouponUpsertBulk) AddReservedCount(v int32) *CouponUpsertBulk {
-	return u.Update(func(s *CouponUpsert) {
-		s.AddReservedCount(v)
-	})
-}
-
-// UpdateReservedCount sets the "reserved_count" field to the value that was provided on create.
-func (u *CouponUpsertBulk) UpdateReservedCount() *CouponUpsertBulk {
-	return u.Update(func(s *CouponUpsert) {
-		s.UpdateReservedCount()
 	})
 }
 

@@ -16,6 +16,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	entcoupon "github.com/chisdev/coupon/pkg/ent/coupon"
+	"github.com/chisdev/coupon/pkg/ent/couponbooking"
 	"github.com/chisdev/coupon/pkg/ent/currency"
 	"github.com/chisdev/coupon/pkg/ent/milestone"
 	"github.com/chisdev/coupon/pkg/ent/progress"
@@ -29,6 +30,8 @@ type Client struct {
 	Schema *migrate.Schema
 	// Coupon is the client for interacting with the Coupon builders.
 	Coupon *CouponClient
+	// CouponBooking is the client for interacting with the CouponBooking builders.
+	CouponBooking *CouponBookingClient
 	// Currency is the client for interacting with the Currency builders.
 	Currency *CurrencyClient
 	// Milestone is the client for interacting with the Milestone builders.
@@ -49,6 +52,7 @@ func NewClient(opts ...Option) *Client {
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.Coupon = NewCouponClient(c.config)
+	c.CouponBooking = NewCouponBookingClient(c.config)
 	c.Currency = NewCurrencyClient(c.config)
 	c.Milestone = NewMilestoneClient(c.config)
 	c.Progress = NewProgressClient(c.config)
@@ -143,13 +147,14 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:       ctx,
-		config:    cfg,
-		Coupon:    NewCouponClient(cfg),
-		Currency:  NewCurrencyClient(cfg),
-		Milestone: NewMilestoneClient(cfg),
-		Progress:  NewProgressClient(cfg),
-		Reward:    NewRewardClient(cfg),
+		ctx:           ctx,
+		config:        cfg,
+		Coupon:        NewCouponClient(cfg),
+		CouponBooking: NewCouponBookingClient(cfg),
+		Currency:      NewCurrencyClient(cfg),
+		Milestone:     NewMilestoneClient(cfg),
+		Progress:      NewProgressClient(cfg),
+		Reward:        NewRewardClient(cfg),
 	}, nil
 }
 
@@ -167,13 +172,14 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:       ctx,
-		config:    cfg,
-		Coupon:    NewCouponClient(cfg),
-		Currency:  NewCurrencyClient(cfg),
-		Milestone: NewMilestoneClient(cfg),
-		Progress:  NewProgressClient(cfg),
-		Reward:    NewRewardClient(cfg),
+		ctx:           ctx,
+		config:        cfg,
+		Coupon:        NewCouponClient(cfg),
+		CouponBooking: NewCouponBookingClient(cfg),
+		Currency:      NewCurrencyClient(cfg),
+		Milestone:     NewMilestoneClient(cfg),
+		Progress:      NewProgressClient(cfg),
+		Reward:        NewRewardClient(cfg),
 	}, nil
 }
 
@@ -202,21 +208,21 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
-	c.Coupon.Use(hooks...)
-	c.Currency.Use(hooks...)
-	c.Milestone.Use(hooks...)
-	c.Progress.Use(hooks...)
-	c.Reward.Use(hooks...)
+	for _, n := range []interface{ Use(...Hook) }{
+		c.Coupon, c.CouponBooking, c.Currency, c.Milestone, c.Progress, c.Reward,
+	} {
+		n.Use(hooks...)
+	}
 }
 
 // Intercept adds the query interceptors to all the entity clients.
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
-	c.Coupon.Intercept(interceptors...)
-	c.Currency.Intercept(interceptors...)
-	c.Milestone.Intercept(interceptors...)
-	c.Progress.Intercept(interceptors...)
-	c.Reward.Intercept(interceptors...)
+	for _, n := range []interface{ Intercept(...Interceptor) }{
+		c.Coupon, c.CouponBooking, c.Currency, c.Milestone, c.Progress, c.Reward,
+	} {
+		n.Intercept(interceptors...)
+	}
 }
 
 // Mutate implements the ent.Mutator interface.
@@ -224,6 +230,8 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
 	case *CouponMutation:
 		return c.Coupon.mutate(ctx, m)
+	case *CouponBookingMutation:
+		return c.CouponBooking.mutate(ctx, m)
 	case *CurrencyMutation:
 		return c.Currency.mutate(ctx, m)
 	case *MilestoneMutation:
@@ -361,6 +369,22 @@ func (c *CouponClient) QueryCurrency(_m *Coupon) *CurrencyQuery {
 	return query
 }
 
+// QueryCouponBookings queries the coupon_bookings edge of a Coupon.
+func (c *CouponClient) QueryCouponBookings(_m *Coupon) *CouponBookingQuery {
+	query := (&CouponBookingClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entcoupon.Table, entcoupon.FieldID, id),
+			sqlgraph.To(couponbooking.Table, couponbooking.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, entcoupon.CouponBookingsTable, entcoupon.CouponBookingsColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *CouponClient) Hooks() []Hook {
 	return c.hooks.Coupon
@@ -383,6 +407,155 @@ func (c *CouponClient) mutate(ctx context.Context, m *CouponMutation) (Value, er
 		return (&CouponDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("ent: unknown Coupon mutation op: %q", m.Op())
+	}
+}
+
+// CouponBookingClient is a client for the CouponBooking schema.
+type CouponBookingClient struct {
+	config
+}
+
+// NewCouponBookingClient returns a client for the CouponBooking from the given config.
+func NewCouponBookingClient(c config) *CouponBookingClient {
+	return &CouponBookingClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `couponbooking.Hooks(f(g(h())))`.
+func (c *CouponBookingClient) Use(hooks ...Hook) {
+	c.hooks.CouponBooking = append(c.hooks.CouponBooking, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `couponbooking.Intercept(f(g(h())))`.
+func (c *CouponBookingClient) Intercept(interceptors ...Interceptor) {
+	c.inters.CouponBooking = append(c.inters.CouponBooking, interceptors...)
+}
+
+// Create returns a builder for creating a CouponBooking entity.
+func (c *CouponBookingClient) Create() *CouponBookingCreate {
+	mutation := newCouponBookingMutation(c.config, OpCreate)
+	return &CouponBookingCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of CouponBooking entities.
+func (c *CouponBookingClient) CreateBulk(builders ...*CouponBookingCreate) *CouponBookingCreateBulk {
+	return &CouponBookingCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *CouponBookingClient) MapCreateBulk(slice any, setFunc func(*CouponBookingCreate, int)) *CouponBookingCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &CouponBookingCreateBulk{err: fmt.Errorf("calling to CouponBookingClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*CouponBookingCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &CouponBookingCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for CouponBooking.
+func (c *CouponBookingClient) Update() *CouponBookingUpdate {
+	mutation := newCouponBookingMutation(c.config, OpUpdate)
+	return &CouponBookingUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *CouponBookingClient) UpdateOne(_m *CouponBooking) *CouponBookingUpdateOne {
+	mutation := newCouponBookingMutation(c.config, OpUpdateOne, withCouponBooking(_m))
+	return &CouponBookingUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *CouponBookingClient) UpdateOneID(id uint64) *CouponBookingUpdateOne {
+	mutation := newCouponBookingMutation(c.config, OpUpdateOne, withCouponBookingID(id))
+	return &CouponBookingUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for CouponBooking.
+func (c *CouponBookingClient) Delete() *CouponBookingDelete {
+	mutation := newCouponBookingMutation(c.config, OpDelete)
+	return &CouponBookingDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *CouponBookingClient) DeleteOne(_m *CouponBooking) *CouponBookingDeleteOne {
+	return c.DeleteOneID(_m.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *CouponBookingClient) DeleteOneID(id uint64) *CouponBookingDeleteOne {
+	builder := c.Delete().Where(couponbooking.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &CouponBookingDeleteOne{builder}
+}
+
+// Query returns a query builder for CouponBooking.
+func (c *CouponBookingClient) Query() *CouponBookingQuery {
+	return &CouponBookingQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeCouponBooking},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a CouponBooking entity by its id.
+func (c *CouponBookingClient) Get(ctx context.Context, id uint64) (*CouponBooking, error) {
+	return c.Query().Where(couponbooking.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *CouponBookingClient) GetX(ctx context.Context, id uint64) *CouponBooking {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// QueryCoupon queries the coupon edge of a CouponBooking.
+func (c *CouponBookingClient) QueryCoupon(_m *CouponBooking) *CouponQuery {
+	query := (&CouponClient{config: c.config}).Query()
+	query.path = func(context.Context) (fromV *sql.Selector, _ error) {
+		id := _m.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(couponbooking.Table, couponbooking.FieldID, id),
+			sqlgraph.To(entcoupon.Table, entcoupon.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, couponbooking.CouponTable, couponbooking.CouponColumn),
+		)
+		fromV = sqlgraph.Neighbors(_m.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// Hooks returns the client hooks.
+func (c *CouponBookingClient) Hooks() []Hook {
+	return c.hooks.CouponBooking
+}
+
+// Interceptors returns the client interceptors.
+func (c *CouponBookingClient) Interceptors() []Interceptor {
+	return c.inters.CouponBooking
+}
+
+func (c *CouponBookingClient) mutate(ctx context.Context, m *CouponBookingMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&CouponBookingCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&CouponBookingUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&CouponBookingUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&CouponBookingDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent: unknown CouponBooking mutation op: %q", m.Op())
 	}
 }
 
@@ -1033,9 +1206,9 @@ func (c *RewardClient) mutate(ctx context.Context, m *RewardMutation) (Value, er
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Coupon, Currency, Milestone, Progress, Reward []ent.Hook
+		Coupon, CouponBooking, Currency, Milestone, Progress, Reward []ent.Hook
 	}
 	inters struct {
-		Coupon, Currency, Milestone, Progress, Reward []ent.Interceptor
+		Coupon, CouponBooking, Currency, Milestone, Progress, Reward []ent.Interceptor
 	}
 )

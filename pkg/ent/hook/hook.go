@@ -21,6 +21,18 @@ func (f CouponFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, erro
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CouponMutation", m)
 }
 
+// The CouponBookingFunc type is an adapter to allow the use of ordinary
+// function as CouponBooking mutator.
+type CouponBookingFunc func(context.Context, *ent.CouponBookingMutation) (ent.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f CouponBookingFunc) Mutate(ctx context.Context, m ent.Mutation) (ent.Value, error) {
+	if mv, ok := m.(*ent.CouponBookingMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent.CouponBookingMutation", m)
+}
+
 // The CurrencyFunc type is an adapter to allow the use of ordinary
 // function as Currency mutator.
 type CurrencyFunc func(context.Context, *ent.CurrencyMutation) (ent.Value, error)

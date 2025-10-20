@@ -14,6 +14,7 @@ import (
 	"entgo.io/ent/schema/field"
 	coupon "github.com/chisdev/coupon/api"
 	entcoupon "github.com/chisdev/coupon/pkg/ent/coupon"
+	"github.com/chisdev/coupon/pkg/ent/couponbooking"
 	"github.com/chisdev/coupon/pkg/ent/currency"
 	"github.com/chisdev/coupon/pkg/ent/predicate"
 )
@@ -201,27 +202,6 @@ func (_u *CouponUpdate) AddUsageLimit(v int32) *CouponUpdate {
 	return _u
 }
 
-// SetUsedCount sets the "used_count" field.
-func (_u *CouponUpdate) SetUsedCount(v int32) *CouponUpdate {
-	_u.mutation.ResetUsedCount()
-	_u.mutation.SetUsedCount(v)
-	return _u
-}
-
-// SetNillableUsedCount sets the "used_count" field if the given value is not nil.
-func (_u *CouponUpdate) SetNillableUsedCount(v *int32) *CouponUpdate {
-	if v != nil {
-		_u.SetUsedCount(*v)
-	}
-	return _u
-}
-
-// AddUsedCount adds value to the "used_count" field.
-func (_u *CouponUpdate) AddUsedCount(v int32) *CouponUpdate {
-	_u.mutation.AddUsedCount(v)
-	return _u
-}
-
 // SetStatus sets the "status" field.
 func (_u *CouponUpdate) SetStatus(v coupon.CouponStatus) *CouponUpdate {
 	_u.mutation.ResetStatus()
@@ -243,30 +223,24 @@ func (_u *CouponUpdate) AddStatus(v coupon.CouponStatus) *CouponUpdate {
 	return _u
 }
 
-// SetReservedCount sets the "reserved_count" field.
-func (_u *CouponUpdate) SetReservedCount(v int32) *CouponUpdate {
-	_u.mutation.ResetReservedCount()
-	_u.mutation.SetReservedCount(v)
-	return _u
-}
-
-// SetNillableReservedCount sets the "reserved_count" field if the given value is not nil.
-func (_u *CouponUpdate) SetNillableReservedCount(v *int32) *CouponUpdate {
-	if v != nil {
-		_u.SetReservedCount(*v)
-	}
-	return _u
-}
-
-// AddReservedCount adds value to the "reserved_count" field.
-func (_u *CouponUpdate) AddReservedCount(v int32) *CouponUpdate {
-	_u.mutation.AddReservedCount(v)
-	return _u
-}
-
 // SetCurrency sets the "currency" edge to the Currency entity.
 func (_u *CouponUpdate) SetCurrency(v *Currency) *CouponUpdate {
 	return _u.SetCurrencyID(v.ID)
+}
+
+// AddCouponBookingIDs adds the "coupon_bookings" edge to the CouponBooking entity by IDs.
+func (_u *CouponUpdate) AddCouponBookingIDs(ids ...uint64) *CouponUpdate {
+	_u.mutation.AddCouponBookingIDs(ids...)
+	return _u
+}
+
+// AddCouponBookings adds the "coupon_bookings" edges to the CouponBooking entity.
+func (_u *CouponUpdate) AddCouponBookings(v ...*CouponBooking) *CouponUpdate {
+	ids := make([]uint64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _u.AddCouponBookingIDs(ids...)
 }
 
 // Mutation returns the CouponMutation object of the builder.
@@ -278,6 +252,27 @@ func (_u *CouponUpdate) Mutation() *CouponMutation {
 func (_u *CouponUpdate) ClearCurrency() *CouponUpdate {
 	_u.mutation.ClearCurrency()
 	return _u
+}
+
+// ClearCouponBookings clears all "coupon_bookings" edges to the CouponBooking entity.
+func (_u *CouponUpdate) ClearCouponBookings() *CouponUpdate {
+	_u.mutation.ClearCouponBookings()
+	return _u
+}
+
+// RemoveCouponBookingIDs removes the "coupon_bookings" edge to CouponBooking entities by IDs.
+func (_u *CouponUpdate) RemoveCouponBookingIDs(ids ...uint64) *CouponUpdate {
+	_u.mutation.RemoveCouponBookingIDs(ids...)
+	return _u
+}
+
+// RemoveCouponBookings removes "coupon_bookings" edges to CouponBooking entities.
+func (_u *CouponUpdate) RemoveCouponBookings(v ...*CouponBooking) *CouponUpdate {
+	ids := make([]uint64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _u.RemoveCouponBookingIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -391,23 +386,11 @@ func (_u *CouponUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	if value, ok := _u.mutation.AddedUsageLimit(); ok {
 		_spec.AddField(entcoupon.FieldUsageLimit, field.TypeInt32, value)
 	}
-	if value, ok := _u.mutation.UsedCount(); ok {
-		_spec.SetField(entcoupon.FieldUsedCount, field.TypeInt32, value)
-	}
-	if value, ok := _u.mutation.AddedUsedCount(); ok {
-		_spec.AddField(entcoupon.FieldUsedCount, field.TypeInt32, value)
-	}
 	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(entcoupon.FieldStatus, field.TypeInt32, value)
 	}
 	if value, ok := _u.mutation.AddedStatus(); ok {
 		_spec.AddField(entcoupon.FieldStatus, field.TypeInt32, value)
-	}
-	if value, ok := _u.mutation.ReservedCount(); ok {
-		_spec.SetField(entcoupon.FieldReservedCount, field.TypeInt32, value)
-	}
-	if value, ok := _u.mutation.AddedReservedCount(); ok {
-		_spec.AddField(entcoupon.FieldReservedCount, field.TypeInt32, value)
 	}
 	if _u.mutation.CurrencyCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -431,6 +414,51 @@ func (_u *CouponUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(currency.FieldID, field.TypeUint64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if _u.mutation.CouponBookingsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcoupon.CouponBookingsTable,
+			Columns: []string{entcoupon.CouponBookingsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(couponbooking.FieldID, field.TypeUint64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.RemovedCouponBookingsIDs(); len(nodes) > 0 && !_u.mutation.CouponBookingsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcoupon.CouponBookingsTable,
+			Columns: []string{entcoupon.CouponBookingsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(couponbooking.FieldID, field.TypeUint64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.CouponBookingsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcoupon.CouponBookingsTable,
+			Columns: []string{entcoupon.CouponBookingsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(couponbooking.FieldID, field.TypeUint64),
 			},
 		}
 		for _, k := range nodes {
@@ -629,27 +657,6 @@ func (_u *CouponUpdateOne) AddUsageLimit(v int32) *CouponUpdateOne {
 	return _u
 }
 
-// SetUsedCount sets the "used_count" field.
-func (_u *CouponUpdateOne) SetUsedCount(v int32) *CouponUpdateOne {
-	_u.mutation.ResetUsedCount()
-	_u.mutation.SetUsedCount(v)
-	return _u
-}
-
-// SetNillableUsedCount sets the "used_count" field if the given value is not nil.
-func (_u *CouponUpdateOne) SetNillableUsedCount(v *int32) *CouponUpdateOne {
-	if v != nil {
-		_u.SetUsedCount(*v)
-	}
-	return _u
-}
-
-// AddUsedCount adds value to the "used_count" field.
-func (_u *CouponUpdateOne) AddUsedCount(v int32) *CouponUpdateOne {
-	_u.mutation.AddUsedCount(v)
-	return _u
-}
-
 // SetStatus sets the "status" field.
 func (_u *CouponUpdateOne) SetStatus(v coupon.CouponStatus) *CouponUpdateOne {
 	_u.mutation.ResetStatus()
@@ -671,30 +678,24 @@ func (_u *CouponUpdateOne) AddStatus(v coupon.CouponStatus) *CouponUpdateOne {
 	return _u
 }
 
-// SetReservedCount sets the "reserved_count" field.
-func (_u *CouponUpdateOne) SetReservedCount(v int32) *CouponUpdateOne {
-	_u.mutation.ResetReservedCount()
-	_u.mutation.SetReservedCount(v)
-	return _u
-}
-
-// SetNillableReservedCount sets the "reserved_count" field if the given value is not nil.
-func (_u *CouponUpdateOne) SetNillableReservedCount(v *int32) *CouponUpdateOne {
-	if v != nil {
-		_u.SetReservedCount(*v)
-	}
-	return _u
-}
-
-// AddReservedCount adds value to the "reserved_count" field.
-func (_u *CouponUpdateOne) AddReservedCount(v int32) *CouponUpdateOne {
-	_u.mutation.AddReservedCount(v)
-	return _u
-}
-
 // SetCurrency sets the "currency" edge to the Currency entity.
 func (_u *CouponUpdateOne) SetCurrency(v *Currency) *CouponUpdateOne {
 	return _u.SetCurrencyID(v.ID)
+}
+
+// AddCouponBookingIDs adds the "coupon_bookings" edge to the CouponBooking entity by IDs.
+func (_u *CouponUpdateOne) AddCouponBookingIDs(ids ...uint64) *CouponUpdateOne {
+	_u.mutation.AddCouponBookingIDs(ids...)
+	return _u
+}
+
+// AddCouponBookings adds the "coupon_bookings" edges to the CouponBooking entity.
+func (_u *CouponUpdateOne) AddCouponBookings(v ...*CouponBooking) *CouponUpdateOne {
+	ids := make([]uint64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _u.AddCouponBookingIDs(ids...)
 }
 
 // Mutation returns the CouponMutation object of the builder.
@@ -706,6 +707,27 @@ func (_u *CouponUpdateOne) Mutation() *CouponMutation {
 func (_u *CouponUpdateOne) ClearCurrency() *CouponUpdateOne {
 	_u.mutation.ClearCurrency()
 	return _u
+}
+
+// ClearCouponBookings clears all "coupon_bookings" edges to the CouponBooking entity.
+func (_u *CouponUpdateOne) ClearCouponBookings() *CouponUpdateOne {
+	_u.mutation.ClearCouponBookings()
+	return _u
+}
+
+// RemoveCouponBookingIDs removes the "coupon_bookings" edge to CouponBooking entities by IDs.
+func (_u *CouponUpdateOne) RemoveCouponBookingIDs(ids ...uint64) *CouponUpdateOne {
+	_u.mutation.RemoveCouponBookingIDs(ids...)
+	return _u
+}
+
+// RemoveCouponBookings removes "coupon_bookings" edges to CouponBooking entities.
+func (_u *CouponUpdateOne) RemoveCouponBookings(v ...*CouponBooking) *CouponUpdateOne {
+	ids := make([]uint64, len(v))
+	for i := range v {
+		ids[i] = v[i].ID
+	}
+	return _u.RemoveCouponBookingIDs(ids...)
 }
 
 // Where appends a list predicates to the CouponUpdate builder.
@@ -849,23 +871,11 @@ func (_u *CouponUpdateOne) sqlSave(ctx context.Context) (_node *Coupon, err erro
 	if value, ok := _u.mutation.AddedUsageLimit(); ok {
 		_spec.AddField(entcoupon.FieldUsageLimit, field.TypeInt32, value)
 	}
-	if value, ok := _u.mutation.UsedCount(); ok {
-		_spec.SetField(entcoupon.FieldUsedCount, field.TypeInt32, value)
-	}
-	if value, ok := _u.mutation.AddedUsedCount(); ok {
-		_spec.AddField(entcoupon.FieldUsedCount, field.TypeInt32, value)
-	}
 	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(entcoupon.FieldStatus, field.TypeInt32, value)
 	}
 	if value, ok := _u.mutation.AddedStatus(); ok {
 		_spec.AddField(entcoupon.FieldStatus, field.TypeInt32, value)
-	}
-	if value, ok := _u.mutation.ReservedCount(); ok {
-		_spec.SetField(entcoupon.FieldReservedCount, field.TypeInt32, value)
-	}
-	if value, ok := _u.mutation.AddedReservedCount(); ok {
-		_spec.AddField(entcoupon.FieldReservedCount, field.TypeInt32, value)
 	}
 	if _u.mutation.CurrencyCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -889,6 +899,51 @@ func (_u *CouponUpdateOne) sqlSave(ctx context.Context) (_node *Coupon, err erro
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: sqlgraph.NewFieldSpec(currency.FieldID, field.TypeUint64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if _u.mutation.CouponBookingsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcoupon.CouponBookingsTable,
+			Columns: []string{entcoupon.CouponBookingsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(couponbooking.FieldID, field.TypeUint64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.RemovedCouponBookingsIDs(); len(nodes) > 0 && !_u.mutation.CouponBookingsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcoupon.CouponBookingsTable,
+			Columns: []string{entcoupon.CouponBookingsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(couponbooking.FieldID, field.TypeUint64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := _u.mutation.CouponBookingsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcoupon.CouponBookingsTable,
+			Columns: []string{entcoupon.CouponBookingsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(couponbooking.FieldID, field.TypeUint64),
 			},
 		}
 		for _, k := range nodes {

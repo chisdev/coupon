@@ -14,6 +14,7 @@ import (
 	"entgo.io/ent/dialect/sql/sqlgraph"
 
 	entcoupon "github.com/chisdev/coupon/pkg/ent/coupon"
+	"github.com/chisdev/coupon/pkg/ent/couponbooking"
 	"github.com/chisdev/coupon/pkg/ent/currency"
 	"github.com/chisdev/coupon/pkg/ent/milestone"
 	"github.com/chisdev/coupon/pkg/ent/progress"
@@ -78,11 +79,12 @@ var (
 func checkColumn(t, c string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			entcoupon.Table: entcoupon.ValidColumn,
-			currency.Table:  currency.ValidColumn,
-			milestone.Table: milestone.ValidColumn,
-			progress.Table:  progress.ValidColumn,
-			reward.Table:    reward.ValidColumn,
+			entcoupon.Table:     entcoupon.ValidColumn,
+			couponbooking.Table: couponbooking.ValidColumn,
+			currency.Table:      currency.ValidColumn,
+			milestone.Table:     milestone.ValidColumn,
+			progress.Table:      progress.ValidColumn,
+			reward.Table:        reward.ValidColumn,
 		})
 	})
 	return columnCheck(t, c)

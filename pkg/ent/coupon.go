@@ -42,12 +42,8 @@ type Coupon struct {
 	CurrencyID uint64 `json:"currency_id,omitempty"`
 	// UsageLimit holds the value of the "usage_limit" field.
 	UsageLimit int32 `json:"usage_limit,omitempty"`
-	// UsedCount holds the value of the "used_count" field.
-	UsedCount int32 `json:"used_count,omitempty"`
 	// Status holds the value of the "status" field.
 	Status coupon.CouponStatus `json:"status,omitempty"`
-	// ReservedCount holds the value of the "reserved_count" field.
-	ReservedCount int32 `json:"reserved_count,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CouponQuery when eager-loading is set.
 	Edges        CouponEdges `json:"edges"`
@@ -58,9 +54,11 @@ type Coupon struct {
 type CouponEdges struct {
 	// Currency holds the value of the currency edge.
 	Currency *Currency `json:"currency,omitempty"`
+	// CouponBookings holds the value of the coupon_bookings edge.
+	CouponBookings []*CouponBooking `json:"coupon_bookings,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [2]bool
 }
 
 // CurrencyOrErr returns the Currency value or an error if the edge
@@ -74,6 +72,15 @@ func (e CouponEdges) CurrencyOrErr() (*Currency, error) {
 	return nil, &NotLoadedError{edge: "currency"}
 }
 
+// CouponBookingsOrErr returns the CouponBookings value or an error if the edge
+// was not loaded in eager-loading.
+func (e CouponEdges) CouponBookingsOrErr() ([]*CouponBooking, error) {
+	if e.loadedTypes[1] {
+		return e.CouponBookings, nil
+	}
+	return nil, &NotLoadedError{edge: "coupon_bookings"}
+}
+
 // scanValues returns the types for scanning values from sql.Rows.
 func (*Coupon) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
@@ -83,7 +90,7 @@ func (*Coupon) scanValues(columns []string) ([]any, error) {
 			values[i] = new([]byte)
 		case entcoupon.FieldValue:
 			values[i] = new(sql.NullFloat64)
-		case entcoupon.FieldID, entcoupon.FieldType, entcoupon.FieldCurrencyID, entcoupon.FieldUsageLimit, entcoupon.FieldUsedCount, entcoupon.FieldStatus, entcoupon.FieldReservedCount:
+		case entcoupon.FieldID, entcoupon.FieldType, entcoupon.FieldCurrencyID, entcoupon.FieldUsageLimit, entcoupon.FieldStatus:
 			values[i] = new(sql.NullInt64)
 		case entcoupon.FieldCode, entcoupon.FieldStoreID, entcoupon.FieldCustomerID:
 			values[i] = new(sql.NullString)
@@ -180,23 +187,11 @@ func (_m *Coupon) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				_m.UsageLimit = int32(value.Int64)
 			}
-		case entcoupon.FieldUsedCount:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field used_count", values[i])
-			} else if value.Valid {
-				_m.UsedCount = int32(value.Int64)
-			}
 		case entcoupon.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field status", values[i])
 			} else if value.Valid {
 				_m.Status = coupon.CouponStatus(value.Int64)
-			}
-		case entcoupon.FieldReservedCount:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field reserved_count", values[i])
-			} else if value.Valid {
-				_m.ReservedCount = int32(value.Int64)
 			}
 		default:
 			_m.selectValues.Set(columns[i], values[i])
@@ -214,6 +209,11 @@ func (_m *Coupon) GetValue(name string) (ent.Value, error) {
 // QueryCurrency queries the "currency" edge of the Coupon entity.
 func (_m *Coupon) QueryCurrency() *CurrencyQuery {
 	return NewCouponClient(_m.config).QueryCurrency(_m)
+}
+
+// QueryCouponBookings queries the "coupon_bookings" edge of the Coupon entity.
+func (_m *Coupon) QueryCouponBookings() *CouponBookingQuery {
+	return NewCouponClient(_m.config).QueryCouponBookings(_m)
 }
 
 // Update returns a builder for updating this Coupon.
@@ -276,14 +276,8 @@ func (_m *Coupon) String() string {
 	builder.WriteString("usage_limit=")
 	builder.WriteString(fmt.Sprintf("%v", _m.UsageLimit))
 	builder.WriteString(", ")
-	builder.WriteString("used_count=")
-	builder.WriteString(fmt.Sprintf("%v", _m.UsedCount))
-	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", _m.Status))
-	builder.WriteString(", ")
-	builder.WriteString("reserved_count=")
-	builder.WriteString(fmt.Sprintf("%v", _m.ReservedCount))
 	builder.WriteByte(')')
 	return builder.String()
 }

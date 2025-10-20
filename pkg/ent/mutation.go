@@ -13,6 +13,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	coupon "github.com/chisdev/coupon/api"
 	entcoupon "github.com/chisdev/coupon/pkg/ent/coupon"
+	"github.com/chisdev/coupon/pkg/ent/couponbooking"
 	"github.com/chisdev/coupon/pkg/ent/currency"
 	"github.com/chisdev/coupon/pkg/ent/milestone"
 	"github.com/chisdev/coupon/pkg/ent/predicate"
@@ -29,45 +30,45 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
-	TypeCoupon    = "Coupon"
-	TypeCurrency  = "Currency"
-	TypeMilestone = "Milestone"
-	TypeProgress  = "Progress"
-	TypeReward    = "Reward"
+	TypeCoupon        = "Coupon"
+	TypeCouponBooking = "CouponBooking"
+	TypeCurrency      = "Currency"
+	TypeMilestone     = "Milestone"
+	TypeProgress      = "Progress"
+	TypeReward        = "Reward"
 )
 
 // CouponMutation represents an operation that mutates the Coupon nodes in the graph.
 type CouponMutation struct {
 	config
-	op                Op
-	typ               string
-	id                *uint64
-	created_at        *time.Time
-	updated_at        *time.Time
-	code              *string
-	value             *float64
-	addvalue          *float64
-	store_id          *string
-	expire_at         *time.Time
-	customer_id       *string
-	service_ids       *[]uint64
-	appendservice_ids []uint64
-	_type             *coupon.CouponType
-	add_type          *coupon.CouponType
-	usage_limit       *int32
-	addusage_limit    *int32
-	used_count        *int32
-	addused_count     *int32
-	status            *coupon.CouponStatus
-	addstatus         *coupon.CouponStatus
-	reserved_count    *int32
-	addreserved_count *int32
-	clearedFields     map[string]struct{}
-	currency          *uint64
-	clearedcurrency   bool
-	done              bool
-	oldValue          func(context.Context) (*Coupon, error)
-	predicates        []predicate.Coupon
+	op                     Op
+	typ                    string
+	id                     *uint64
+	created_at             *time.Time
+	updated_at             *time.Time
+	code                   *string
+	value                  *float64
+	addvalue               *float64
+	store_id               *string
+	expire_at              *time.Time
+	customer_id            *string
+	service_ids            *[]uint64
+	appendservice_ids      []uint64
+	_type                  *coupon.CouponType
+	add_type               *coupon.CouponType
+	usage_limit            *int32
+	addusage_limit         *int32
+	status                 *coupon.CouponStatus
+	addstatus              *coupon.CouponStatus
+	clearedFields          map[string]struct{}
+	currency               *uint64
+	clearedcurrency        bool
+	coupon_bookings        map[uint64]struct{}
+	removedcoupon_bookings map[uint64]struct{}
+	clearedcoupon_bookings bool
+	done                   bool
+	oldValue               func(context.Context) (*Coupon, error)
+	predicates             []predicate.Coupon
 }
 
 var _ ent.Mutation = (*CouponMutation)(nil)
@@ -684,62 +685,6 @@ func (m *CouponMutation) ResetUsageLimit() {
 	m.addusage_limit = nil
 }
 
-// SetUsedCount sets the "used_count" field.
-func (m *CouponMutation) SetUsedCount(i int32) {
-	m.used_count = &i
-	m.addused_count = nil
-}
-
-// UsedCount returns the value of the "used_count" field in the mutation.
-func (m *CouponMutation) UsedCount() (r int32, exists bool) {
-	v := m.used_count
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldUsedCount returns the old "used_count" field's value of the Coupon entity.
-// If the Coupon object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponMutation) OldUsedCount(ctx context.Context) (v int32, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUsedCount is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUsedCount requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUsedCount: %w", err)
-	}
-	return oldValue.UsedCount, nil
-}
-
-// AddUsedCount adds i to the "used_count" field.
-func (m *CouponMutation) AddUsedCount(i int32) {
-	if m.addused_count != nil {
-		*m.addused_count += i
-	} else {
-		m.addused_count = &i
-	}
-}
-
-// AddedUsedCount returns the value that was added to the "used_count" field in this mutation.
-func (m *CouponMutation) AddedUsedCount() (r int32, exists bool) {
-	v := m.addused_count
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetUsedCount resets all changes to the "used_count" field.
-func (m *CouponMutation) ResetUsedCount() {
-	m.used_count = nil
-	m.addused_count = nil
-}
-
 // SetStatus sets the "status" field.
 func (m *CouponMutation) SetStatus(cs coupon.CouponStatus) {
 	m.status = &cs
@@ -796,62 +741,6 @@ func (m *CouponMutation) ResetStatus() {
 	m.addstatus = nil
 }
 
-// SetReservedCount sets the "reserved_count" field.
-func (m *CouponMutation) SetReservedCount(i int32) {
-	m.reserved_count = &i
-	m.addreserved_count = nil
-}
-
-// ReservedCount returns the value of the "reserved_count" field in the mutation.
-func (m *CouponMutation) ReservedCount() (r int32, exists bool) {
-	v := m.reserved_count
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldReservedCount returns the old "reserved_count" field's value of the Coupon entity.
-// If the Coupon object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponMutation) OldReservedCount(ctx context.Context) (v int32, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldReservedCount is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldReservedCount requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldReservedCount: %w", err)
-	}
-	return oldValue.ReservedCount, nil
-}
-
-// AddReservedCount adds i to the "reserved_count" field.
-func (m *CouponMutation) AddReservedCount(i int32) {
-	if m.addreserved_count != nil {
-		*m.addreserved_count += i
-	} else {
-		m.addreserved_count = &i
-	}
-}
-
-// AddedReservedCount returns the value that was added to the "reserved_count" field in this mutation.
-func (m *CouponMutation) AddedReservedCount() (r int32, exists bool) {
-	v := m.addreserved_count
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetReservedCount resets all changes to the "reserved_count" field.
-func (m *CouponMutation) ResetReservedCount() {
-	m.reserved_count = nil
-	m.addreserved_count = nil
-}
-
 // ClearCurrency clears the "currency" edge to the Currency entity.
 func (m *CouponMutation) ClearCurrency() {
 	m.clearedcurrency = true
@@ -877,6 +766,60 @@ func (m *CouponMutation) CurrencyIDs() (ids []uint64) {
 func (m *CouponMutation) ResetCurrency() {
 	m.currency = nil
 	m.clearedcurrency = false
+}
+
+// AddCouponBookingIDs adds the "coupon_bookings" edge to the CouponBooking entity by ids.
+func (m *CouponMutation) AddCouponBookingIDs(ids ...uint64) {
+	if m.coupon_bookings == nil {
+		m.coupon_bookings = make(map[uint64]struct{})
+	}
+	for i := range ids {
+		m.coupon_bookings[ids[i]] = struct{}{}
+	}
+}
+
+// ClearCouponBookings clears the "coupon_bookings" edge to the CouponBooking entity.
+func (m *CouponMutation) ClearCouponBookings() {
+	m.clearedcoupon_bookings = true
+}
+
+// CouponBookingsCleared reports if the "coupon_bookings" edge to the CouponBooking entity was cleared.
+func (m *CouponMutation) CouponBookingsCleared() bool {
+	return m.clearedcoupon_bookings
+}
+
+// RemoveCouponBookingIDs removes the "coupon_bookings" edge to the CouponBooking entity by IDs.
+func (m *CouponMutation) RemoveCouponBookingIDs(ids ...uint64) {
+	if m.removedcoupon_bookings == nil {
+		m.removedcoupon_bookings = make(map[uint64]struct{})
+	}
+	for i := range ids {
+		delete(m.coupon_bookings, ids[i])
+		m.removedcoupon_bookings[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedCouponBookings returns the removed IDs of the "coupon_bookings" edge to the CouponBooking entity.
+func (m *CouponMutation) RemovedCouponBookingsIDs() (ids []uint64) {
+	for id := range m.removedcoupon_bookings {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// CouponBookingsIDs returns the "coupon_bookings" edge IDs in the mutation.
+func (m *CouponMutation) CouponBookingsIDs() (ids []uint64) {
+	for id := range m.coupon_bookings {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetCouponBookings resets all changes to the "coupon_bookings" edge.
+func (m *CouponMutation) ResetCouponBookings() {
+	m.coupon_bookings = nil
+	m.clearedcoupon_bookings = false
+	m.removedcoupon_bookings = nil
 }
 
 // Where appends a list predicates to the CouponMutation builder.
@@ -913,7 +856,7 @@ func (m *CouponMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CouponMutation) Fields() []string {
-	fields := make([]string, 0, 14)
+	fields := make([]string, 0, 12)
 	if m.created_at != nil {
 		fields = append(fields, entcoupon.FieldCreatedAt)
 	}
@@ -947,14 +890,8 @@ func (m *CouponMutation) Fields() []string {
 	if m.usage_limit != nil {
 		fields = append(fields, entcoupon.FieldUsageLimit)
 	}
-	if m.used_count != nil {
-		fields = append(fields, entcoupon.FieldUsedCount)
-	}
 	if m.status != nil {
 		fields = append(fields, entcoupon.FieldStatus)
-	}
-	if m.reserved_count != nil {
-		fields = append(fields, entcoupon.FieldReservedCount)
 	}
 	return fields
 }
@@ -986,12 +923,8 @@ func (m *CouponMutation) Field(name string) (ent.Value, bool) {
 		return m.CurrencyID()
 	case entcoupon.FieldUsageLimit:
 		return m.UsageLimit()
-	case entcoupon.FieldUsedCount:
-		return m.UsedCount()
 	case entcoupon.FieldStatus:
 		return m.Status()
-	case entcoupon.FieldReservedCount:
-		return m.ReservedCount()
 	}
 	return nil, false
 }
@@ -1023,12 +956,8 @@ func (m *CouponMutation) OldField(ctx context.Context, name string) (ent.Value, 
 		return m.OldCurrencyID(ctx)
 	case entcoupon.FieldUsageLimit:
 		return m.OldUsageLimit(ctx)
-	case entcoupon.FieldUsedCount:
-		return m.OldUsedCount(ctx)
 	case entcoupon.FieldStatus:
 		return m.OldStatus(ctx)
-	case entcoupon.FieldReservedCount:
-		return m.OldReservedCount(ctx)
 	}
 	return nil, fmt.Errorf("unknown Coupon field %s", name)
 }
@@ -1115,26 +1044,12 @@ func (m *CouponMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetUsageLimit(v)
 		return nil
-	case entcoupon.FieldUsedCount:
-		v, ok := value.(int32)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetUsedCount(v)
-		return nil
 	case entcoupon.FieldStatus:
 		v, ok := value.(coupon.CouponStatus)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetStatus(v)
-		return nil
-	case entcoupon.FieldReservedCount:
-		v, ok := value.(int32)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetReservedCount(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Coupon field %s", name)
@@ -1153,14 +1068,8 @@ func (m *CouponMutation) AddedFields() []string {
 	if m.addusage_limit != nil {
 		fields = append(fields, entcoupon.FieldUsageLimit)
 	}
-	if m.addused_count != nil {
-		fields = append(fields, entcoupon.FieldUsedCount)
-	}
 	if m.addstatus != nil {
 		fields = append(fields, entcoupon.FieldStatus)
-	}
-	if m.addreserved_count != nil {
-		fields = append(fields, entcoupon.FieldReservedCount)
 	}
 	return fields
 }
@@ -1176,12 +1085,8 @@ func (m *CouponMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedType()
 	case entcoupon.FieldUsageLimit:
 		return m.AddedUsageLimit()
-	case entcoupon.FieldUsedCount:
-		return m.AddedUsedCount()
 	case entcoupon.FieldStatus:
 		return m.AddedStatus()
-	case entcoupon.FieldReservedCount:
-		return m.AddedReservedCount()
 	}
 	return nil, false
 }
@@ -1212,26 +1117,12 @@ func (m *CouponMutation) AddField(name string, value ent.Value) error {
 		}
 		m.AddUsageLimit(v)
 		return nil
-	case entcoupon.FieldUsedCount:
-		v, ok := value.(int32)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddUsedCount(v)
-		return nil
 	case entcoupon.FieldStatus:
 		v, ok := value.(coupon.CouponStatus)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddStatus(v)
-		return nil
-	case entcoupon.FieldReservedCount:
-		v, ok := value.(int32)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddReservedCount(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Coupon numeric field %s", name)
@@ -1314,14 +1205,8 @@ func (m *CouponMutation) ResetField(name string) error {
 	case entcoupon.FieldUsageLimit:
 		m.ResetUsageLimit()
 		return nil
-	case entcoupon.FieldUsedCount:
-		m.ResetUsedCount()
-		return nil
 	case entcoupon.FieldStatus:
 		m.ResetStatus()
-		return nil
-	case entcoupon.FieldReservedCount:
-		m.ResetReservedCount()
 		return nil
 	}
 	return fmt.Errorf("unknown Coupon field %s", name)
@@ -1329,9 +1214,12 @@ func (m *CouponMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *CouponMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
 	if m.currency != nil {
 		edges = append(edges, entcoupon.EdgeCurrency)
+	}
+	if m.coupon_bookings != nil {
+		edges = append(edges, entcoupon.EdgeCouponBookings)
 	}
 	return edges
 }
@@ -1344,27 +1232,47 @@ func (m *CouponMutation) AddedIDs(name string) []ent.Value {
 		if id := m.currency; id != nil {
 			return []ent.Value{*id}
 		}
+	case entcoupon.EdgeCouponBookings:
+		ids := make([]ent.Value, 0, len(m.coupon_bookings))
+		for id := range m.coupon_bookings {
+			ids = append(ids, id)
+		}
+		return ids
 	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *CouponMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
+	if m.removedcoupon_bookings != nil {
+		edges = append(edges, entcoupon.EdgeCouponBookings)
+	}
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *CouponMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case entcoupon.EdgeCouponBookings:
+		ids := make([]ent.Value, 0, len(m.removedcoupon_bookings))
+		for id := range m.removedcoupon_bookings {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *CouponMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
+	edges := make([]string, 0, 2)
 	if m.clearedcurrency {
 		edges = append(edges, entcoupon.EdgeCurrency)
+	}
+	if m.clearedcoupon_bookings {
+		edges = append(edges, entcoupon.EdgeCouponBookings)
 	}
 	return edges
 }
@@ -1375,6 +1283,8 @@ func (m *CouponMutation) EdgeCleared(name string) bool {
 	switch name {
 	case entcoupon.EdgeCurrency:
 		return m.clearedcurrency
+	case entcoupon.EdgeCouponBookings:
+		return m.clearedcoupon_bookings
 	}
 	return false
 }
@@ -1397,8 +1307,682 @@ func (m *CouponMutation) ResetEdge(name string) error {
 	case entcoupon.EdgeCurrency:
 		m.ResetCurrency()
 		return nil
+	case entcoupon.EdgeCouponBookings:
+		m.ResetCouponBookings()
+		return nil
 	}
 	return fmt.Errorf("unknown Coupon edge %s", name)
+}
+
+// CouponBookingMutation represents an operation that mutates the CouponBooking nodes in the graph.
+type CouponBookingMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *uint64
+	created_at    *time.Time
+	updated_at    *time.Time
+	booking_id    *uint64
+	addbooking_id *int64
+	status        *coupon.CouponUsedStatus
+	addstatus     *coupon.CouponUsedStatus
+	clearedFields map[string]struct{}
+	coupon        *uint64
+	clearedcoupon bool
+	done          bool
+	oldValue      func(context.Context) (*CouponBooking, error)
+	predicates    []predicate.CouponBooking
+}
+
+var _ ent.Mutation = (*CouponBookingMutation)(nil)
+
+// couponbookingOption allows management of the mutation configuration using functional options.
+type couponbookingOption func(*CouponBookingMutation)
+
+// newCouponBookingMutation creates new mutation for the CouponBooking entity.
+func newCouponBookingMutation(c config, op Op, opts ...couponbookingOption) *CouponBookingMutation {
+	m := &CouponBookingMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeCouponBooking,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withCouponBookingID sets the ID field of the mutation.
+func withCouponBookingID(id uint64) couponbookingOption {
+	return func(m *CouponBookingMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *CouponBooking
+		)
+		m.oldValue = func(ctx context.Context) (*CouponBooking, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().CouponBooking.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withCouponBooking sets the old CouponBooking of the mutation.
+func withCouponBooking(node *CouponBooking) couponbookingOption {
+	return func(m *CouponBookingMutation) {
+		m.oldValue = func(context.Context) (*CouponBooking, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m CouponBookingMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m CouponBookingMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of CouponBooking entities.
+func (m *CouponBookingMutation) SetID(id uint64) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *CouponBookingMutation) ID() (id uint64, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *CouponBookingMutation) IDs(ctx context.Context) ([]uint64, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []uint64{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().CouponBooking.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *CouponBookingMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *CouponBookingMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the CouponBooking entity.
+// If the CouponBooking object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CouponBookingMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *CouponBookingMutation) ResetCreatedAt() {
+	m.created_at = nil
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *CouponBookingMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *CouponBookingMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the CouponBooking entity.
+// If the CouponBooking object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CouponBookingMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *CouponBookingMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+}
+
+// SetCouponID sets the "coupon_id" field.
+func (m *CouponBookingMutation) SetCouponID(u uint64) {
+	m.coupon = &u
+}
+
+// CouponID returns the value of the "coupon_id" field in the mutation.
+func (m *CouponBookingMutation) CouponID() (r uint64, exists bool) {
+	v := m.coupon
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCouponID returns the old "coupon_id" field's value of the CouponBooking entity.
+// If the CouponBooking object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CouponBookingMutation) OldCouponID(ctx context.Context) (v uint64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCouponID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCouponID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCouponID: %w", err)
+	}
+	return oldValue.CouponID, nil
+}
+
+// ResetCouponID resets all changes to the "coupon_id" field.
+func (m *CouponBookingMutation) ResetCouponID() {
+	m.coupon = nil
+}
+
+// SetBookingID sets the "booking_id" field.
+func (m *CouponBookingMutation) SetBookingID(u uint64) {
+	m.booking_id = &u
+	m.addbooking_id = nil
+}
+
+// BookingID returns the value of the "booking_id" field in the mutation.
+func (m *CouponBookingMutation) BookingID() (r uint64, exists bool) {
+	v := m.booking_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldBookingID returns the old "booking_id" field's value of the CouponBooking entity.
+// If the CouponBooking object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CouponBookingMutation) OldBookingID(ctx context.Context) (v uint64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldBookingID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldBookingID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldBookingID: %w", err)
+	}
+	return oldValue.BookingID, nil
+}
+
+// AddBookingID adds u to the "booking_id" field.
+func (m *CouponBookingMutation) AddBookingID(u int64) {
+	if m.addbooking_id != nil {
+		*m.addbooking_id += u
+	} else {
+		m.addbooking_id = &u
+	}
+}
+
+// AddedBookingID returns the value that was added to the "booking_id" field in this mutation.
+func (m *CouponBookingMutation) AddedBookingID() (r int64, exists bool) {
+	v := m.addbooking_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetBookingID resets all changes to the "booking_id" field.
+func (m *CouponBookingMutation) ResetBookingID() {
+	m.booking_id = nil
+	m.addbooking_id = nil
+}
+
+// SetStatus sets the "status" field.
+func (m *CouponBookingMutation) SetStatus(cus coupon.CouponUsedStatus) {
+	m.status = &cus
+	m.addstatus = nil
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *CouponBookingMutation) Status() (r coupon.CouponUsedStatus, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the CouponBooking entity.
+// If the CouponBooking object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CouponBookingMutation) OldStatus(ctx context.Context) (v coupon.CouponUsedStatus, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// AddStatus adds cus to the "status" field.
+func (m *CouponBookingMutation) AddStatus(cus coupon.CouponUsedStatus) {
+	if m.addstatus != nil {
+		*m.addstatus += cus
+	} else {
+		m.addstatus = &cus
+	}
+}
+
+// AddedStatus returns the value that was added to the "status" field in this mutation.
+func (m *CouponBookingMutation) AddedStatus() (r coupon.CouponUsedStatus, exists bool) {
+	v := m.addstatus
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *CouponBookingMutation) ResetStatus() {
+	m.status = nil
+	m.addstatus = nil
+}
+
+// ClearCoupon clears the "coupon" edge to the Coupon entity.
+func (m *CouponBookingMutation) ClearCoupon() {
+	m.clearedcoupon = true
+	m.clearedFields[couponbooking.FieldCouponID] = struct{}{}
+}
+
+// CouponCleared reports if the "coupon" edge to the Coupon entity was cleared.
+func (m *CouponBookingMutation) CouponCleared() bool {
+	return m.clearedcoupon
+}
+
+// CouponIDs returns the "coupon" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// CouponID instead. It exists only for internal usage by the builders.
+func (m *CouponBookingMutation) CouponIDs() (ids []uint64) {
+	if id := m.coupon; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetCoupon resets all changes to the "coupon" edge.
+func (m *CouponBookingMutation) ResetCoupon() {
+	m.coupon = nil
+	m.clearedcoupon = false
+}
+
+// Where appends a list predicates to the CouponBookingMutation builder.
+func (m *CouponBookingMutation) Where(ps ...predicate.CouponBooking) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the CouponBookingMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *CouponBookingMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.CouponBooking, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *CouponBookingMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *CouponBookingMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (CouponBooking).
+func (m *CouponBookingMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *CouponBookingMutation) Fields() []string {
+	fields := make([]string, 0, 5)
+	if m.created_at != nil {
+		fields = append(fields, couponbooking.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, couponbooking.FieldUpdatedAt)
+	}
+	if m.coupon != nil {
+		fields = append(fields, couponbooking.FieldCouponID)
+	}
+	if m.booking_id != nil {
+		fields = append(fields, couponbooking.FieldBookingID)
+	}
+	if m.status != nil {
+		fields = append(fields, couponbooking.FieldStatus)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *CouponBookingMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case couponbooking.FieldCreatedAt:
+		return m.CreatedAt()
+	case couponbooking.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case couponbooking.FieldCouponID:
+		return m.CouponID()
+	case couponbooking.FieldBookingID:
+		return m.BookingID()
+	case couponbooking.FieldStatus:
+		return m.Status()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *CouponBookingMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case couponbooking.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case couponbooking.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case couponbooking.FieldCouponID:
+		return m.OldCouponID(ctx)
+	case couponbooking.FieldBookingID:
+		return m.OldBookingID(ctx)
+	case couponbooking.FieldStatus:
+		return m.OldStatus(ctx)
+	}
+	return nil, fmt.Errorf("unknown CouponBooking field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *CouponBookingMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case couponbooking.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case couponbooking.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case couponbooking.FieldCouponID:
+		v, ok := value.(uint64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCouponID(v)
+		return nil
+	case couponbooking.FieldBookingID:
+		v, ok := value.(uint64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetBookingID(v)
+		return nil
+	case couponbooking.FieldStatus:
+		v, ok := value.(coupon.CouponUsedStatus)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
+	}
+	return fmt.Errorf("unknown CouponBooking field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *CouponBookingMutation) AddedFields() []string {
+	var fields []string
+	if m.addbooking_id != nil {
+		fields = append(fields, couponbooking.FieldBookingID)
+	}
+	if m.addstatus != nil {
+		fields = append(fields, couponbooking.FieldStatus)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *CouponBookingMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case couponbooking.FieldBookingID:
+		return m.AddedBookingID()
+	case couponbooking.FieldStatus:
+		return m.AddedStatus()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *CouponBookingMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case couponbooking.FieldBookingID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddBookingID(v)
+		return nil
+	case couponbooking.FieldStatus:
+		v, ok := value.(coupon.CouponUsedStatus)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddStatus(v)
+		return nil
+	}
+	return fmt.Errorf("unknown CouponBooking numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *CouponBookingMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *CouponBookingMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *CouponBookingMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown CouponBooking nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *CouponBookingMutation) ResetField(name string) error {
+	switch name {
+	case couponbooking.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case couponbooking.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case couponbooking.FieldCouponID:
+		m.ResetCouponID()
+		return nil
+	case couponbooking.FieldBookingID:
+		m.ResetBookingID()
+		return nil
+	case couponbooking.FieldStatus:
+		m.ResetStatus()
+		return nil
+	}
+	return fmt.Errorf("unknown CouponBooking field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *CouponBookingMutation) AddedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.coupon != nil {
+		edges = append(edges, couponbooking.EdgeCoupon)
+	}
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *CouponBookingMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case couponbooking.EdgeCoupon:
+		if id := m.coupon; id != nil {
+			return []ent.Value{*id}
+		}
+	}
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *CouponBookingMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 1)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *CouponBookingMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *CouponBookingMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 1)
+	if m.clearedcoupon {
+		edges = append(edges, couponbooking.EdgeCoupon)
+	}
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *CouponBookingMutation) EdgeCleared(name string) bool {
+	switch name {
+	case couponbooking.EdgeCoupon:
+		return m.clearedcoupon
+	}
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *CouponBookingMutation) ClearEdge(name string) error {
+	switch name {
+	case couponbooking.EdgeCoupon:
+		m.ClearCoupon()
+		return nil
+	}
+	return fmt.Errorf("unknown CouponBooking unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *CouponBookingMutation) ResetEdge(name string) error {
+	switch name {
+	case couponbooking.EdgeCoupon:
+		m.ResetCoupon()
+		return nil
+	}
+	return fmt.Errorf("unknown CouponBooking edge %s", name)
 }
 
 // CurrencyMutation represents an operation that mutates the Currency nodes in the graph.

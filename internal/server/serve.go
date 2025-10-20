@@ -79,10 +79,10 @@ func Serve(cfg *config.Config) {
 	service.HttpServeMux().Handle("/coupon/", grpcGatewayMux)
 	service.HttpServeMux().Handle("/couponcms/", grpcGatewayMux)
 
-	err = pb0.RegisterCouponHandlerServer(context.Background(), grpcGatewayMux, couponServie)
-	if err != nil {
-		logger.Fatal("can not register http coupon server", zap.Error(err))
-	}
+	// err = pb0.RegisterCouponHandlerServer(context.Background(), grpcGatewayMux, couponServie)
+	// if err != nil {
+	// 	logger.Fatal("can not register http coupon server", zap.Error(err))
+	// }
 	err = pb0.RegisterCouponCmsHandlerServer(context.Background(), grpcGatewayMux, couponCmsService)
 	if err != nil {
 		logger.Fatal("can not register http coupon cms server", zap.Error(err))

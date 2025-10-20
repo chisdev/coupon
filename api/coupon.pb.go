@@ -25,6 +25,55 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type CouponUsedStatus int32
+
+const (
+	CouponUsedStatus_COUPON_USED_STATUS_UNKNOWN  CouponUsedStatus = 0
+	CouponUsedStatus_COUPON_USED_STATUS_RESERVED CouponUsedStatus = 1
+	CouponUsedStatus_COUPON_USED_STATUS_USED     CouponUsedStatus = 2
+)
+
+// Enum value maps for CouponUsedStatus.
+var (
+	CouponUsedStatus_name = map[int32]string{
+		0: "COUPON_USED_STATUS_UNKNOWN",
+		1: "COUPON_USED_STATUS_RESERVED",
+		2: "COUPON_USED_STATUS_USED",
+	}
+	CouponUsedStatus_value = map[string]int32{
+		"COUPON_USED_STATUS_UNKNOWN":  0,
+		"COUPON_USED_STATUS_RESERVED": 1,
+		"COUPON_USED_STATUS_USED":     2,
+	}
+)
+
+func (x CouponUsedStatus) Enum() *CouponUsedStatus {
+	p := new(CouponUsedStatus)
+	*p = x
+	return p
+}
+
+func (x CouponUsedStatus) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (CouponUsedStatus) Descriptor() protoreflect.EnumDescriptor {
+	return file_coupon_api_coupon_proto_enumTypes[0].Descriptor()
+}
+
+func (CouponUsedStatus) Type() protoreflect.EnumType {
+	return &file_coupon_api_coupon_proto_enumTypes[0]
+}
+
+func (x CouponUsedStatus) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use CouponUsedStatus.Descriptor instead.
+func (CouponUsedStatus) EnumDescriptor() ([]byte, []int) {
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{0}
+}
+
 type SortType int32
 
 const (
@@ -58,11 +107,11 @@ func (x SortType) String() string {
 }
 
 func (SortType) Descriptor() protoreflect.EnumDescriptor {
-	return file_coupon_api_coupon_proto_enumTypes[0].Descriptor()
+	return file_coupon_api_coupon_proto_enumTypes[1].Descriptor()
 }
 
 func (SortType) Type() protoreflect.EnumType {
-	return &file_coupon_api_coupon_proto_enumTypes[0]
+	return &file_coupon_api_coupon_proto_enumTypes[1]
 }
 
 func (x SortType) Number() protoreflect.EnumNumber {
@@ -71,7 +120,7 @@ func (x SortType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use SortType.Descriptor instead.
 func (SortType) EnumDescriptor() ([]byte, []int) {
-	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{0}
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{1}
 }
 
 type CouponType int32
@@ -107,11 +156,11 @@ func (x CouponType) String() string {
 }
 
 func (CouponType) Descriptor() protoreflect.EnumDescriptor {
-	return file_coupon_api_coupon_proto_enumTypes[1].Descriptor()
+	return file_coupon_api_coupon_proto_enumTypes[2].Descriptor()
 }
 
 func (CouponType) Type() protoreflect.EnumType {
-	return &file_coupon_api_coupon_proto_enumTypes[1]
+	return &file_coupon_api_coupon_proto_enumTypes[2]
 }
 
 func (x CouponType) Number() protoreflect.EnumNumber {
@@ -120,34 +169,34 @@ func (x CouponType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use CouponType.Descriptor instead.
 func (CouponType) EnumDescriptor() ([]byte, []int) {
-	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{1}
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{2}
 }
 
 type CouponStatus int32
 
 const (
 	CouponStatus_COUPON_STATUS_UNKNOWN  CouponStatus = 0
-	CouponStatus_COUPON_STATUS_USED     CouponStatus = 1
-	CouponStatus_COUPON_STATUS_RESERVED CouponStatus = 2
-	CouponStatus_COUPON_STATUS_ACTIVE   CouponStatus = 3
-	CouponStatus_COUPON_STATUS_EXPIRED  CouponStatus = 4
+	CouponStatus_COUPON_STATUS_ACTIVE   CouponStatus = 1
+	CouponStatus_COUPON_STATUS_USED     CouponStatus = 2
+	CouponStatus_COUPON_STATUS_EXPIRED  CouponStatus = 3
+	CouponStatus_COUPON_STATUS_DISABLED CouponStatus = 4
 )
 
 // Enum value maps for CouponStatus.
 var (
 	CouponStatus_name = map[int32]string{
 		0: "COUPON_STATUS_UNKNOWN",
-		1: "COUPON_STATUS_USED",
-		2: "COUPON_STATUS_RESERVED",
-		3: "COUPON_STATUS_ACTIVE",
-		4: "COUPON_STATUS_EXPIRED",
+		1: "COUPON_STATUS_ACTIVE",
+		2: "COUPON_STATUS_USED",
+		3: "COUPON_STATUS_EXPIRED",
+		4: "COUPON_STATUS_DISABLED",
 	}
 	CouponStatus_value = map[string]int32{
 		"COUPON_STATUS_UNKNOWN":  0,
-		"COUPON_STATUS_USED":     1,
-		"COUPON_STATUS_RESERVED": 2,
-		"COUPON_STATUS_ACTIVE":   3,
-		"COUPON_STATUS_EXPIRED":  4,
+		"COUPON_STATUS_ACTIVE":   1,
+		"COUPON_STATUS_USED":     2,
+		"COUPON_STATUS_EXPIRED":  3,
+		"COUPON_STATUS_DISABLED": 4,
 	}
 )
 
@@ -162,11 +211,11 @@ func (x CouponStatus) String() string {
 }
 
 func (CouponStatus) Descriptor() protoreflect.EnumDescriptor {
-	return file_coupon_api_coupon_proto_enumTypes[2].Descriptor()
+	return file_coupon_api_coupon_proto_enumTypes[3].Descriptor()
 }
 
 func (CouponStatus) Type() protoreflect.EnumType {
-	return &file_coupon_api_coupon_proto_enumTypes[2]
+	return &file_coupon_api_coupon_proto_enumTypes[3]
 }
 
 func (x CouponStatus) Number() protoreflect.EnumNumber {
@@ -175,7 +224,7 @@ func (x CouponStatus) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use CouponStatus.Descriptor instead.
 func (CouponStatus) EnumDescriptor() ([]byte, []int) {
-	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{2}
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{3}
 }
 
 type MilestoneType int32
@@ -211,11 +260,11 @@ func (x MilestoneType) String() string {
 }
 
 func (MilestoneType) Descriptor() protoreflect.EnumDescriptor {
-	return file_coupon_api_coupon_proto_enumTypes[3].Descriptor()
+	return file_coupon_api_coupon_proto_enumTypes[4].Descriptor()
 }
 
 func (MilestoneType) Type() protoreflect.EnumType {
-	return &file_coupon_api_coupon_proto_enumTypes[3]
+	return &file_coupon_api_coupon_proto_enumTypes[4]
 }
 
 func (x MilestoneType) Number() protoreflect.EnumNumber {
@@ -224,79 +273,7 @@ func (x MilestoneType) Number() protoreflect.EnumNumber {
 
 // Deprecated: Use MilestoneType.Descriptor instead.
 func (MilestoneType) EnumDescriptor() ([]byte, []int) {
-	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{3}
-}
-
-type HealCheckRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *HealCheckRequest) Reset() {
-	*x = HealCheckRequest{}
-	mi := &file_coupon_api_coupon_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *HealCheckRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*HealCheckRequest) ProtoMessage() {}
-
-func (x *HealCheckRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_coupon_api_coupon_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use HealCheckRequest.ProtoReflect.Descriptor instead.
-func (*HealCheckRequest) Descriptor() ([]byte, []int) {
-	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{0}
-}
-
-type HealCheckResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *HealCheckResponse) Reset() {
-	*x = HealCheckResponse{}
-	mi := &file_coupon_api_coupon_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *HealCheckResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*HealCheckResponse) ProtoMessage() {}
-
-func (x *HealCheckResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_coupon_api_coupon_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use HealCheckResponse.ProtoReflect.Descriptor instead.
-func (*HealCheckResponse) Descriptor() ([]byte, []int) {
-	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{1}
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{4}
 }
 
 type SortMethod struct {
@@ -309,7 +286,7 @@ type SortMethod struct {
 
 func (x *SortMethod) Reset() {
 	*x = SortMethod{}
-	mi := &file_coupon_api_coupon_proto_msgTypes[2]
+	mi := &file_coupon_api_coupon_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -321,7 +298,7 @@ func (x *SortMethod) String() string {
 func (*SortMethod) ProtoMessage() {}
 
 func (x *SortMethod) ProtoReflect() protoreflect.Message {
-	mi := &file_coupon_api_coupon_proto_msgTypes[2]
+	mi := &file_coupon_api_coupon_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -334,7 +311,7 @@ func (x *SortMethod) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SortMethod.ProtoReflect.Descriptor instead.
 func (*SortMethod) Descriptor() ([]byte, []int) {
-	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{2}
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *SortMethod) GetName() string {
@@ -367,7 +344,7 @@ type Reward struct {
 
 func (x *Reward) Reset() {
 	*x = Reward{}
-	mi := &file_coupon_api_coupon_proto_msgTypes[3]
+	mi := &file_coupon_api_coupon_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -379,7 +356,7 @@ func (x *Reward) String() string {
 func (*Reward) ProtoMessage() {}
 
 func (x *Reward) ProtoReflect() protoreflect.Message {
-	mi := &file_coupon_api_coupon_proto_msgTypes[3]
+	mi := &file_coupon_api_coupon_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -392,7 +369,7 @@ func (x *Reward) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Reward.ProtoReflect.Descriptor instead.
 func (*Reward) Descriptor() ([]byte, []int) {
-	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{3}
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *Reward) GetId() uint64 {
@@ -465,7 +442,7 @@ type Milestone struct {
 
 func (x *Milestone) Reset() {
 	*x = Milestone{}
-	mi := &file_coupon_api_coupon_proto_msgTypes[4]
+	mi := &file_coupon_api_coupon_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -477,7 +454,7 @@ func (x *Milestone) String() string {
 func (*Milestone) ProtoMessage() {}
 
 func (x *Milestone) ProtoReflect() protoreflect.Message {
-	mi := &file_coupon_api_coupon_proto_msgTypes[4]
+	mi := &file_coupon_api_coupon_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -490,7 +467,7 @@ func (x *Milestone) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Milestone.ProtoReflect.Descriptor instead.
 func (*Milestone) Descriptor() ([]byte, []int) {
-	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{4}
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *Milestone) GetId() uint64 {
@@ -555,7 +532,7 @@ type StoreCoupon struct {
 
 func (x *StoreCoupon) Reset() {
 	*x = StoreCoupon{}
-	mi := &file_coupon_api_coupon_proto_msgTypes[5]
+	mi := &file_coupon_api_coupon_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -567,7 +544,7 @@ func (x *StoreCoupon) String() string {
 func (*StoreCoupon) ProtoMessage() {}
 
 func (x *StoreCoupon) ProtoReflect() protoreflect.Message {
-	mi := &file_coupon_api_coupon_proto_msgTypes[5]
+	mi := &file_coupon_api_coupon_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -580,7 +557,7 @@ func (x *StoreCoupon) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StoreCoupon.ProtoReflect.Descriptor instead.
 func (*StoreCoupon) Descriptor() ([]byte, []int) {
-	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{5}
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *StoreCoupon) GetId() uint64 {
@@ -677,7 +654,7 @@ type MilestoneProgress struct {
 
 func (x *MilestoneProgress) Reset() {
 	*x = MilestoneProgress{}
-	mi := &file_coupon_api_coupon_proto_msgTypes[6]
+	mi := &file_coupon_api_coupon_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -689,7 +666,7 @@ func (x *MilestoneProgress) String() string {
 func (*MilestoneProgress) ProtoMessage() {}
 
 func (x *MilestoneProgress) ProtoReflect() protoreflect.Message {
-	mi := &file_coupon_api_coupon_proto_msgTypes[6]
+	mi := &file_coupon_api_coupon_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -702,7 +679,7 @@ func (x *MilestoneProgress) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MilestoneProgress.ProtoReflect.Descriptor instead.
 func (*MilestoneProgress) Descriptor() ([]byte, []int) {
-	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{6}
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *MilestoneProgress) GetMilestone() *Milestone {
@@ -731,7 +708,7 @@ type CreateMileStoneRequest struct {
 
 func (x *CreateMileStoneRequest) Reset() {
 	*x = CreateMileStoneRequest{}
-	mi := &file_coupon_api_coupon_proto_msgTypes[7]
+	mi := &file_coupon_api_coupon_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -743,7 +720,7 @@ func (x *CreateMileStoneRequest) String() string {
 func (*CreateMileStoneRequest) ProtoMessage() {}
 
 func (x *CreateMileStoneRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_coupon_api_coupon_proto_msgTypes[7]
+	mi := &file_coupon_api_coupon_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -756,7 +733,7 @@ func (x *CreateMileStoneRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMileStoneRequest.ProtoReflect.Descriptor instead.
 func (*CreateMileStoneRequest) Descriptor() ([]byte, []int) {
-	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{7}
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *CreateMileStoneRequest) GetName() string {
@@ -796,7 +773,7 @@ type CreateMileStoneResponse struct {
 
 func (x *CreateMileStoneResponse) Reset() {
 	*x = CreateMileStoneResponse{}
-	mi := &file_coupon_api_coupon_proto_msgTypes[8]
+	mi := &file_coupon_api_coupon_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -808,7 +785,7 @@ func (x *CreateMileStoneResponse) String() string {
 func (*CreateMileStoneResponse) ProtoMessage() {}
 
 func (x *CreateMileStoneResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_coupon_api_coupon_proto_msgTypes[8]
+	mi := &file_coupon_api_coupon_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -821,7 +798,7 @@ func (x *CreateMileStoneResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateMileStoneResponse.ProtoReflect.Descriptor instead.
 func (*CreateMileStoneResponse) Descriptor() ([]byte, []int) {
-	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{8}
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *CreateMileStoneResponse) GetMilestone() *Milestone {
@@ -840,7 +817,7 @@ type GetMileStoneRequest struct {
 
 func (x *GetMileStoneRequest) Reset() {
 	*x = GetMileStoneRequest{}
-	mi := &file_coupon_api_coupon_proto_msgTypes[9]
+	mi := &file_coupon_api_coupon_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -852,7 +829,7 @@ func (x *GetMileStoneRequest) String() string {
 func (*GetMileStoneRequest) ProtoMessage() {}
 
 func (x *GetMileStoneRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_coupon_api_coupon_proto_msgTypes[9]
+	mi := &file_coupon_api_coupon_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -865,7 +842,7 @@ func (x *GetMileStoneRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMileStoneRequest.ProtoReflect.Descriptor instead.
 func (*GetMileStoneRequest) Descriptor() ([]byte, []int) {
-	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{9}
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *GetMileStoneRequest) GetId() uint64 {
@@ -884,7 +861,7 @@ type GetMileStoneResponse struct {
 
 func (x *GetMileStoneResponse) Reset() {
 	*x = GetMileStoneResponse{}
-	mi := &file_coupon_api_coupon_proto_msgTypes[10]
+	mi := &file_coupon_api_coupon_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -896,7 +873,7 @@ func (x *GetMileStoneResponse) String() string {
 func (*GetMileStoneResponse) ProtoMessage() {}
 
 func (x *GetMileStoneResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_coupon_api_coupon_proto_msgTypes[10]
+	mi := &file_coupon_api_coupon_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -909,7 +886,7 @@ func (x *GetMileStoneResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetMileStoneResponse.ProtoReflect.Descriptor instead.
 func (*GetMileStoneResponse) Descriptor() ([]byte, []int) {
-	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{10}
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *GetMileStoneResponse) GetMilestone() *Milestone {
@@ -930,7 +907,7 @@ type ListMileStoneRequest struct {
 
 func (x *ListMileStoneRequest) Reset() {
 	*x = ListMileStoneRequest{}
-	mi := &file_coupon_api_coupon_proto_msgTypes[11]
+	mi := &file_coupon_api_coupon_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -942,7 +919,7 @@ func (x *ListMileStoneRequest) String() string {
 func (*ListMileStoneRequest) ProtoMessage() {}
 
 func (x *ListMileStoneRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_coupon_api_coupon_proto_msgTypes[11]
+	mi := &file_coupon_api_coupon_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -955,7 +932,7 @@ func (x *ListMileStoneRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMileStoneRequest.ProtoReflect.Descriptor instead.
 func (*ListMileStoneRequest) Descriptor() ([]byte, []int) {
-	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{11}
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *ListMileStoneRequest) GetPageIndex() int32 {
@@ -991,7 +968,7 @@ type ListMileStoneResponse struct {
 
 func (x *ListMileStoneResponse) Reset() {
 	*x = ListMileStoneResponse{}
-	mi := &file_coupon_api_coupon_proto_msgTypes[12]
+	mi := &file_coupon_api_coupon_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1003,7 +980,7 @@ func (x *ListMileStoneResponse) String() string {
 func (*ListMileStoneResponse) ProtoMessage() {}
 
 func (x *ListMileStoneResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_coupon_api_coupon_proto_msgTypes[12]
+	mi := &file_coupon_api_coupon_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1016,7 +993,7 @@ func (x *ListMileStoneResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListMileStoneResponse.ProtoReflect.Descriptor instead.
 func (*ListMileStoneResponse) Descriptor() ([]byte, []int) {
-	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{12}
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *ListMileStoneResponse) GetMilestones() []*Milestone {
@@ -1056,7 +1033,7 @@ type DeleteMileStoneRequest struct {
 
 func (x *DeleteMileStoneRequest) Reset() {
 	*x = DeleteMileStoneRequest{}
-	mi := &file_coupon_api_coupon_proto_msgTypes[13]
+	mi := &file_coupon_api_coupon_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1068,7 +1045,7 @@ func (x *DeleteMileStoneRequest) String() string {
 func (*DeleteMileStoneRequest) ProtoMessage() {}
 
 func (x *DeleteMileStoneRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_coupon_api_coupon_proto_msgTypes[13]
+	mi := &file_coupon_api_coupon_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1081,7 +1058,7 @@ func (x *DeleteMileStoneRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteMileStoneRequest.ProtoReflect.Descriptor instead.
 func (*DeleteMileStoneRequest) Descriptor() ([]byte, []int) {
-	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{13}
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *DeleteMileStoneRequest) GetIds() []uint64 {
@@ -1089,6 +1066,170 @@ func (x *DeleteMileStoneRequest) GetIds() []uint64 {
 		return x.Ids
 	}
 	return nil
+}
+
+type ReserveCouponRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	BookingId     uint64                 `protobuf:"varint,2,opt,name=booking_id,json=bookingId,proto3" json:"booking_id,omitempty"`
+	ServiceIds    []uint64               `protobuf:"varint,3,rep,packed,name=service_ids,json=serviceIds,proto3" json:"service_ids,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ReserveCouponRequest) Reset() {
+	*x = ReserveCouponRequest{}
+	mi := &file_coupon_api_coupon_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ReserveCouponRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ReserveCouponRequest) ProtoMessage() {}
+
+func (x *ReserveCouponRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_coupon_api_coupon_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ReserveCouponRequest.ProtoReflect.Descriptor instead.
+func (*ReserveCouponRequest) Descriptor() ([]byte, []int) {
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *ReserveCouponRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *ReserveCouponRequest) GetBookingId() uint64 {
+	if x != nil {
+		return x.BookingId
+	}
+	return 0
+}
+
+func (x *ReserveCouponRequest) GetServiceIds() []uint64 {
+	if x != nil {
+		return x.ServiceIds
+	}
+	return nil
+}
+
+type UnReserveCouponRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	BookingId     uint64                 `protobuf:"varint,2,opt,name=booking_id,json=bookingId,proto3" json:"booking_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UnReserveCouponRequest) Reset() {
+	*x = UnReserveCouponRequest{}
+	mi := &file_coupon_api_coupon_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UnReserveCouponRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UnReserveCouponRequest) ProtoMessage() {}
+
+func (x *UnReserveCouponRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_coupon_api_coupon_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UnReserveCouponRequest.ProtoReflect.Descriptor instead.
+func (*UnReserveCouponRequest) Descriptor() ([]byte, []int) {
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *UnReserveCouponRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *UnReserveCouponRequest) GetBookingId() uint64 {
+	if x != nil {
+		return x.BookingId
+	}
+	return 0
+}
+
+type ConfirmCouponUsageRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	BookingId     uint64                 `protobuf:"varint,2,opt,name=booking_id,json=bookingId,proto3" json:"booking_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ConfirmCouponUsageRequest) Reset() {
+	*x = ConfirmCouponUsageRequest{}
+	mi := &file_coupon_api_coupon_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ConfirmCouponUsageRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ConfirmCouponUsageRequest) ProtoMessage() {}
+
+func (x *ConfirmCouponUsageRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_coupon_api_coupon_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ConfirmCouponUsageRequest.ProtoReflect.Descriptor instead.
+func (*ConfirmCouponUsageRequest) Descriptor() ([]byte, []int) {
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *ConfirmCouponUsageRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *ConfirmCouponUsageRequest) GetBookingId() uint64 {
+	if x != nil {
+		return x.BookingId
+	}
+	return 0
 }
 
 type CreateMileStoneRequest_MilestoneReward struct {
@@ -1105,7 +1246,7 @@ type CreateMileStoneRequest_MilestoneReward struct {
 
 func (x *CreateMileStoneRequest_MilestoneReward) Reset() {
 	*x = CreateMileStoneRequest_MilestoneReward{}
-	mi := &file_coupon_api_coupon_proto_msgTypes[14]
+	mi := &file_coupon_api_coupon_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1117,7 +1258,7 @@ func (x *CreateMileStoneRequest_MilestoneReward) String() string {
 func (*CreateMileStoneRequest_MilestoneReward) ProtoMessage() {}
 
 func (x *CreateMileStoneRequest_MilestoneReward) ProtoReflect() protoreflect.Message {
-	mi := &file_coupon_api_coupon_proto_msgTypes[14]
+	mi := &file_coupon_api_coupon_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1130,7 +1271,7 @@ func (x *CreateMileStoneRequest_MilestoneReward) ProtoReflect() protoreflect.Mes
 
 // Deprecated: Use CreateMileStoneRequest_MilestoneReward.ProtoReflect.Descriptor instead.
 func (*CreateMileStoneRequest_MilestoneReward) Descriptor() ([]byte, []int) {
-	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{7, 0}
+	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{5, 0}
 }
 
 func (x *CreateMileStoneRequest_MilestoneReward) GetCouponValue() float64 {
@@ -1179,9 +1320,7 @@ var File_coupon_api_coupon_proto protoreflect.FileDescriptor
 
 const file_coupon_api_coupon_proto_rawDesc = "" +
 	"\n" +
-	"\x17coupon/api/coupon.proto\x12\x06coupon\x1a\x17validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/api/annotations.proto\"\x12\n" +
-	"\x10HealCheckRequest\"\x13\n" +
-	"\x11HealCheckResponse\"O\n" +
+	"\x17coupon/api/coupon.proto\x12\x06coupon\x1a\x17validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1cgoogle/api/annotations.proto\"O\n" +
 	"\n" +
 	"SortMethod\x12\x1b\n" +
 	"\x04name\x18\x01 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x04name\x12$\n" +
@@ -1280,7 +1419,25 @@ const file_coupon_api_coupon_proto_rawDesc = "" +
 	"totalPages\x126\n" +
 	"\arequest\x18\x04 \x01(\v2\x1c.coupon.ListMileStoneRequestR\arequest\"*\n" +
 	"\x16DeleteMileStoneRequest\x12\x10\n" +
-	"\x03ids\x18\x01 \x03(\x04R\x03ids*H\n" +
+	"\x03ids\x18\x01 \x03(\x04R\x03ids\"s\n" +
+	"\x14ReserveCouponRequest\x12\x1b\n" +
+	"\x04code\x18\x01 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x04code\x12\x1d\n" +
+	"\n" +
+	"booking_id\x18\x02 \x01(\x04R\tbookingId\x12\x1f\n" +
+	"\vservice_ids\x18\x03 \x03(\x04R\n" +
+	"serviceIds\"T\n" +
+	"\x16UnReserveCouponRequest\x12\x1b\n" +
+	"\x04code\x18\x01 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x04code\x12\x1d\n" +
+	"\n" +
+	"booking_id\x18\x02 \x01(\x04R\tbookingId\"W\n" +
+	"\x19ConfirmCouponUsageRequest\x12\x1b\n" +
+	"\x04code\x18\x01 \x01(\tB\a\xfaB\x04r\x02\x10\x01R\x04code\x12\x1d\n" +
+	"\n" +
+	"booking_id\x18\x02 \x01(\x04R\tbookingId*p\n" +
+	"\x10CouponUsedStatus\x12\x1e\n" +
+	"\x1aCOUPON_USED_STATUS_UNKNOWN\x10\x00\x12\x1f\n" +
+	"\x1bCOUPON_USED_STATUS_RESERVED\x10\x01\x12\x1b\n" +
+	"\x17COUPON_USED_STATUS_USED\x10\x02*H\n" +
 	"\bSortType\x12\x15\n" +
 	"\x11SORT_TYPE_UNKNOWN\x10\x00\x12\x11\n" +
 	"\rSORT_TYPE_ASC\x10\x01\x12\x12\n" +
@@ -1291,21 +1448,23 @@ const file_coupon_api_coupon_proto_rawDesc = "" +
 	"\x16COUPON_TYPE_PERCENTAGE\x10\x01\x12\x15\n" +
 	"\x11COUPON_TYPE_FIXED\x10\x02*\x92\x01\n" +
 	"\fCouponStatus\x12\x19\n" +
-	"\x15COUPON_STATUS_UNKNOWN\x10\x00\x12\x16\n" +
-	"\x12COUPON_STATUS_USED\x10\x01\x12\x1a\n" +
-	"\x16COUPON_STATUS_RESERVED\x10\x02\x12\x18\n" +
-	"\x14COUPON_STATUS_ACTIVE\x10\x03\x12\x19\n" +
-	"\x15COUPON_STATUS_EXPIRED\x10\x04*c\n" +
+	"\x15COUPON_STATUS_UNKNOWN\x10\x00\x12\x18\n" +
+	"\x14COUPON_STATUS_ACTIVE\x10\x01\x12\x16\n" +
+	"\x12COUPON_STATUS_USED\x10\x02\x12\x19\n" +
+	"\x15COUPON_STATUS_EXPIRED\x10\x03\x12\x1a\n" +
+	"\x16COUPON_STATUS_DISABLED\x10\x04*c\n" +
 	"\rMilestoneType\x12\x1a\n" +
 	"\x16MILESTONE_TYPE_UNKNOWN\x10\x00\x12\x18\n" +
 	"\x14MILESTONE_TYPE_FIXED\x10\x01\x12\x1c\n" +
-	"\x18MILESTONE_TYPE_RECURRING\x10\x022e\n" +
-	"\x06Coupon\x12[\n" +
-	"\tHealCheck\x12\x18.coupon.HealCheckRequest\x1a\x19.coupon.HealCheckResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/coupon/healcheck2\xdf\x02\n" +
+	"\x18MILESTONE_TYPE_RECURRING\x10\x022\xd4\x01\n" +
+	"\x06Coupon\x12a\n" +
+	"\rReserveCoupon\x12\x1c.coupon.ReserveCouponRequest\x1a\x16.google.protobuf.Empty\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/coupon/reserve\x12g\n" +
+	"\x0fUnReserveCoupon\x12\x1e.coupon.UnReserveCouponRequest\x1a\x16.google.protobuf.Empty\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/coupon/unreserve2\xd5\x03\n" +
 	"\tCouponCms\x12s\n" +
 	"\x0fCreateMileStone\x12\x1e.coupon.CreateMileStoneRequest\x1a\x1f.coupon.CreateMileStoneResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/couponcms/milestone\x12j\n" +
 	"\rListMileStone\x12\x1c.coupon.ListMileStoneRequest\x1a\x1d.coupon.ListMileStoneResponse\"\x1c\x82\xd3\xe4\x93\x02\x16\x12\x14/couponcms/milestone\x12q\n" +
-	"\x0fDeleteMileStone\x12\x1e.coupon.DeleteMileStoneRequest\x1a\x16.google.protobuf.Empty\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/couponcms/milestone/deleteB&Z$github.com/chisdev/coupon/api;couponb\x06proto3"
+	"\x0fDeleteMileStone\x12\x1e.coupon.DeleteMileStoneRequest\x1a\x16.google.protobuf.Empty\"&\x82\xd3\xe4\x93\x02 :\x01*\"\x1b/couponcms/milestone/delete\x12t\n" +
+	"\x12ConfirmCouponUsage\x12!.coupon.ConfirmCouponUsageRequest\x1a\x16.google.protobuf.Empty\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/couponcms/confirm-usageB&Z$github.com/chisdev/coupon/api;couponb\x06proto3"
 
 var (
 	file_coupon_api_coupon_proto_rawDescOnce sync.Once
@@ -1319,56 +1478,62 @@ func file_coupon_api_coupon_proto_rawDescGZIP() []byte {
 	return file_coupon_api_coupon_proto_rawDescData
 }
 
-var file_coupon_api_coupon_proto_enumTypes = make([]protoimpl.EnumInfo, 4)
-var file_coupon_api_coupon_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_coupon_api_coupon_proto_enumTypes = make([]protoimpl.EnumInfo, 5)
+var file_coupon_api_coupon_proto_msgTypes = make([]protoimpl.MessageInfo, 16)
 var file_coupon_api_coupon_proto_goTypes = []any{
-	(SortType)(0),                                  // 0: coupon.SortType
-	(CouponType)(0),                                // 1: coupon.CouponType
-	(CouponStatus)(0),                              // 2: coupon.CouponStatus
-	(MilestoneType)(0),                             // 3: coupon.MilestoneType
-	(*HealCheckRequest)(nil),                       // 4: coupon.HealCheckRequest
-	(*HealCheckResponse)(nil),                      // 5: coupon.HealCheckResponse
-	(*SortMethod)(nil),                             // 6: coupon.SortMethod
-	(*Reward)(nil),                                 // 7: coupon.Reward
-	(*Milestone)(nil),                              // 8: coupon.Milestone
-	(*StoreCoupon)(nil),                            // 9: coupon.StoreCoupon
-	(*MilestoneProgress)(nil),                      // 10: coupon.MilestoneProgress
-	(*CreateMileStoneRequest)(nil),                 // 11: coupon.CreateMileStoneRequest
-	(*CreateMileStoneResponse)(nil),                // 12: coupon.CreateMileStoneResponse
-	(*GetMileStoneRequest)(nil),                    // 13: coupon.GetMileStoneRequest
-	(*GetMileStoneResponse)(nil),                   // 14: coupon.GetMileStoneResponse
-	(*ListMileStoneRequest)(nil),                   // 15: coupon.ListMileStoneRequest
-	(*ListMileStoneResponse)(nil),                  // 16: coupon.ListMileStoneResponse
-	(*DeleteMileStoneRequest)(nil),                 // 17: coupon.DeleteMileStoneRequest
-	(*CreateMileStoneRequest_MilestoneReward)(nil), // 18: coupon.CreateMileStoneRequest.MilestoneReward
-	(*timestamppb.Timestamp)(nil),                  // 19: google.protobuf.Timestamp
-	(*emptypb.Empty)(nil),                          // 20: google.protobuf.Empty
+	(CouponUsedStatus)(0),                          // 0: coupon.CouponUsedStatus
+	(SortType)(0),                                  // 1: coupon.SortType
+	(CouponType)(0),                                // 2: coupon.CouponType
+	(CouponStatus)(0),                              // 3: coupon.CouponStatus
+	(MilestoneType)(0),                             // 4: coupon.MilestoneType
+	(*SortMethod)(nil),                             // 5: coupon.SortMethod
+	(*Reward)(nil),                                 // 6: coupon.Reward
+	(*Milestone)(nil),                              // 7: coupon.Milestone
+	(*StoreCoupon)(nil),                            // 8: coupon.StoreCoupon
+	(*MilestoneProgress)(nil),                      // 9: coupon.MilestoneProgress
+	(*CreateMileStoneRequest)(nil),                 // 10: coupon.CreateMileStoneRequest
+	(*CreateMileStoneResponse)(nil),                // 11: coupon.CreateMileStoneResponse
+	(*GetMileStoneRequest)(nil),                    // 12: coupon.GetMileStoneRequest
+	(*GetMileStoneResponse)(nil),                   // 13: coupon.GetMileStoneResponse
+	(*ListMileStoneRequest)(nil),                   // 14: coupon.ListMileStoneRequest
+	(*ListMileStoneResponse)(nil),                  // 15: coupon.ListMileStoneResponse
+	(*DeleteMileStoneRequest)(nil),                 // 16: coupon.DeleteMileStoneRequest
+	(*ReserveCouponRequest)(nil),                   // 17: coupon.ReserveCouponRequest
+	(*UnReserveCouponRequest)(nil),                 // 18: coupon.UnReserveCouponRequest
+	(*ConfirmCouponUsageRequest)(nil),              // 19: coupon.ConfirmCouponUsageRequest
+	(*CreateMileStoneRequest_MilestoneReward)(nil), // 20: coupon.CreateMileStoneRequest.MilestoneReward
+	(*timestamppb.Timestamp)(nil),                  // 21: google.protobuf.Timestamp
+	(*emptypb.Empty)(nil),                          // 22: google.protobuf.Empty
 }
 var file_coupon_api_coupon_proto_depIdxs = []int32{
-	0,  // 0: coupon.SortMethod.type:type_name -> coupon.SortType
-	1,  // 1: coupon.Reward.coupon_type:type_name -> coupon.CouponType
-	3,  // 2: coupon.Milestone.type:type_name -> coupon.MilestoneType
-	7,  // 3: coupon.Milestone.rewards:type_name -> coupon.Reward
-	19, // 4: coupon.StoreCoupon.expired_at:type_name -> google.protobuf.Timestamp
-	1,  // 5: coupon.StoreCoupon.coupon_type:type_name -> coupon.CouponType
-	2,  // 6: coupon.StoreCoupon.status:type_name -> coupon.CouponStatus
-	8,  // 7: coupon.MilestoneProgress.Milestone:type_name -> coupon.Milestone
-	18, // 8: coupon.CreateMileStoneRequest.rewards:type_name -> coupon.CreateMileStoneRequest.MilestoneReward
-	8,  // 9: coupon.CreateMileStoneResponse.milestone:type_name -> coupon.Milestone
-	8,  // 10: coupon.GetMileStoneResponse.milestone:type_name -> coupon.Milestone
-	6,  // 11: coupon.ListMileStoneRequest.sort_methods:type_name -> coupon.SortMethod
-	8,  // 12: coupon.ListMileStoneResponse.milestones:type_name -> coupon.Milestone
-	15, // 13: coupon.ListMileStoneResponse.request:type_name -> coupon.ListMileStoneRequest
-	4,  // 14: coupon.Coupon.HealCheck:input_type -> coupon.HealCheckRequest
-	11, // 15: coupon.CouponCms.CreateMileStone:input_type -> coupon.CreateMileStoneRequest
-	15, // 16: coupon.CouponCms.ListMileStone:input_type -> coupon.ListMileStoneRequest
-	17, // 17: coupon.CouponCms.DeleteMileStone:input_type -> coupon.DeleteMileStoneRequest
-	5,  // 18: coupon.Coupon.HealCheck:output_type -> coupon.HealCheckResponse
-	12, // 19: coupon.CouponCms.CreateMileStone:output_type -> coupon.CreateMileStoneResponse
-	16, // 20: coupon.CouponCms.ListMileStone:output_type -> coupon.ListMileStoneResponse
-	20, // 21: coupon.CouponCms.DeleteMileStone:output_type -> google.protobuf.Empty
-	18, // [18:22] is the sub-list for method output_type
-	14, // [14:18] is the sub-list for method input_type
+	1,  // 0: coupon.SortMethod.type:type_name -> coupon.SortType
+	2,  // 1: coupon.Reward.coupon_type:type_name -> coupon.CouponType
+	4,  // 2: coupon.Milestone.type:type_name -> coupon.MilestoneType
+	6,  // 3: coupon.Milestone.rewards:type_name -> coupon.Reward
+	21, // 4: coupon.StoreCoupon.expired_at:type_name -> google.protobuf.Timestamp
+	2,  // 5: coupon.StoreCoupon.coupon_type:type_name -> coupon.CouponType
+	3,  // 6: coupon.StoreCoupon.status:type_name -> coupon.CouponStatus
+	7,  // 7: coupon.MilestoneProgress.Milestone:type_name -> coupon.Milestone
+	20, // 8: coupon.CreateMileStoneRequest.rewards:type_name -> coupon.CreateMileStoneRequest.MilestoneReward
+	7,  // 9: coupon.CreateMileStoneResponse.milestone:type_name -> coupon.Milestone
+	7,  // 10: coupon.GetMileStoneResponse.milestone:type_name -> coupon.Milestone
+	5,  // 11: coupon.ListMileStoneRequest.sort_methods:type_name -> coupon.SortMethod
+	7,  // 12: coupon.ListMileStoneResponse.milestones:type_name -> coupon.Milestone
+	14, // 13: coupon.ListMileStoneResponse.request:type_name -> coupon.ListMileStoneRequest
+	17, // 14: coupon.Coupon.ReserveCoupon:input_type -> coupon.ReserveCouponRequest
+	18, // 15: coupon.Coupon.UnReserveCoupon:input_type -> coupon.UnReserveCouponRequest
+	10, // 16: coupon.CouponCms.CreateMileStone:input_type -> coupon.CreateMileStoneRequest
+	14, // 17: coupon.CouponCms.ListMileStone:input_type -> coupon.ListMileStoneRequest
+	16, // 18: coupon.CouponCms.DeleteMileStone:input_type -> coupon.DeleteMileStoneRequest
+	19, // 19: coupon.CouponCms.ConfirmCouponUsage:input_type -> coupon.ConfirmCouponUsageRequest
+	22, // 20: coupon.Coupon.ReserveCoupon:output_type -> google.protobuf.Empty
+	22, // 21: coupon.Coupon.UnReserveCoupon:output_type -> google.protobuf.Empty
+	11, // 22: coupon.CouponCms.CreateMileStone:output_type -> coupon.CreateMileStoneResponse
+	15, // 23: coupon.CouponCms.ListMileStone:output_type -> coupon.ListMileStoneResponse
+	22, // 24: coupon.CouponCms.DeleteMileStone:output_type -> google.protobuf.Empty
+	22, // 25: coupon.CouponCms.ConfirmCouponUsage:output_type -> google.protobuf.Empty
+	20, // [20:26] is the sub-list for method output_type
+	14, // [14:20] is the sub-list for method input_type
 	14, // [14:14] is the sub-list for extension type_name
 	14, // [14:14] is the sub-list for extension extendee
 	0,  // [0:14] is the sub-list for field type_name
@@ -1379,18 +1544,18 @@ func file_coupon_api_coupon_proto_init() {
 	if File_coupon_api_coupon_proto != nil {
 		return
 	}
+	file_coupon_api_coupon_proto_msgTypes[1].OneofWrappers = []any{}
+	file_coupon_api_coupon_proto_msgTypes[2].OneofWrappers = []any{}
 	file_coupon_api_coupon_proto_msgTypes[3].OneofWrappers = []any{}
-	file_coupon_api_coupon_proto_msgTypes[4].OneofWrappers = []any{}
 	file_coupon_api_coupon_proto_msgTypes[5].OneofWrappers = []any{}
-	file_coupon_api_coupon_proto_msgTypes[7].OneofWrappers = []any{}
-	file_coupon_api_coupon_proto_msgTypes[14].OneofWrappers = []any{}
+	file_coupon_api_coupon_proto_msgTypes[15].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_coupon_api_coupon_proto_rawDesc), len(file_coupon_api_coupon_proto_rawDesc)),
-			NumEnums:      4,
-			NumMessages:   15,
+			NumEnums:      5,
+			NumMessages:   16,
 			NumExtensions: 0,
 			NumServices:   2,
 		},

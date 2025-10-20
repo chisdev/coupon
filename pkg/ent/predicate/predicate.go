@@ -9,6 +9,9 @@ import (
 // Coupon is the predicate function for entcoupon builders.
 type Coupon func(*sql.Selector)
 
+// CouponBooking is the predicate function for couponbooking builders.
+type CouponBooking func(*sql.Selector)
+
 // Currency is the predicate function for currency builders.
 type Currency func(*sql.Selector)
 

@@ -107,20 +107,10 @@ func UsageLimit(v int32) predicate.Coupon {
 	return predicate.Coupon(sql.FieldEQ(FieldUsageLimit, v))
 }
 
-// UsedCount applies equality check predicate on the "used_count" field. It's identical to UsedCountEQ.
-func UsedCount(v int32) predicate.Coupon {
-	return predicate.Coupon(sql.FieldEQ(FieldUsedCount, v))
-}
-
 // Status applies equality check predicate on the "status" field. It's identical to StatusEQ.
 func Status(v coupon.CouponStatus) predicate.Coupon {
 	vc := int32(v)
 	return predicate.Coupon(sql.FieldEQ(FieldStatus, vc))
-}
-
-// ReservedCount applies equality check predicate on the "reserved_count" field. It's identical to ReservedCountEQ.
-func ReservedCount(v int32) predicate.Coupon {
-	return predicate.Coupon(sql.FieldEQ(FieldReservedCount, v))
 }
 
 // CreatedAtEQ applies the EQ predicate on the "created_at" field.
@@ -622,46 +612,6 @@ func UsageLimitLTE(v int32) predicate.Coupon {
 	return predicate.Coupon(sql.FieldLTE(FieldUsageLimit, v))
 }
 
-// UsedCountEQ applies the EQ predicate on the "used_count" field.
-func UsedCountEQ(v int32) predicate.Coupon {
-	return predicate.Coupon(sql.FieldEQ(FieldUsedCount, v))
-}
-
-// UsedCountNEQ applies the NEQ predicate on the "used_count" field.
-func UsedCountNEQ(v int32) predicate.Coupon {
-	return predicate.Coupon(sql.FieldNEQ(FieldUsedCount, v))
-}
-
-// UsedCountIn applies the In predicate on the "used_count" field.
-func UsedCountIn(vs ...int32) predicate.Coupon {
-	return predicate.Coupon(sql.FieldIn(FieldUsedCount, vs...))
-}
-
-// UsedCountNotIn applies the NotIn predicate on the "used_count" field.
-func UsedCountNotIn(vs ...int32) predicate.Coupon {
-	return predicate.Coupon(sql.FieldNotIn(FieldUsedCount, vs...))
-}
-
-// UsedCountGT applies the GT predicate on the "used_count" field.
-func UsedCountGT(v int32) predicate.Coupon {
-	return predicate.Coupon(sql.FieldGT(FieldUsedCount, v))
-}
-
-// UsedCountGTE applies the GTE predicate on the "used_count" field.
-func UsedCountGTE(v int32) predicate.Coupon {
-	return predicate.Coupon(sql.FieldGTE(FieldUsedCount, v))
-}
-
-// UsedCountLT applies the LT predicate on the "used_count" field.
-func UsedCountLT(v int32) predicate.Coupon {
-	return predicate.Coupon(sql.FieldLT(FieldUsedCount, v))
-}
-
-// UsedCountLTE applies the LTE predicate on the "used_count" field.
-func UsedCountLTE(v int32) predicate.Coupon {
-	return predicate.Coupon(sql.FieldLTE(FieldUsedCount, v))
-}
-
 // StatusEQ applies the EQ predicate on the "status" field.
 func StatusEQ(v coupon.CouponStatus) predicate.Coupon {
 	vc := int32(v)
@@ -716,46 +666,6 @@ func StatusLTE(v coupon.CouponStatus) predicate.Coupon {
 	return predicate.Coupon(sql.FieldLTE(FieldStatus, vc))
 }
 
-// ReservedCountEQ applies the EQ predicate on the "reserved_count" field.
-func ReservedCountEQ(v int32) predicate.Coupon {
-	return predicate.Coupon(sql.FieldEQ(FieldReservedCount, v))
-}
-
-// ReservedCountNEQ applies the NEQ predicate on the "reserved_count" field.
-func ReservedCountNEQ(v int32) predicate.Coupon {
-	return predicate.Coupon(sql.FieldNEQ(FieldReservedCount, v))
-}
-
-// ReservedCountIn applies the In predicate on the "reserved_count" field.
-func ReservedCountIn(vs ...int32) predicate.Coupon {
-	return predicate.Coupon(sql.FieldIn(FieldReservedCount, vs...))
-}
-
-// ReservedCountNotIn applies the NotIn predicate on the "reserved_count" field.
-func ReservedCountNotIn(vs ...int32) predicate.Coupon {
-	return predicate.Coupon(sql.FieldNotIn(FieldReservedCount, vs...))
-}
-
-// ReservedCountGT applies the GT predicate on the "reserved_count" field.
-func ReservedCountGT(v int32) predicate.Coupon {
-	return predicate.Coupon(sql.FieldGT(FieldReservedCount, v))
-}
-
-// ReservedCountGTE applies the GTE predicate on the "reserved_count" field.
-func ReservedCountGTE(v int32) predicate.Coupon {
-	return predicate.Coupon(sql.FieldGTE(FieldReservedCount, v))
-}
-
-// ReservedCountLT applies the LT predicate on the "reserved_count" field.
-func ReservedCountLT(v int32) predicate.Coupon {
-	return predicate.Coupon(sql.FieldLT(FieldReservedCount, v))
-}
-
-// ReservedCountLTE applies the LTE predicate on the "reserved_count" field.
-func ReservedCountLTE(v int32) predicate.Coupon {
-	return predicate.Coupon(sql.FieldLTE(FieldReservedCount, v))
-}
-
 // HasCurrency applies the HasEdge predicate on the "currency" edge.
 func HasCurrency() predicate.Coupon {
 	return predicate.Coupon(func(s *sql.Selector) {
@@ -771,6 +681,29 @@ func HasCurrency() predicate.Coupon {
 func HasCurrencyWith(preds ...predicate.Currency) predicate.Coupon {
 	return predicate.Coupon(func(s *sql.Selector) {
 		step := newCurrencyStep()
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasCouponBookings applies the HasEdge predicate on the "coupon_bookings" edge.
+func HasCouponBookings() predicate.Coupon {
+	return predicate.Coupon(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, CouponBookingsTable, CouponBookingsColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasCouponBookingsWith applies the HasEdge predicate on the "coupon_bookings" edge with a given conditions (other predicates).
+func HasCouponBookingsWith(preds ...predicate.CouponBooking) predicate.Coupon {
+	return predicate.Coupon(func(s *sql.Selector) {
+		step := newCouponBookingsStep()
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {
 				p(s)

@@ -1,0 +1,522 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api/coupon.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "Coupon"
+    },
+    {
+      "name": "CouponCms"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/coupon/reserve": {
+      "post": {
+        "operationId": "Coupon_ReserveCoupon",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/couponReserveCouponRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Coupon"
+        ]
+      }
+    },
+    "/coupon/unreserve": {
+      "post": {
+        "operationId": "Coupon_UnReserveCoupon",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/couponUnReserveCouponRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Coupon"
+        ]
+      }
+    },
+    "/couponcms/confirm-usage": {
+      "post": {
+        "operationId": "CouponCms_ConfirmCouponUsage",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/couponConfirmCouponUsageRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CouponCms"
+        ]
+      }
+    },
+    "/couponcms/milestone": {
+      "get": {
+        "operationId": "CouponCms_ListMileStone",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/couponListMileStoneResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "pageIndex",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "CouponCms"
+        ]
+      },
+      "post": {
+        "summary": "Milestone API",
+        "operationId": "CouponCms_CreateMileStone",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/couponCreateMileStoneResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/couponCreateMileStoneRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CouponCms"
+        ]
+      }
+    },
+    "/couponcms/milestone/delete": {
+      "post": {
+        "operationId": "CouponCms_DeleteMileStone",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/couponDeleteMileStoneRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CouponCms"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "CreateMileStoneRequestMilestoneReward": {
+      "type": "object",
+      "properties": {
+        "couponValue": {
+          "type": "number",
+          "format": "double"
+        },
+        "expiredDuration": {
+          "type": "number",
+          "format": "double"
+        },
+        "currencyId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "usageLimit": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "milestoneId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "serviceIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uint64"
+          }
+        }
+      }
+    },
+    "couponConfirmCouponUsageRequest": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "bookingId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "couponCouponType": {
+      "type": "string",
+      "enum": [
+        "COUPON_TYPE_UNKNOWN",
+        "COUPON_TYPE_PERCENTAGE",
+        "COUPON_TYPE_FIXED"
+      ],
+      "default": "COUPON_TYPE_UNKNOWN"
+    },
+    "couponCreateMileStoneRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "threshold": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "step": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "rewards": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/CreateMileStoneRequestMilestoneReward"
+          }
+        }
+      }
+    },
+    "couponCreateMileStoneResponse": {
+      "type": "object",
+      "properties": {
+        "milestone": {
+          "$ref": "#/definitions/couponMilestone"
+        }
+      }
+    },
+    "couponDeleteMileStoneRequest": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uint64"
+          }
+        }
+      }
+    },
+    "couponListMileStoneRequest": {
+      "type": "object",
+      "properties": {
+        "pageIndex": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "sortMethods": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/couponSortMethod"
+          }
+        }
+      }
+    },
+    "couponListMileStoneResponse": {
+      "type": "object",
+      "properties": {
+        "milestones": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/couponMilestone"
+          }
+        },
+        "totalCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalPages": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "request": {
+          "$ref": "#/definitions/couponListMileStoneRequest"
+        }
+      }
+    },
+    "couponMilestone": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "type": {
+          "$ref": "#/definitions/couponMilestoneType"
+        },
+        "threshold": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "step": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "storeId": {
+          "type": "string"
+        },
+        "rewards": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/couponReward"
+          }
+        }
+      }
+    },
+    "couponMilestoneType": {
+      "type": "string",
+      "enum": [
+        "MILESTONE_TYPE_UNKNOWN",
+        "MILESTONE_TYPE_FIXED",
+        "MILESTONE_TYPE_RECURRING"
+      ],
+      "default": "MILESTONE_TYPE_UNKNOWN"
+    },
+    "couponReserveCouponRequest": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "bookingId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "serviceIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uint64"
+          }
+        }
+      }
+    },
+    "couponReward": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "couponValue": {
+          "type": "number",
+          "format": "double"
+        },
+        "expiredDuration": {
+          "type": "number",
+          "format": "double"
+        },
+        "currencyId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "usageLimit": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "milestoneId": {
+          "type": "string",
+          "format": "uint64"
+        },
+        "couponType": {
+          "$ref": "#/definitions/couponCouponType"
+        },
+        "serviceIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uint64"
+          }
+        }
+      }
+    },
+    "couponSortMethod": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/couponSortType"
+        }
+      }
+    },
+    "couponSortType": {
+      "type": "string",
+      "enum": [
+        "SORT_TYPE_UNKNOWN",
+        "SORT_TYPE_ASC",
+        "SORT_TYPE_DESC"
+      ],
+      "default": "SORT_TYPE_UNKNOWN"
+    },
+    "couponUnReserveCouponRequest": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "bookingId": {
+          "type": "string",
+          "format": "uint64"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  }
+}

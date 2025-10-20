@@ -20,14 +20,16 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Coupon_HealCheck_FullMethodName = "/coupon.Coupon/HealCheck"
+	Coupon_ReserveCoupon_FullMethodName   = "/coupon.Coupon/ReserveCoupon"
+	Coupon_UnReserveCoupon_FullMethodName = "/coupon.Coupon/UnReserveCoupon"
 )
 
 // CouponClient is the client API for Coupon service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CouponClient interface {
-	HealCheck(ctx context.Context, in *HealCheckRequest, opts ...grpc.CallOption) (*HealCheckResponse, error)
+	ReserveCoupon(ctx context.Context, in *ReserveCouponRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	UnReserveCoupon(ctx context.Context, in *UnReserveCouponRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type couponClient struct {
@@ -38,10 +40,20 @@ func NewCouponClient(cc grpc.ClientConnInterface) CouponClient {
 	return &couponClient{cc}
 }
 
-func (c *couponClient) HealCheck(ctx context.Context, in *HealCheckRequest, opts ...grpc.CallOption) (*HealCheckResponse, error) {
+func (c *couponClient) ReserveCoupon(ctx context.Context, in *ReserveCouponRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(HealCheckResponse)
-	err := c.cc.Invoke(ctx, Coupon_HealCheck_FullMethodName, in, out, cOpts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Coupon_ReserveCoupon_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *couponClient) UnReserveCoupon(ctx context.Context, in *UnReserveCouponRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Coupon_UnReserveCoupon_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +64,8 @@ func (c *couponClient) HealCheck(ctx context.Context, in *HealCheckRequest, opts
 // All implementations must embed UnimplementedCouponServer
 // for forward compatibility.
 type CouponServer interface {
-	HealCheck(context.Context, *HealCheckRequest) (*HealCheckResponse, error)
+	ReserveCoupon(context.Context, *ReserveCouponRequest) (*emptypb.Empty, error)
+	UnReserveCoupon(context.Context, *UnReserveCouponRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedCouponServer()
 }
 
@@ -63,8 +76,11 @@ type CouponServer interface {
 // pointer dereference when methods are called.
 type UnimplementedCouponServer struct{}
 
-func (UnimplementedCouponServer) HealCheck(context.Context, *HealCheckRequest) (*HealCheckResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method HealCheck not implemented")
+func (UnimplementedCouponServer) ReserveCoupon(context.Context, *ReserveCouponRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReserveCoupon not implemented")
+}
+func (UnimplementedCouponServer) UnReserveCoupon(context.Context, *UnReserveCouponRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UnReserveCoupon not implemented")
 }
 func (UnimplementedCouponServer) mustEmbedUnimplementedCouponServer() {}
 func (UnimplementedCouponServer) testEmbeddedByValue()                {}
@@ -87,20 +103,38 @@ func RegisterCouponServer(s grpc.ServiceRegistrar, srv CouponServer) {
 	s.RegisterService(&Coupon_ServiceDesc, srv)
 }
 
-func _Coupon_HealCheck_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HealCheckRequest)
+func _Coupon_ReserveCoupon_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ReserveCouponRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CouponServer).HealCheck(ctx, in)
+		return srv.(CouponServer).ReserveCoupon(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Coupon_HealCheck_FullMethodName,
+		FullMethod: Coupon_ReserveCoupon_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CouponServer).HealCheck(ctx, req.(*HealCheckRequest))
+		return srv.(CouponServer).ReserveCoupon(ctx, req.(*ReserveCouponRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Coupon_UnReserveCoupon_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UnReserveCouponRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CouponServer).UnReserveCoupon(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coupon_UnReserveCoupon_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CouponServer).UnReserveCoupon(ctx, req.(*UnReserveCouponRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -113,8 +147,12 @@ var Coupon_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*CouponServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "HealCheck",
-			Handler:    _Coupon_HealCheck_Handler,
+			MethodName: "ReserveCoupon",
+			Handler:    _Coupon_ReserveCoupon_Handler,
+		},
+		{
+			MethodName: "UnReserveCoupon",
+			Handler:    _Coupon_UnReserveCoupon_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -122,9 +160,10 @@ var Coupon_ServiceDesc = grpc.ServiceDesc{
 }
 
 const (
-	CouponCms_CreateMileStone_FullMethodName = "/coupon.CouponCms/CreateMileStone"
-	CouponCms_ListMileStone_FullMethodName   = "/coupon.CouponCms/ListMileStone"
-	CouponCms_DeleteMileStone_FullMethodName = "/coupon.CouponCms/DeleteMileStone"
+	CouponCms_CreateMileStone_FullMethodName    = "/coupon.CouponCms/CreateMileStone"
+	CouponCms_ListMileStone_FullMethodName      = "/coupon.CouponCms/ListMileStone"
+	CouponCms_DeleteMileStone_FullMethodName    = "/coupon.CouponCms/DeleteMileStone"
+	CouponCms_ConfirmCouponUsage_FullMethodName = "/coupon.CouponCms/ConfirmCouponUsage"
 )
 
 // CouponCmsClient is the client API for CouponCms service.
@@ -134,9 +173,8 @@ type CouponCmsClient interface {
 	// Milestone API
 	CreateMileStone(ctx context.Context, in *CreateMileStoneRequest, opts ...grpc.CallOption) (*CreateMileStoneResponse, error)
 	ListMileStone(ctx context.Context, in *ListMileStoneRequest, opts ...grpc.CallOption) (*ListMileStoneResponse, error)
-	// rpc UpdateMileStone (UpdateMileStoneRequest) returns (UpdateMileStoneResponse);
-	// rpc ListMileStone   (ListMileStoneRequest) returns (ListMileStoneResponse);
 	DeleteMileStone(ctx context.Context, in *DeleteMileStoneRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	ConfirmCouponUsage(ctx context.Context, in *ConfirmCouponUsageRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type couponCmsClient struct {
@@ -177,6 +215,16 @@ func (c *couponCmsClient) DeleteMileStone(ctx context.Context, in *DeleteMileSto
 	return out, nil
 }
 
+func (c *couponCmsClient) ConfirmCouponUsage(ctx context.Context, in *ConfirmCouponUsageRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, CouponCms_ConfirmCouponUsage_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CouponCmsServer is the server API for CouponCms service.
 // All implementations must embed UnimplementedCouponCmsServer
 // for forward compatibility.
@@ -184,9 +232,8 @@ type CouponCmsServer interface {
 	// Milestone API
 	CreateMileStone(context.Context, *CreateMileStoneRequest) (*CreateMileStoneResponse, error)
 	ListMileStone(context.Context, *ListMileStoneRequest) (*ListMileStoneResponse, error)
-	// rpc UpdateMileStone (UpdateMileStoneRequest) returns (UpdateMileStoneResponse);
-	// rpc ListMileStone   (ListMileStoneRequest) returns (ListMileStoneResponse);
 	DeleteMileStone(context.Context, *DeleteMileStoneRequest) (*emptypb.Empty, error)
+	ConfirmCouponUsage(context.Context, *ConfirmCouponUsageRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedCouponCmsServer()
 }
 
@@ -205,6 +252,9 @@ func (UnimplementedCouponCmsServer) ListMileStone(context.Context, *ListMileSton
 }
 func (UnimplementedCouponCmsServer) DeleteMileStone(context.Context, *DeleteMileStoneRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteMileStone not implemented")
+}
+func (UnimplementedCouponCmsServer) ConfirmCouponUsage(context.Context, *ConfirmCouponUsageRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ConfirmCouponUsage not implemented")
 }
 func (UnimplementedCouponCmsServer) mustEmbedUnimplementedCouponCmsServer() {}
 func (UnimplementedCouponCmsServer) testEmbeddedByValue()                   {}
@@ -281,6 +331,24 @@ func _CouponCms_DeleteMileStone_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CouponCms_ConfirmCouponUsage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConfirmCouponUsageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CouponCmsServer).ConfirmCouponUsage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CouponCms_ConfirmCouponUsage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CouponCmsServer).ConfirmCouponUsage(ctx, req.(*ConfirmCouponUsageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CouponCms_ServiceDesc is the grpc.ServiceDesc for CouponCms service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -299,6 +367,10 @@ var CouponCms_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteMileStone",
 			Handler:    _CouponCms_DeleteMileStone_Handler,
+		},
+		{
+			MethodName: "ConfirmCouponUsage",
+			Handler:    _CouponCms_ConfirmCouponUsage_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

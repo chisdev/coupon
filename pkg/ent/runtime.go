@@ -6,6 +6,7 @@ import (
 	"time"
 
 	entcoupon "github.com/chisdev/coupon/pkg/ent/coupon"
+	"github.com/chisdev/coupon/pkg/ent/couponbooking"
 	"github.com/chisdev/coupon/pkg/ent/currency"
 	"github.com/chisdev/coupon/pkg/ent/milestone"
 	"github.com/chisdev/coupon/pkg/ent/progress"
@@ -48,14 +49,21 @@ func init() {
 	entcouponDescUsageLimit := entcouponFields[8].Descriptor()
 	// entcoupon.DefaultUsageLimit holds the default value on creation for the usage_limit field.
 	entcoupon.DefaultUsageLimit = entcouponDescUsageLimit.Default.(int32)
-	// entcouponDescUsedCount is the schema descriptor for used_count field.
-	entcouponDescUsedCount := entcouponFields[9].Descriptor()
-	// entcoupon.DefaultUsedCount holds the default value on creation for the used_count field.
-	entcoupon.DefaultUsedCount = entcouponDescUsedCount.Default.(int32)
-	// entcouponDescReservedCount is the schema descriptor for reserved_count field.
-	entcouponDescReservedCount := entcouponFields[11].Descriptor()
-	// entcoupon.DefaultReservedCount holds the default value on creation for the reserved_count field.
-	entcoupon.DefaultReservedCount = entcouponDescReservedCount.Default.(int32)
+	couponbookingMixin := schema.CouponBooking{}.Mixin()
+	couponbookingMixinFields0 := couponbookingMixin[0].Fields()
+	_ = couponbookingMixinFields0
+	couponbookingFields := schema.CouponBooking{}.Fields()
+	_ = couponbookingFields
+	// couponbookingDescCreatedAt is the schema descriptor for created_at field.
+	couponbookingDescCreatedAt := couponbookingMixinFields0[1].Descriptor()
+	// couponbooking.DefaultCreatedAt holds the default value on creation for the created_at field.
+	couponbooking.DefaultCreatedAt = couponbookingDescCreatedAt.Default.(func() time.Time)
+	// couponbookingDescUpdatedAt is the schema descriptor for updated_at field.
+	couponbookingDescUpdatedAt := couponbookingMixinFields0[2].Descriptor()
+	// couponbooking.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	couponbooking.DefaultUpdatedAt = couponbookingDescUpdatedAt.Default.(func() time.Time)
+	// couponbooking.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	couponbooking.UpdateDefaultUpdatedAt = couponbookingDescUpdatedAt.UpdateDefault.(func() time.Time)
 	currencyMixin := schema.Currency{}.Mixin()
 	currencyMixinFields0 := currencyMixin[0].Fields()
 	_ = currencyMixinFields0
