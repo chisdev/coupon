@@ -444,8 +444,6 @@ func (m *StoreCoupon) validate(all bool) error {
 
 	// no validation rules for Status
 
-	// no validation rules for UsageLimit
-
 	// no validation rules for UsedCount
 
 	// no validation rules for ReservedCount
@@ -523,6 +521,10 @@ func (m *StoreCoupon) validate(all bool) error {
 
 	if m.CurrencyId != nil {
 		// no validation rules for CurrencyId
+	}
+
+	if m.UsageLimit != nil {
+		// no validation rules for UsageLimit
 	}
 
 	if len(errors) > 0 {
@@ -628,8 +630,76 @@ func (m *CouponUsage) validate(all bool) error {
 
 	// no validation rules for BookingId
 
+	// no validation rules for Status
+
 	if m.CustomerId != nil {
 		// no validation rules for CustomerId
+	}
+
+	if m.ReservedAt != nil {
+
+		if all {
+			switch v := interface{}(m.GetReservedAt()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CouponUsageValidationError{
+						field:  "ReservedAt",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CouponUsageValidationError{
+						field:  "ReservedAt",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetReservedAt()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CouponUsageValidationError{
+					field:  "ReservedAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if m.UsedAt != nil {
+
+		if all {
+			switch v := interface{}(m.GetUsedAt()).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, CouponUsageValidationError{
+						field:  "UsedAt",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, CouponUsageValidationError{
+						field:  "UsedAt",
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(m.GetUsedAt()).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return CouponUsageValidationError{
+					field:  "UsedAt",
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
 	}
 
 	if len(errors) > 0 {
@@ -2230,6 +2300,335 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = AddPointRequestValidationError{}
+
+// Validate checks the field values on ListCouponRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *ListCouponRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListCouponRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListCouponRequestMultiError, or nil if none found.
+func (m *ListCouponRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListCouponRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if m.GetPageIndex() < 0 {
+		err := ListCouponRequestValidationError{
+			field:  "PageIndex",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	if m.GetPageSize() < 0 {
+		err := ListCouponRequestValidationError{
+			field:  "PageSize",
+			reason: "value must be greater than or equal to 0",
+		}
+		if !all {
+			return err
+		}
+		errors = append(errors, err)
+	}
+
+	for idx, item := range m.GetSortMethods() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListCouponRequestValidationError{
+						field:  fmt.Sprintf("SortMethods[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListCouponRequestValidationError{
+						field:  fmt.Sprintf("SortMethods[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListCouponRequestValidationError{
+					field:  fmt.Sprintf("SortMethods[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for Status
+
+	if len(errors) > 0 {
+		return ListCouponRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListCouponRequestMultiError is an error wrapping multiple validation errors
+// returned by ListCouponRequest.ValidateAll() if the designated constraints
+// aren't met.
+type ListCouponRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListCouponRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListCouponRequestMultiError) AllErrors() []error { return m }
+
+// ListCouponRequestValidationError is the validation error returned by
+// ListCouponRequest.Validate if the designated constraints aren't met.
+type ListCouponRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListCouponRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListCouponRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListCouponRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListCouponRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListCouponRequestValidationError) ErrorName() string {
+	return "ListCouponRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListCouponRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListCouponRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListCouponRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListCouponRequestValidationError{}
+
+// Validate checks the field values on ListCouponResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListCouponResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListCouponResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListCouponResponseMultiError, or nil if none found.
+func (m *ListCouponResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListCouponResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetCoupons() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListCouponResponseValidationError{
+						field:  fmt.Sprintf("Coupons[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListCouponResponseValidationError{
+						field:  fmt.Sprintf("Coupons[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListCouponResponseValidationError{
+					field:  fmt.Sprintf("Coupons[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for TotalCount
+
+	// no validation rules for TotalPages
+
+	if all {
+		switch v := interface{}(m.GetRequest()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ListCouponResponseValidationError{
+					field:  "Request",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ListCouponResponseValidationError{
+					field:  "Request",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetRequest()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ListCouponResponseValidationError{
+				field:  "Request",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ListCouponResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListCouponResponseMultiError is an error wrapping multiple validation errors
+// returned by ListCouponResponse.ValidateAll() if the designated constraints
+// aren't met.
+type ListCouponResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListCouponResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListCouponResponseMultiError) AllErrors() []error { return m }
+
+// ListCouponResponseValidationError is the validation error returned by
+// ListCouponResponse.Validate if the designated constraints aren't met.
+type ListCouponResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListCouponResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListCouponResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListCouponResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListCouponResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListCouponResponseValidationError) ErrorName() string {
+	return "ListCouponResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListCouponResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListCouponResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListCouponResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListCouponResponseValidationError{}
 
 // Validate checks the field values on CreateMileStoneRequest_MilestoneReward
 // with the rules defined in the proto definition for this message. If any

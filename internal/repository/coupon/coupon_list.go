@@ -62,6 +62,10 @@ func (c *coupon) List(ctx context.Context, opts ...Option) ([]*ent.Coupon, int32
 		totalPage = paging.GetPagingData(int32(totalCount), couponOpts.Limit)
 	}
 
+	if couponOpts.WithUsage {
+		query = query.WithCouponBookings()
+	}
+
 	entCoupons, err := query.All(ctx)
 	if err != nil {
 		return nil, 0, 0, err

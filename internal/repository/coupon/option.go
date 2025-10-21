@@ -7,20 +7,19 @@ import (
 )
 
 type CouponOpts struct {
-	Code          string
-	UserIDs       []string
-	StoreIDs      []string
-	ExpiredAt     *time.Time
-	Limit         int32
-	PageIndex     int32
-	UsageLimit    int32
-	UsageCount    int32
-	ReservedCount int32
-	Status        api.CouponStatus
-	Type          api.CouponType
-	CurrencyID    *uint64
-	ServiceIds    []string
-	SortMethods   []*api.SortMethod
+	Code        string
+	UserIDs     []string
+	StoreIDs    []string
+	ExpiredAt   *time.Time
+	Limit       int32
+	PageIndex   int32
+	UsageLimit  *int32
+	Status      api.CouponStatus
+	Type        api.CouponType
+	CurrencyID  *uint64
+	ServiceIds  []string
+	SortMethods []*api.SortMethod
+	WithUsage   bool
 }
 
 type Option interface {
@@ -64,7 +63,7 @@ func WithCode(code string) Option {
 	})
 }
 
-func WithUsageLimit(usageLimit int32) Option {
+func WithUsageLimit(usageLimit *int32) Option {
 	return funcOption(func(co *CouponOpts) {
 		co.UsageLimit = usageLimit
 	})
@@ -88,20 +87,20 @@ func WithCurrencyID(currencyID *uint64) Option {
 	})
 }
 
-func WithReservedCount(reservedCount int32) Option {
-	return funcOption(func(co *CouponOpts) {
-		co.ReservedCount = reservedCount
-	})
-}
-
-func WithUsageCount(usageCount int32) Option {
-	return funcOption(func(co *CouponOpts) {
-		co.UsageCount = usageCount
-	})
-}
-
 func WithServiceIds(serviceIds []string) Option {
 	return funcOption(func(co *CouponOpts) {
 		co.ServiceIds = serviceIds
+	})
+}
+
+func WithUsage(withUsage bool) Option {
+	return funcOption(func(co *CouponOpts) {
+		co.WithUsage = withUsage
+	})
+}
+
+func WithSortMethods(sortMethods []*api.SortMethod) Option {
+	return funcOption(func(co *CouponOpts) {
+		co.SortMethods = sortMethods
 	})
 }

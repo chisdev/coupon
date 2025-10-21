@@ -12,6 +12,7 @@ type Coupon interface {
 	ConfirmUsage(ctx context.Context, req *api.ConfirmCouponUsageRequest) error
 	Reserve(ctx context.Context, req *api.ReserveCouponRequest) error
 	UnReserve(ctx context.Context, req *api.UnReserveCouponRequest) error
+	ListCoupons(ctx context.Context, request *api.ListCouponRequest) (*api.ListCouponResponse, error)
 }
 
 type coupon struct {

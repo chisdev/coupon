@@ -11,6 +11,7 @@ type Coupon interface {
 	Get(ctx context.Context, opts ...Option) (*ent.Coupon, error)
 	List(ctx context.Context, opts ...Option) ([]*ent.Coupon, int32, int32, error)
 	Create(ctx context.Context, value float64, opts ...Option) error
+	CreateTx(ctx context.Context, tx tx.Tx, value float64, opts ...Option) error
 	Update(ctx context.Context, tx tx.Tx, id uint64, opts ...Option) error
 	Delete(ctx context.Context, tx tx.Tx, opts ...Option) error
 }

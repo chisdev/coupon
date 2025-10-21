@@ -27,6 +27,7 @@ type Extractor interface {
 	GetXTotalWithdraw(ctx context.Context) string
 	GetAppID(ctx context.Context) string
 	GetStoreID(ctx context.Context) string
+	GetCustomerID(ctx context.Context) (string, bool)
 }
 
 type extractor struct {
@@ -144,4 +145,13 @@ func (t *extractor) GetAppID(ctx context.Context) string {
 
 func (t *extractor) GetStoreID(ctx context.Context) string {
 	return t.GetFirst(ctx, XStoreID)
+}
+
+func (t *extractor) GetCustomerID(ctx context.Context) (string, bool) {
+	values := t.Get(ctx, UserID)
+	if len(values) == 0 || values[0] == "" {
+		return "", false
+	}
+
+	return values[0], true
 }

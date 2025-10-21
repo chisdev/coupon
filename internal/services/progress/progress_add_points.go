@@ -3,8 +3,10 @@ package progress
 import (
 	"context"
 	"errors"
+	"time"
 
 	coupon "github.com/chisdev/coupon/api"
+	couponrepo "github.com/chisdev/coupon/internal/repository/coupon"
 	"github.com/chisdev/coupon/internal/repository/milestone"
 	"github.com/chisdev/coupon/internal/utiils/tx"
 	"github.com/chisdev/coupon/pkg/ent"
@@ -13,7 +15,9 @@ import (
 func (p *progress) AddPoints(ctx context.Context, req *coupon.AddPointRequest) error {
 	return tx.WithTransaction(ctx, p.repository.GetEntClient(), func(ctx context.Context, tx tx.Tx) error {
 
-		eMilestones, _, _, err := p.repository.MileStoneRepository.ListTx(ctx, tx, milestone.WithStoreIDs([]string{req.String()}))
+		eMilestones, _, _, err := p.repository.MileStoneRepository.ListTx(ctx, tx,
+			milestone.WithStoreIDs([]string{req.String()}),
+			milestone.WithReward(true))
 		if err != nil && !ent.IsNotFound(err) {
 			return err
 		}
@@ -38,8 +42,27 @@ func (p *progress) AddPoints(ctx context.Context, req *coupon.AddPointRequest) e
 
 			pass := (req.Points + cusPro.Progress) / goal
 			for range pass {
-				//Implement flow create coupon here
-				println("pass test")
+
+				for _, reward := range m.Edges.Reward {
+					opts := []couponrepo.Option{
+						couponrepo.WithUserIDs([]string{req.CustomerId}),
+						couponrepo.WithStoreIDs([]string{m.StoreID}),
+						couponrepo.WithType(reward.CouponType),
+						couponrepo.WithCurrencyID(reward.CurrencyID),
+						couponrepo.WithUsageLimit(reward.UsageLimit),
+					}
+
+					if reward.ExpiredDuration != nil {
+						expiredAt := time.Now().Add(time.Duration(*reward.ExpiredDuration * float64(time.Second)))
+						opts = append(opts, couponrepo.WithExpiredAt(&expiredAt))
+					}
+
+					if err := p.repository.CouponRepository.CreateTx(ctx, tx, reward.CouponValue,
+						opts...,
+					); err != nil {
+						return err
+					}
+				}
 			}
 
 			cusPro.PassCount += pass

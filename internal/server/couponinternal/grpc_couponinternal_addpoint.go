@@ -5,7 +5,7 @@ import (
 
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	"github.com/chisdev/coupon/api"
+	coupon "github.com/chisdev/coupon/api"
 )
 
 func (s *couponInternalServer) AddPoint(ctx context.Context, request *coupon.AddPointRequest) (*emptypb.Empty, error) {

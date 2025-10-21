@@ -10,9 +10,13 @@ import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
 
 service Coupon {
+    rpc ListCoupon (ListCouponRequest) returns (ListCouponResponse) {
+        option (google.api.http) = {
+            get: "/coupon/list"
+        };
+    };
+
 }
-
-
 
 service CouponCms {
     // Milestone API
@@ -36,19 +40,6 @@ service CouponCms {
             body: "*"   
         };
     };
-
-
-
-
-
-
-    // rpc UpdateMileStone (UpdateMileStoneRequest) returns (UpdateMileStoneResponse);
-
-    // Coupon API
-    // rpc CreateCoupon (CreateCouponRequest) returns (CreateCouponResponse);
-    // rpc ListCoupon (ListCouponRequest) returns (ListCouponResponse);
-    // rpc DelteCoupon (DelteCouponRequest) returns (DelteCouponResponse);
-    // rpc UpdateCoupon (UpdateCouponRequest) returns (UpdateCouponResponse);
 
 }
 
@@ -146,11 +137,11 @@ message StoreCoupon {
     string store_id = 3;
     optional google.protobuf.Timestamp expired_at = 4;
     optional string customer_id = 5;
-    repeated uint64 service_ids = 6;
+    repeated string service_ids = 6;
     optional uint64 currency_id = 7;
     CouponType coupon_type = 8;
     CouponStatus status = 9;
-    int32 usage_limit = 10;
+    optional int32 usage_limit = 10;
     int32 used_count = 11;
     int32 reserved_count = 12;
     repeated CouponUsage coupon_usages = 13;
@@ -162,6 +153,9 @@ message CouponUsage {
     string booking_id = 2;
     repeated  string service_ids = 3;
     optional string customer_id = 4;
+    CouponUsedStatus status = 5;
+    optional google.protobuf.Timestamp reserved_at = 6;
+    optional google.protobuf.Timestamp used_at = 7;
 }
 
 
@@ -236,4 +230,20 @@ message AddPointRequest {
     int32 points = 1;
     string customer_id = 2;
     string store_id = 3;
+}
+
+message ListCouponRequest {
+    int32 page_index = 1 [(validate.rules).int32 = {gte: 0}];
+    int32 page_size = 2 [(validate.rules).int32 = {gte: 0}];
+    repeated SortMethod sort_methods = 3;
+    repeated string store_id = 4;
+    repeated string service_ids = 5;
+    CouponStatus status = 6;
+}
+
+message ListCouponResponse {
+    repeated StoreCoupon coupons = 1;
+    int32 total_count = 2;
+    int32 total_pages = 3;
+    ListCouponRequest request = 4;
 }
