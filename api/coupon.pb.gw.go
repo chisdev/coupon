@@ -327,7 +327,7 @@ func RegisterCouponInternalHandlerServer(ctx context.Context, mux *runtime.Serve
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.CouponInternal/ConfirmCouponUsage", runtime.WithHTTPPathPattern("/couponcms/confirm-usage"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.CouponInternal/ConfirmCouponUsage", runtime.WithHTTPPathPattern("/couponint/confirm-usage"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -521,7 +521,7 @@ func RegisterCouponInternalHandlerClient(ctx context.Context, mux *runtime.Serve
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.CouponInternal/ConfirmCouponUsage", runtime.WithHTTPPathPattern("/couponcms/confirm-usage"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.CouponInternal/ConfirmCouponUsage", runtime.WithHTTPPathPattern("/couponint/confirm-usage"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -540,7 +540,7 @@ func RegisterCouponInternalHandlerClient(ctx context.Context, mux *runtime.Serve
 var (
 	pattern_CouponInternal_ReserveCoupon_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"couponint", "reserve"}, ""))
 	pattern_CouponInternal_UnReserveCoupon_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"couponint", "unreserve"}, ""))
-	pattern_CouponInternal_ConfirmCouponUsage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"couponcms", "confirm-usage"}, ""))
+	pattern_CouponInternal_ConfirmCouponUsage_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"couponint", "confirm-usage"}, ""))
 )
 
 var (

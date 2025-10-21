@@ -647,7 +647,7 @@ func (m *CouponMutation) UsageLimit() (r int32, exists bool) {
 // OldUsageLimit returns the old "usage_limit" field's value of the Coupon entity.
 // If the Coupon object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponMutation) OldUsageLimit(ctx context.Context) (v int32, err error) {
+func (m *CouponMutation) OldUsageLimit(ctx context.Context) (v *int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldUsageLimit is only allowed on UpdateOne operations")
 	}
@@ -679,10 +679,24 @@ func (m *CouponMutation) AddedUsageLimit() (r int32, exists bool) {
 	return *v, true
 }
 
+// ClearUsageLimit clears the value of the "usage_limit" field.
+func (m *CouponMutation) ClearUsageLimit() {
+	m.usage_limit = nil
+	m.addusage_limit = nil
+	m.clearedFields[entcoupon.FieldUsageLimit] = struct{}{}
+}
+
+// UsageLimitCleared returns if the "usage_limit" field was cleared in this mutation.
+func (m *CouponMutation) UsageLimitCleared() bool {
+	_, ok := m.clearedFields[entcoupon.FieldUsageLimit]
+	return ok
+}
+
 // ResetUsageLimit resets all changes to the "usage_limit" field.
 func (m *CouponMutation) ResetUsageLimit() {
 	m.usage_limit = nil
 	m.addusage_limit = nil
+	delete(m.clearedFields, entcoupon.FieldUsageLimit)
 }
 
 // SetStatus sets the "status" field.
@@ -1141,6 +1155,9 @@ func (m *CouponMutation) ClearedFields() []string {
 	if m.FieldCleared(entcoupon.FieldCurrencyID) {
 		fields = append(fields, entcoupon.FieldCurrencyID)
 	}
+	if m.FieldCleared(entcoupon.FieldUsageLimit) {
+		fields = append(fields, entcoupon.FieldUsageLimit)
+	}
 	return fields
 }
 
@@ -1163,6 +1180,9 @@ func (m *CouponMutation) ClearField(name string) error {
 		return nil
 	case entcoupon.FieldCurrencyID:
 		m.ClearCurrencyID()
+		return nil
+	case entcoupon.FieldUsageLimit:
+		m.ClearUsageLimit()
 		return nil
 	}
 	return fmt.Errorf("unknown Coupon nullable field %s", name)
@@ -1708,7 +1728,7 @@ func (m *CouponBookingMutation) CustomerID() (r string, exists bool) {
 // OldCustomerID returns the old "customer_id" field's value of the CouponBooking entity.
 // If the CouponBooking object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *CouponBookingMutation) OldCustomerID(ctx context.Context) (v string, err error) {
+func (m *CouponBookingMutation) OldCustomerID(ctx context.Context) (v *string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldCustomerID is only allowed on UpdateOne operations")
 	}
@@ -1722,9 +1742,22 @@ func (m *CouponBookingMutation) OldCustomerID(ctx context.Context) (v string, er
 	return oldValue.CustomerID, nil
 }
 
+// ClearCustomerID clears the value of the "customer_id" field.
+func (m *CouponBookingMutation) ClearCustomerID() {
+	m.customer_id = nil
+	m.clearedFields[couponbooking.FieldCustomerID] = struct{}{}
+}
+
+// CustomerIDCleared returns if the "customer_id" field was cleared in this mutation.
+func (m *CouponBookingMutation) CustomerIDCleared() bool {
+	_, ok := m.clearedFields[couponbooking.FieldCustomerID]
+	return ok
+}
+
 // ResetCustomerID resets all changes to the "customer_id" field.
 func (m *CouponBookingMutation) ResetCustomerID() {
 	m.customer_id = nil
+	delete(m.clearedFields, couponbooking.FieldCustomerID)
 }
 
 // ClearCoupon clears the "coupon" edge to the Coupon entity.
@@ -1957,7 +1990,11 @@ func (m *CouponBookingMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *CouponBookingMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(couponbooking.FieldCustomerID) {
+		fields = append(fields, couponbooking.FieldCustomerID)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -1970,6 +2007,11 @@ func (m *CouponBookingMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *CouponBookingMutation) ClearField(name string) error {
+	switch name {
+	case couponbooking.FieldCustomerID:
+		m.ClearCustomerID()
+		return nil
+	}
 	return fmt.Errorf("unknown CouponBooking nullable field %s", name)
 }
 
@@ -4932,7 +4974,7 @@ func (m *RewardMutation) UsageLimit() (r int32, exists bool) {
 // OldUsageLimit returns the old "usage_limit" field's value of the Reward entity.
 // If the Reward object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *RewardMutation) OldUsageLimit(ctx context.Context) (v int32, err error) {
+func (m *RewardMutation) OldUsageLimit(ctx context.Context) (v *int32, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldUsageLimit is only allowed on UpdateOne operations")
 	}
@@ -4964,10 +5006,24 @@ func (m *RewardMutation) AddedUsageLimit() (r int32, exists bool) {
 	return *v, true
 }
 
+// ClearUsageLimit clears the value of the "usage_limit" field.
+func (m *RewardMutation) ClearUsageLimit() {
+	m.usage_limit = nil
+	m.addusage_limit = nil
+	m.clearedFields[reward.FieldUsageLimit] = struct{}{}
+}
+
+// UsageLimitCleared returns if the "usage_limit" field was cleared in this mutation.
+func (m *RewardMutation) UsageLimitCleared() bool {
+	_, ok := m.clearedFields[reward.FieldUsageLimit]
+	return ok
+}
+
 // ResetUsageLimit resets all changes to the "usage_limit" field.
 func (m *RewardMutation) ResetUsageLimit() {
 	m.usage_limit = nil
 	m.addusage_limit = nil
+	delete(m.clearedFields, reward.FieldUsageLimit)
 }
 
 // SetCouponValue sets the "coupon_value" field.
@@ -5354,6 +5410,9 @@ func (m *RewardMutation) ClearedFields() []string {
 	if m.FieldCleared(reward.FieldCurrencyID) {
 		fields = append(fields, reward.FieldCurrencyID)
 	}
+	if m.FieldCleared(reward.FieldUsageLimit) {
+		fields = append(fields, reward.FieldUsageLimit)
+	}
 	return fields
 }
 
@@ -5373,6 +5432,9 @@ func (m *RewardMutation) ClearField(name string) error {
 		return nil
 	case reward.FieldCurrencyID:
 		m.ClearCurrencyID()
+		return nil
+	case reward.FieldUsageLimit:
+		m.ClearUsageLimit()
 		return nil
 	}
 	return fmt.Errorf("unknown Reward nullable field %s", name)

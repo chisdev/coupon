@@ -154,6 +154,12 @@ func (_u *RewardUpdate) AddUsageLimit(v int32) *RewardUpdate {
 	return _u
 }
 
+// ClearUsageLimit clears the value of the "usage_limit" field.
+func (_u *RewardUpdate) ClearUsageLimit() *RewardUpdate {
+	_u.mutation.ClearUsageLimit()
+	return _u
+}
+
 // SetCouponValue sets the "coupon_value" field.
 func (_u *RewardUpdate) SetCouponValue(v float64) *RewardUpdate {
 	_u.mutation.ResetCouponValue()
@@ -295,6 +301,9 @@ func (_u *RewardUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	}
 	if value, ok := _u.mutation.AddedUsageLimit(); ok {
 		_spec.AddField(reward.FieldUsageLimit, field.TypeInt32, value)
+	}
+	if _u.mutation.UsageLimitCleared() {
+		_spec.ClearField(reward.FieldUsageLimit, field.TypeInt32)
 	}
 	if value, ok := _u.mutation.CouponValue(); ok {
 		_spec.SetField(reward.FieldCouponValue, field.TypeFloat64, value)
@@ -503,6 +512,12 @@ func (_u *RewardUpdateOne) AddUsageLimit(v int32) *RewardUpdateOne {
 	return _u
 }
 
+// ClearUsageLimit clears the value of the "usage_limit" field.
+func (_u *RewardUpdateOne) ClearUsageLimit() *RewardUpdateOne {
+	_u.mutation.ClearUsageLimit()
+	return _u
+}
+
 // SetCouponValue sets the "coupon_value" field.
 func (_u *RewardUpdateOne) SetCouponValue(v float64) *RewardUpdateOne {
 	_u.mutation.ResetCouponValue()
@@ -674,6 +689,9 @@ func (_u *RewardUpdateOne) sqlSave(ctx context.Context) (_node *Reward, err erro
 	}
 	if value, ok := _u.mutation.AddedUsageLimit(); ok {
 		_spec.AddField(reward.FieldUsageLimit, field.TypeInt32, value)
+	}
+	if _u.mutation.UsageLimitCleared() {
+		_spec.ClearField(reward.FieldUsageLimit, field.TypeInt32)
 	}
 	if value, ok := _u.mutation.CouponValue(); ok {
 		_spec.SetField(reward.FieldCouponValue, field.TypeFloat64, value)

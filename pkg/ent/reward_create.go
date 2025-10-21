@@ -190,10 +190,6 @@ func (_c *RewardCreate) defaults() {
 		v := reward.DefaultServiceIds
 		_c.mutation.SetServiceIds(v)
 	}
-	if _, ok := _c.mutation.UsageLimit(); !ok {
-		v := reward.DefaultUsageLimit
-		_c.mutation.SetUsageLimit(v)
-	}
 	if _, ok := _c.mutation.CouponValue(); !ok {
 		v := reward.DefaultCouponValue
 		_c.mutation.SetCouponValue(v)
@@ -216,9 +212,6 @@ func (_c *RewardCreate) check() error {
 	}
 	if _, ok := _c.mutation.CouponType(); !ok {
 		return &ValidationError{Name: "coupon_type", err: errors.New(`ent: missing required field "Reward.coupon_type"`)}
-	}
-	if _, ok := _c.mutation.UsageLimit(); !ok {
-		return &ValidationError{Name: "usage_limit", err: errors.New(`ent: missing required field "Reward.usage_limit"`)}
 	}
 	if _, ok := _c.mutation.CouponValue(); !ok {
 		return &ValidationError{Name: "coupon_value", err: errors.New(`ent: missing required field "Reward.coupon_value"`)}
@@ -281,7 +274,7 @@ func (_c *RewardCreate) createSpec() (*Reward, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := _c.mutation.UsageLimit(); ok {
 		_spec.SetField(reward.FieldUsageLimit, field.TypeInt32, value)
-		_node.UsageLimit = value
+		_node.UsageLimit = &value
 	}
 	if value, ok := _c.mutation.CouponValue(); ok {
 		_spec.SetField(reward.FieldCouponValue, field.TypeFloat64, value)
@@ -487,6 +480,12 @@ func (u *RewardUpsert) AddUsageLimit(v int32) *RewardUpsert {
 	return u
 }
 
+// ClearUsageLimit clears the value of the "usage_limit" field.
+func (u *RewardUpsert) ClearUsageLimit() *RewardUpsert {
+	u.SetNull(reward.FieldUsageLimit)
+	return u
+}
+
 // SetCouponValue sets the "coupon_value" field.
 func (u *RewardUpsert) SetCouponValue(v float64) *RewardUpsert {
 	u.Set(reward.FieldCouponValue, v)
@@ -686,6 +685,13 @@ func (u *RewardUpsertOne) AddUsageLimit(v int32) *RewardUpsertOne {
 func (u *RewardUpsertOne) UpdateUsageLimit() *RewardUpsertOne {
 	return u.Update(func(s *RewardUpsert) {
 		s.UpdateUsageLimit()
+	})
+}
+
+// ClearUsageLimit clears the value of the "usage_limit" field.
+func (u *RewardUpsertOne) ClearUsageLimit() *RewardUpsertOne {
+	return u.Update(func(s *RewardUpsert) {
+		s.ClearUsageLimit()
 	})
 }
 
@@ -1057,6 +1063,13 @@ func (u *RewardUpsertBulk) AddUsageLimit(v int32) *RewardUpsertBulk {
 func (u *RewardUpsertBulk) UpdateUsageLimit() *RewardUpsertBulk {
 	return u.Update(func(s *RewardUpsert) {
 		s.UpdateUsageLimit()
+	})
+}
+
+// ClearUsageLimit clears the value of the "usage_limit" field.
+func (u *RewardUpsertBulk) ClearUsageLimit() *RewardUpsertBulk {
+	return u.Update(func(s *RewardUpsert) {
+		s.ClearUsageLimit()
 	})
 }
 

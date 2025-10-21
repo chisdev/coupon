@@ -226,10 +226,6 @@ func (_c *CouponCreate) defaults() {
 		v := entcoupon.DefaultValue
 		_c.mutation.SetValue(v)
 	}
-	if _, ok := _c.mutation.UsageLimit(); !ok {
-		v := entcoupon.DefaultUsageLimit
-		_c.mutation.SetUsageLimit(v)
-	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -259,9 +255,6 @@ func (_c *CouponCreate) check() error {
 	}
 	if _, ok := _c.mutation.GetType(); !ok {
 		return &ValidationError{Name: "type", err: errors.New(`ent: missing required field "Coupon.type"`)}
-	}
-	if _, ok := _c.mutation.UsageLimit(); !ok {
-		return &ValidationError{Name: "usage_limit", err: errors.New(`ent: missing required field "Coupon.usage_limit"`)}
 	}
 	if _, ok := _c.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "Coupon.status"`)}
@@ -337,7 +330,7 @@ func (_c *CouponCreate) createSpec() (*Coupon, *sqlgraph.CreateSpec) {
 	}
 	if value, ok := _c.mutation.UsageLimit(); ok {
 		_spec.SetField(entcoupon.FieldUsageLimit, field.TypeInt32, value)
-		_node.UsageLimit = value
+		_node.UsageLimit = &value
 	}
 	if value, ok := _c.mutation.Status(); ok {
 		_spec.SetField(entcoupon.FieldStatus, field.TypeInt32, value)
@@ -581,6 +574,12 @@ func (u *CouponUpsert) UpdateUsageLimit() *CouponUpsert {
 // AddUsageLimit adds v to the "usage_limit" field.
 func (u *CouponUpsert) AddUsageLimit(v int32) *CouponUpsert {
 	u.Add(entcoupon.FieldUsageLimit, v)
+	return u
+}
+
+// ClearUsageLimit clears the value of the "usage_limit" field.
+func (u *CouponUpsert) ClearUsageLimit() *CouponUpsert {
+	u.SetNull(entcoupon.FieldUsageLimit)
 	return u
 }
 
@@ -832,6 +831,13 @@ func (u *CouponUpsertOne) AddUsageLimit(v int32) *CouponUpsertOne {
 func (u *CouponUpsertOne) UpdateUsageLimit() *CouponUpsertOne {
 	return u.Update(func(s *CouponUpsert) {
 		s.UpdateUsageLimit()
+	})
+}
+
+// ClearUsageLimit clears the value of the "usage_limit" field.
+func (u *CouponUpsertOne) ClearUsageLimit() *CouponUpsertOne {
+	return u.Update(func(s *CouponUpsert) {
+		s.ClearUsageLimit()
 	})
 }
 
@@ -1252,6 +1258,13 @@ func (u *CouponUpsertBulk) AddUsageLimit(v int32) *CouponUpsertBulk {
 func (u *CouponUpsertBulk) UpdateUsageLimit() *CouponUpsertBulk {
 	return u.Update(func(s *CouponUpsert) {
 		s.UpdateUsageLimit()
+	})
+}
+
+// ClearUsageLimit clears the value of the "usage_limit" field.
+func (u *CouponUpsertBulk) ClearUsageLimit() *CouponUpsertBulk {
+	return u.Update(func(s *CouponUpsert) {
+		s.ClearUsageLimit()
 	})
 }
 

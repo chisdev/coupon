@@ -41,10 +41,6 @@ func init() {
 	entcouponDescStoreID := entcouponFields[2].Descriptor()
 	// entcoupon.StoreIDValidator is a validator for the "store_id" field. It is called by the builders before save.
 	entcoupon.StoreIDValidator = entcouponDescStoreID.Validators[0].(func(string) error)
-	// entcouponDescUsageLimit is the schema descriptor for usage_limit field.
-	entcouponDescUsageLimit := entcouponFields[8].Descriptor()
-	// entcoupon.DefaultUsageLimit holds the default value on creation for the usage_limit field.
-	entcoupon.DefaultUsageLimit = entcouponDescUsageLimit.Default.(int32)
 	couponbookingMixin := schema.CouponBooking{}.Mixin()
 	couponbookingMixinFields0 := couponbookingMixin[0].Fields()
 	_ = couponbookingMixinFields0
@@ -144,10 +140,6 @@ func init() {
 	rewardDescServiceIds := rewardFields[2].Descriptor()
 	// reward.DefaultServiceIds holds the default value on creation for the service_ids field.
 	reward.DefaultServiceIds = rewardDescServiceIds.Default.([]uint64)
-	// rewardDescUsageLimit is the schema descriptor for usage_limit field.
-	rewardDescUsageLimit := rewardFields[5].Descriptor()
-	// reward.DefaultUsageLimit holds the default value on creation for the usage_limit field.
-	reward.DefaultUsageLimit = rewardDescUsageLimit.Default.(int32)
 	// rewardDescCouponValue is the schema descriptor for coupon_value field.
 	rewardDescCouponValue := rewardFields[6].Descriptor()
 	// reward.DefaultCouponValue holds the default value on creation for the coupon_value field.

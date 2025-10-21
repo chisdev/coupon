@@ -8,7 +8,7 @@ import (
 )
 
 type CouponBooking interface {
-	Create(ctx context.Context, storeId, couponCode, bookingID, userID string, serviceIds []string) error
+	Create(ctx context.Context, storeId, couponCode, bookingID string, customerID *string, serviceIds []string) error
 	UpdateStatus(ctx context.Context, storeId, customerID, couponCode, bookingID string, status coupon.CouponUsedStatus) error
 	UpdateStatusV2(ctx context.Context, storeId, bookingID string, status, newStatus coupon.CouponUsedStatus) error
 	Delete(ctx context.Context, storeId, couponCode, bookingID, userID string) error

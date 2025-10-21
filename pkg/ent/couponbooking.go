@@ -33,7 +33,7 @@ type CouponBooking struct {
 	// ServiceIds holds the value of the "service_ids" field.
 	ServiceIds []string `json:"service_ids,omitempty"`
 	// CustomerID holds the value of the "customer_id" field.
-	CustomerID string `json:"customer_id,omitempty"`
+	CustomerID *string `json:"customer_id,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the CouponBookingQuery when eager-loading is set.
 	Edges        CouponBookingEdges `json:"edges"`
@@ -136,7 +136,8 @@ func (_m *CouponBooking) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field customer_id", values[i])
 			} else if value.Valid {
-				_m.CustomerID = value.String
+				_m.CustomerID = new(string)
+				*_m.CustomerID = value.String
 			}
 		default:
 			_m.selectValues.Set(columns[i], values[i])
@@ -197,8 +198,10 @@ func (_m *CouponBooking) String() string {
 	builder.WriteString("service_ids=")
 	builder.WriteString(fmt.Sprintf("%v", _m.ServiceIds))
 	builder.WriteString(", ")
-	builder.WriteString("customer_id=")
-	builder.WriteString(_m.CustomerID)
+	if v := _m.CustomerID; v != nil {
+		builder.WriteString("customer_id=")
+		builder.WriteString(*v)
+	}
 	builder.WriteByte(')')
 	return builder.String()
 }

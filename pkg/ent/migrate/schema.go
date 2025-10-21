@@ -20,7 +20,7 @@ var (
 		{Name: "customer_id", Type: field.TypeString, Nullable: true},
 		{Name: "service_ids", Type: field.TypeJSON},
 		{Name: "type", Type: field.TypeInt32},
-		{Name: "usage_limit", Type: field.TypeInt32, Default: 1},
+		{Name: "usage_limit", Type: field.TypeInt32, Nullable: true},
 		{Name: "status", Type: field.TypeInt32},
 		{Name: "currency_id", Type: field.TypeUint64, Nullable: true},
 	}
@@ -46,7 +46,7 @@ var (
 		{Name: "booking_id", Type: field.TypeString},
 		{Name: "status", Type: field.TypeInt32},
 		{Name: "service_ids", Type: field.TypeJSON},
-		{Name: "customer_id", Type: field.TypeString},
+		{Name: "customer_id", Type: field.TypeString, Nullable: true},
 		{Name: "coupon_id", Type: field.TypeUint64},
 	}
 	// CouponBookingsTable holds the schema information for the "coupon_bookings" table.
@@ -126,7 +126,7 @@ var (
 		{Name: "expired_duration", Type: field.TypeFloat64, Nullable: true},
 		{Name: "service_ids", Type: field.TypeJSON},
 		{Name: "coupon_type", Type: field.TypeInt32},
-		{Name: "usage_limit", Type: field.TypeInt32, Default: 1},
+		{Name: "usage_limit", Type: field.TypeInt32, Nullable: true},
 		{Name: "coupon_value", Type: field.TypeFloat64, Default: 0},
 		{Name: "currency_id", Type: field.TypeUint64, Nullable: true},
 		{Name: "milestone_id", Type: field.TypeUint64},

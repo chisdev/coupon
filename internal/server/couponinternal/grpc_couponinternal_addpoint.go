@@ -5,10 +5,10 @@ import (
 
 	"google.golang.org/protobuf/types/known/emptypb"
 
-	coupon "github.com/chisdev/coupon/api"
+	"github.com/chisdev/coupon/api"
 )
 
-func (s *couponInternalServer) ConfirmCouponUsage(ctx context.Context, request *coupon.ConfirmCouponUsageRequest) (*emptypb.Empty, error) {
+func (s *couponInternalServer) AddPoint(ctx context.Context, request *coupon.AddPointRequest) (*emptypb.Empty, error) {
 	if err := request.Validate(); err != nil {
 		return nil, err
 	}

@@ -172,8 +172,6 @@ func (m *Reward) validate(all bool) error {
 
 	// no validation rules for CouponValue
 
-	// no validation rules for UsageLimit
-
 	// no validation rules for MilestoneId
 
 	// no validation rules for CouponType
@@ -184,6 +182,10 @@ func (m *Reward) validate(all bool) error {
 
 	if m.CurrencyId != nil {
 		// no validation rules for CurrencyId
+	}
+
+	if m.UsageLimit != nil {
+		// no validation rules for UsageLimit
 	}
 
 	if len(errors) > 0 {
@@ -448,6 +450,40 @@ func (m *StoreCoupon) validate(all bool) error {
 
 	// no validation rules for ReservedCount
 
+	for idx, item := range m.GetCouponUsages() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, StoreCouponValidationError{
+						field:  fmt.Sprintf("CouponUsages[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, StoreCouponValidationError{
+						field:  fmt.Sprintf("CouponUsages[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return StoreCouponValidationError{
+					field:  fmt.Sprintf("CouponUsages[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
 	if m.ExpiredAt != nil {
 
 		if all {
@@ -565,6 +601,113 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = StoreCouponValidationError{}
+
+// Validate checks the field values on CouponUsage with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *CouponUsage) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CouponUsage with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in CouponUsageMultiError, or
+// nil if none found.
+func (m *CouponUsage) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CouponUsage) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for BookingId
+
+	if m.CustomerId != nil {
+		// no validation rules for CustomerId
+	}
+
+	if len(errors) > 0 {
+		return CouponUsageMultiError(errors)
+	}
+
+	return nil
+}
+
+// CouponUsageMultiError is an error wrapping multiple validation errors
+// returned by CouponUsage.ValidateAll() if the designated constraints aren't met.
+type CouponUsageMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CouponUsageMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CouponUsageMultiError) AllErrors() []error { return m }
+
+// CouponUsageValidationError is the validation error returned by
+// CouponUsage.Validate if the designated constraints aren't met.
+type CouponUsageValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CouponUsageValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CouponUsageValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CouponUsageValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CouponUsageValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CouponUsageValidationError) ErrorName() string { return "CouponUsageValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CouponUsageValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCouponUsage.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CouponUsageValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CouponUsageValidationError{}
 
 // Validate checks the field values on MilestoneProgress with the rules defined
 // in the proto definition for this message. If any rules are violated, the
@@ -1684,9 +1827,11 @@ func (m *ReserveCouponRequest) validate(all bool) error {
 
 	// no validation rules for BookingId
 
-	// no validation rules for CustomerId
-
 	// no validation rules for StoreId
+
+	if m.CustomerId != nil {
+		// no validation rules for CustomerId
+	}
 
 	if len(errors) > 0 {
 		return ReserveCouponRequestMultiError(errors)
@@ -1979,6 +2124,112 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ConfirmCouponUsageRequestValidationError{}
+
+// Validate checks the field values on AddPointRequest with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// first error encountered is returned, or nil if there are no violations.
+func (m *AddPointRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AddPointRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// AddPointRequestMultiError, or nil if none found.
+func (m *AddPointRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AddPointRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Points
+
+	// no validation rules for CustomerId
+
+	// no validation rules for StoreId
+
+	if len(errors) > 0 {
+		return AddPointRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// AddPointRequestMultiError is an error wrapping multiple validation errors
+// returned by AddPointRequest.ValidateAll() if the designated constraints
+// aren't met.
+type AddPointRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AddPointRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AddPointRequestMultiError) AllErrors() []error { return m }
+
+// AddPointRequestValidationError is the validation error returned by
+// AddPointRequest.Validate if the designated constraints aren't met.
+type AddPointRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AddPointRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AddPointRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AddPointRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AddPointRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AddPointRequestValidationError) ErrorName() string { return "AddPointRequestValidationError" }
+
+// Error satisfies the builtin error interface
+func (e AddPointRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAddPointRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AddPointRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AddPointRequestValidationError{}
 
 // Validate checks the field values on CreateMileStoneRequest_MilestoneReward
 // with the rules defined in the proto definition for this message. If any

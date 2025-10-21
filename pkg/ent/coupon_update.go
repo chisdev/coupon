@@ -202,6 +202,12 @@ func (_u *CouponUpdate) AddUsageLimit(v int32) *CouponUpdate {
 	return _u
 }
 
+// ClearUsageLimit clears the value of the "usage_limit" field.
+func (_u *CouponUpdate) ClearUsageLimit() *CouponUpdate {
+	_u.mutation.ClearUsageLimit()
+	return _u
+}
+
 // SetStatus sets the "status" field.
 func (_u *CouponUpdate) SetStatus(v coupon.CouponStatus) *CouponUpdate {
 	_u.mutation.ResetStatus()
@@ -385,6 +391,9 @@ func (_u *CouponUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 	}
 	if value, ok := _u.mutation.AddedUsageLimit(); ok {
 		_spec.AddField(entcoupon.FieldUsageLimit, field.TypeInt32, value)
+	}
+	if _u.mutation.UsageLimitCleared() {
+		_spec.ClearField(entcoupon.FieldUsageLimit, field.TypeInt32)
 	}
 	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(entcoupon.FieldStatus, field.TypeInt32, value)
@@ -657,6 +666,12 @@ func (_u *CouponUpdateOne) AddUsageLimit(v int32) *CouponUpdateOne {
 	return _u
 }
 
+// ClearUsageLimit clears the value of the "usage_limit" field.
+func (_u *CouponUpdateOne) ClearUsageLimit() *CouponUpdateOne {
+	_u.mutation.ClearUsageLimit()
+	return _u
+}
+
 // SetStatus sets the "status" field.
 func (_u *CouponUpdateOne) SetStatus(v coupon.CouponStatus) *CouponUpdateOne {
 	_u.mutation.ResetStatus()
@@ -870,6 +885,9 @@ func (_u *CouponUpdateOne) sqlSave(ctx context.Context) (_node *Coupon, err erro
 	}
 	if value, ok := _u.mutation.AddedUsageLimit(); ok {
 		_spec.AddField(entcoupon.FieldUsageLimit, field.TypeInt32, value)
+	}
+	if _u.mutation.UsageLimitCleared() {
+		_spec.ClearField(entcoupon.FieldUsageLimit, field.TypeInt32)
 	}
 	if value, ok := _u.mutation.Status(); ok {
 		_spec.SetField(entcoupon.FieldStatus, field.TypeInt32, value)

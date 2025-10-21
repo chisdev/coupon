@@ -87,8 +87,6 @@ var (
 	UpdateDefaultUpdatedAt func() time.Time
 	// DefaultServiceIds holds the default value on creation for the "service_ids" field.
 	DefaultServiceIds []uint64
-	// DefaultUsageLimit holds the default value on creation for the "usage_limit" field.
-	DefaultUsageLimit int32
 	// DefaultCouponValue holds the default value on creation for the "coupon_value" field.
 	DefaultCouponValue float64
 )

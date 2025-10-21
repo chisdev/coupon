@@ -612,6 +612,16 @@ func UsageLimitLTE(v int32) predicate.Coupon {
 	return predicate.Coupon(sql.FieldLTE(FieldUsageLimit, v))
 }
 
+// UsageLimitIsNil applies the IsNil predicate on the "usage_limit" field.
+func UsageLimitIsNil() predicate.Coupon {
+	return predicate.Coupon(sql.FieldIsNull(FieldUsageLimit))
+}
+
+// UsageLimitNotNil applies the NotNil predicate on the "usage_limit" field.
+func UsageLimitNotNil() predicate.Coupon {
+	return predicate.Coupon(sql.FieldNotNull(FieldUsageLimit))
+}
+
 // StatusEQ applies the EQ predicate on the "status" field.
 func StatusEQ(v coupon.CouponStatus) predicate.Coupon {
 	vc := int32(v)

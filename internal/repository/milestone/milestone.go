@@ -11,6 +11,8 @@ type Milestone interface {
 	Create(ctx context.Context, tx tx.Tx, storeID string, opts ...Option) (*ent.Milestone, error)
 	Delete(ctx context.Context, tx tx.Tx, storeID string, ids []uint64) error
 	List(ctx context.Context, opts ...Option) ([]*ent.Milestone, int32, int32, error)
+	ListIdsTx(ctx context.Context, tx tx.Tx, opts ...Option) ([]uint64, error)
+	ListTx(ctx context.Context, tx tx.Tx, opts ...Option) ([]*ent.Milestone, int32, int32, error)
 	Update(ctx context.Context, tx tx.Tx, id uint64, opts ...Option) error
 }
 

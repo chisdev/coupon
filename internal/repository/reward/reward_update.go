@@ -24,7 +24,7 @@ func (r *reward) Update(ctx context.Context, tx tx.Tx, id uint64, opts ...Option
 		reward.CouponValue = opt.CouponValue
 	}
 
-	if opt.UsageLimit > 1 && reward.UsageLimit != opt.UsageLimit {
+	if opt.UsageLimit != nil {
 		reward.UsageLimit = opt.UsageLimit
 	}
 

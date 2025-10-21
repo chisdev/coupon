@@ -18,6 +18,7 @@ func (m *milestone) ListMileStone(ctx context.Context, req *coupon.ListMileStone
 
 	opts = append(opts, milestonerepo.WithStoreIDs([]string{storeId}))
 	opts = append(opts, milestonerepo.WithSortMethods(req.SortMethods))
+	opts = append(opts, milestonerepo.WithReward(true))
 
 	if req.PageSize != 0 {
 		opts = append(opts, milestonerepo.WithPaging(req.PageSize, req.PageIndex))

@@ -28,7 +28,7 @@ func (Coupon) Fields() []ent.Field {
 		field.Strings("service_ids"),
 		field.Int32("type").GoType(coupon.CouponType(1)),
 		field.Uint64("currency_id").Optional(),
-		field.Int32("usage_limit").Default(1),
+		field.Int32("usage_limit").Optional().Nillable(),
 		field.Int32("status").GoType(coupon.CouponStatus(0)),
 	}
 }

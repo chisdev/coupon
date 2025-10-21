@@ -13,6 +13,7 @@ type MilestoneOption struct {
 	MilestoneType coupon.MilestoneType
 	StoreIDs      []string
 	SortMethods   []*coupon.SortMethod
+	WithReward    bool
 }
 
 type Option interface {
@@ -65,5 +66,11 @@ func WithPaging(limit, pageIndex int32) Option {
 	return funcOption(func(mo *MilestoneOption) {
 		mo.Limit = limit
 		mo.PageIndex = pageIndex
+	})
+}
+
+func WithReward(withReward bool) Option {
+	return funcOption(func(mo *MilestoneOption) {
+		mo.WithReward = withReward
 	})
 }

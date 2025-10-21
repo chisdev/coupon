@@ -263,6 +263,7 @@ const (
 	CouponInternal_ReserveCoupon_FullMethodName      = "/coupon.CouponInternal/ReserveCoupon"
 	CouponInternal_UnReserveCoupon_FullMethodName    = "/coupon.CouponInternal/UnReserveCoupon"
 	CouponInternal_ConfirmCouponUsage_FullMethodName = "/coupon.CouponInternal/ConfirmCouponUsage"
+	CouponInternal_AddPoint_FullMethodName           = "/coupon.CouponInternal/AddPoint"
 )
 
 // CouponInternalClient is the client API for CouponInternal service.
@@ -272,6 +273,7 @@ type CouponInternalClient interface {
 	ReserveCoupon(ctx context.Context, in *ReserveCouponRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	UnReserveCoupon(ctx context.Context, in *UnReserveCouponRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	ConfirmCouponUsage(ctx context.Context, in *ConfirmCouponUsageRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	AddPoint(ctx context.Context, in *AddPointRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type couponInternalClient struct {
@@ -312,6 +314,16 @@ func (c *couponInternalClient) ConfirmCouponUsage(ctx context.Context, in *Confi
 	return out, nil
 }
 
+func (c *couponInternalClient) AddPoint(ctx context.Context, in *AddPointRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, CouponInternal_AddPoint_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CouponInternalServer is the server API for CouponInternal service.
 // All implementations must embed UnimplementedCouponInternalServer
 // for forward compatibility.
@@ -319,6 +331,7 @@ type CouponInternalServer interface {
 	ReserveCoupon(context.Context, *ReserveCouponRequest) (*emptypb.Empty, error)
 	UnReserveCoupon(context.Context, *UnReserveCouponRequest) (*emptypb.Empty, error)
 	ConfirmCouponUsage(context.Context, *ConfirmCouponUsageRequest) (*emptypb.Empty, error)
+	AddPoint(context.Context, *AddPointRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedCouponInternalServer()
 }
 
@@ -337,6 +350,9 @@ func (UnimplementedCouponInternalServer) UnReserveCoupon(context.Context, *UnRes
 }
 func (UnimplementedCouponInternalServer) ConfirmCouponUsage(context.Context, *ConfirmCouponUsageRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ConfirmCouponUsage not implemented")
+}
+func (UnimplementedCouponInternalServer) AddPoint(context.Context, *AddPointRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddPoint not implemented")
 }
 func (UnimplementedCouponInternalServer) mustEmbedUnimplementedCouponInternalServer() {}
 func (UnimplementedCouponInternalServer) testEmbeddedByValue()                        {}
@@ -413,6 +429,24 @@ func _CouponInternal_ConfirmCouponUsage_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _CouponInternal_AddPoint_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddPointRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CouponInternalServer).AddPoint(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: CouponInternal_AddPoint_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CouponInternalServer).AddPoint(ctx, req.(*AddPointRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // CouponInternal_ServiceDesc is the grpc.ServiceDesc for CouponInternal service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -431,6 +465,10 @@ var CouponInternal_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ConfirmCouponUsage",
 			Handler:    _CouponInternal_ConfirmCouponUsage_Handler,
+		},
+		{
+			MethodName: "AddPoint",
+			Handler:    _CouponInternal_AddPoint_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

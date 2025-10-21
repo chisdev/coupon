@@ -371,6 +371,16 @@ func UsageLimitLTE(v int32) predicate.Reward {
 	return predicate.Reward(sql.FieldLTE(FieldUsageLimit, v))
 }
 
+// UsageLimitIsNil applies the IsNil predicate on the "usage_limit" field.
+func UsageLimitIsNil() predicate.Reward {
+	return predicate.Reward(sql.FieldIsNull(FieldUsageLimit))
+}
+
+// UsageLimitNotNil applies the NotNil predicate on the "usage_limit" field.
+func UsageLimitNotNil() predicate.Reward {
+	return predicate.Reward(sql.FieldNotNull(FieldUsageLimit))
+}
+
 // CouponValueEQ applies the EQ predicate on the "coupon_value" field.
 func CouponValueEQ(v float64) predicate.Reward {
 	return predicate.Reward(sql.FieldEQ(FieldCouponValue, v))

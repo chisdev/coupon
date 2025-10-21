@@ -32,8 +32,8 @@ func (r *reward) Create(ctx context.Context, tx tx.Tx, milestoneID uint64, coupo
 		query = query.SetExpiredDuration(*rOpt.ExpiredDuration)
 	}
 
-	if rOpt.UsageLimit > 0 {
-		query = query.SetUsageLimit(rOpt.UsageLimit)
+	if rOpt.UsageLimit != nil && *rOpt.UsageLimit > 1 {
+		query = query.SetUsageLimit(*rOpt.UsageLimit)
 	}
 
 	if len(rOpt.ServiceIds) != 0 {
@@ -54,7 +54,7 @@ func (r *reward) Create(ctx context.Context, tx tx.Tx, milestoneID uint64, coupo
 	return query.Save(ctx)
 }
 
-func (r *reward) CreateBulk(ctx context.Context, tx tx.Tx, entities []*RewardEntity) ([]*ent.Reward, error) {
+func (r *reward) CreateBulk(ctx context.Context, tx tx.Tx, entities []*ent.Reward) ([]*ent.Reward, error) {
 	creates := []*ent.RewardCreate{}
 
 	for _, entity := range entities {

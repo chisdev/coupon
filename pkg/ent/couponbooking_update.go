@@ -113,6 +113,12 @@ func (_u *CouponBookingUpdate) SetNillableCustomerID(v *string) *CouponBookingUp
 	return _u
 }
 
+// ClearCustomerID clears the value of the "customer_id" field.
+func (_u *CouponBookingUpdate) ClearCustomerID() *CouponBookingUpdate {
+	_u.mutation.ClearCustomerID()
+	return _u
+}
+
 // SetCoupon sets the "coupon" edge to the Coupon entity.
 func (_u *CouponBookingUpdate) SetCoupon(v *Coupon) *CouponBookingUpdate {
 	return _u.SetCouponID(v.ID)
@@ -213,6 +219,9 @@ func (_u *CouponBookingUpdate) sqlSave(ctx context.Context) (_node int, err erro
 	}
 	if value, ok := _u.mutation.CustomerID(); ok {
 		_spec.SetField(couponbooking.FieldCustomerID, field.TypeString, value)
+	}
+	if _u.mutation.CustomerIDCleared() {
+		_spec.ClearField(couponbooking.FieldCustomerID, field.TypeString)
 	}
 	if _u.mutation.CouponCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -346,6 +355,12 @@ func (_u *CouponBookingUpdateOne) SetNillableCustomerID(v *string) *CouponBookin
 	return _u
 }
 
+// ClearCustomerID clears the value of the "customer_id" field.
+func (_u *CouponBookingUpdateOne) ClearCustomerID() *CouponBookingUpdateOne {
+	_u.mutation.ClearCustomerID()
+	return _u
+}
+
 // SetCoupon sets the "coupon" edge to the Coupon entity.
 func (_u *CouponBookingUpdateOne) SetCoupon(v *Coupon) *CouponBookingUpdateOne {
 	return _u.SetCouponID(v.ID)
@@ -476,6 +491,9 @@ func (_u *CouponBookingUpdateOne) sqlSave(ctx context.Context) (_node *CouponBoo
 	}
 	if value, ok := _u.mutation.CustomerID(); ok {
 		_spec.SetField(couponbooking.FieldCustomerID, field.TypeString, value)
+	}
+	if _u.mutation.CustomerIDCleared() {
+		_spec.ClearField(couponbooking.FieldCustomerID, field.TypeString)
 	}
 	if _u.mutation.CouponCleared() {
 		edge := &sqlgraph.EdgeSpec{

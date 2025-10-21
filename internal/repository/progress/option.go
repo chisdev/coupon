@@ -3,8 +3,8 @@ package progress
 type ProgrestOption struct {
 	Progress     int32
 	PassCount    int32
-	MilestoneId  uint64
 	MilestoneIds []uint64
+	CustomerIds  []string
 }
 
 type Option interface {
@@ -29,9 +29,9 @@ func WithPassCount(passCount int32) Option {
 	})
 }
 
-func WithMilestoneId(id uint64) Option {
+func WithCustomerIDs(ids []string) Option {
 	return funcOption(func(po *ProgrestOption) {
-		po.MilestoneId = id
+		po.CustomerIds = ids
 	})
 }
 

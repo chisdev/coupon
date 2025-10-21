@@ -98,8 +98,6 @@ var (
 	DefaultValue float64
 	// StoreIDValidator is a validator for the "store_id" field. It is called by the builders before save.
 	StoreIDValidator func(string) error
-	// DefaultUsageLimit holds the default value on creation for the "usage_limit" field.
-	DefaultUsageLimit int32
 )
 
 // OrderOption defines the ordering options for the Coupon queries.

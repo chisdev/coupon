@@ -5,7 +5,6 @@ import (
 
 	coupon "github.com/chisdev/coupon/api"
 	milestonerepo "github.com/chisdev/coupon/internal/repository/milestone"
-	rewardrepo "github.com/chisdev/coupon/internal/repository/reward"
 	"github.com/chisdev/coupon/internal/utiils/convert"
 	"github.com/chisdev/coupon/internal/utiils/tx"
 	"github.com/chisdev/coupon/pkg/ent"
@@ -54,9 +53,9 @@ func (m *milestone) CreateMilestone(ctx context.Context, req *coupon.CreateMileS
 			return err
 		}
 
-		rewardEntities := []*rewardrepo.RewardEntity{}
+		rewardEntities := []*ent.Reward{}
 		for _, reward := range req.Rewards {
-			rewardEntities = append(rewardEntities, &rewardrepo.RewardEntity{
+			rewardEntities = append(rewardEntities, &ent.Reward{
 				MilestoneID:     milestone.ID,
 				ExpiredDuration: reward.ExpiredDuration,
 				CurrencyID:      reward.CurrencyId,

@@ -9,7 +9,7 @@ import (
 
 type Reward interface {
 	Create(ctx context.Context, tx tx.Tx, milestoneID uint64, couponValue float64, opts ...Option) (*ent.Reward, error)
-	CreateBulk(ctx context.Context, tx tx.Tx, entities []*RewardEntity) ([]*ent.Reward, error)
+	CreateBulk(ctx context.Context, tx tx.Tx, entities []*ent.Reward) ([]*ent.Reward, error)
 	Delete(ctx context.Context, tx tx.Tx, opts ...Option) error
 	Update(ctx context.Context, tx tx.Tx, id uint64, opts ...Option) error
 	List(ctx context.Context, milestoneID uint64, opts ...Option) ([]*ent.Reward, error)

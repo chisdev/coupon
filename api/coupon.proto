@@ -10,7 +10,6 @@ import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
 
 service Coupon {
-
 }
 
 
@@ -67,13 +66,15 @@ service CouponInternal {
             body: "*"
         };
     };
-        rpc ConfirmCouponUsage (ConfirmCouponUsageRequest) returns (google.protobuf.Empty) {
+
+    rpc ConfirmCouponUsage (ConfirmCouponUsageRequest) returns (google.protobuf.Empty) {
         option (google.api.http) = {
-            post: "/couponcms/confirm-usage"
+            post: "/couponint/confirm-usage"
             body: "*"
         };
     };
 
+    rpc AddPoint (AddPointRequest) returns (google.protobuf.Empty);
     
 }
 
@@ -124,7 +125,7 @@ message Reward {
     double coupon_value = 2;
     optional double expired_duration = 3;
     optional uint64 currency_id = 4;
-    int32 usage_limit = 5;
+    optional int32 usage_limit = 5;
     uint64 milestone_id = 6;
     CouponType coupon_type = 7;
     repeated uint64 service_ids = 8;
@@ -152,6 +153,15 @@ message StoreCoupon {
     int32 usage_limit = 10;
     int32 used_count = 11;
     int32 reserved_count = 12;
+    repeated CouponUsage coupon_usages = 13;
+
+}
+
+message CouponUsage {
+    uint64 id = 1;
+    string booking_id = 2;
+    repeated  string service_ids = 3;
+    optional string customer_id = 4;
 }
 
 
@@ -208,7 +218,7 @@ message ReserveCouponRequest {
     string code = 1 [(validate.rules).string = {min_len: 1}];
     string booking_id = 2;
     repeated string service_ids = 3;    
-    string customer_id = 4;
+    optional string customer_id = 4;
     string store_id = 6;
 }
 
@@ -220,4 +230,10 @@ message UnReserveCouponRequest {
 message ConfirmCouponUsageRequest {
     string booking_id = 1;
     string store_id = 2;
+}
+
+message AddPointRequest {
+    int32 points = 1;
+    string customer_id = 2;
+    string store_id = 3;
 }

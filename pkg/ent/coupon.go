@@ -41,7 +41,7 @@ type Coupon struct {
 	// CurrencyID holds the value of the "currency_id" field.
 	CurrencyID uint64 `json:"currency_id,omitempty"`
 	// UsageLimit holds the value of the "usage_limit" field.
-	UsageLimit int32 `json:"usage_limit,omitempty"`
+	UsageLimit *int32 `json:"usage_limit,omitempty"`
 	// Status holds the value of the "status" field.
 	Status coupon.CouponStatus `json:"status,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -185,7 +185,8 @@ func (_m *Coupon) assignValues(columns []string, values []any) error {
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field usage_limit", values[i])
 			} else if value.Valid {
-				_m.UsageLimit = int32(value.Int64)
+				_m.UsageLimit = new(int32)
+				*_m.UsageLimit = int32(value.Int64)
 			}
 		case entcoupon.FieldStatus:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
@@ -273,8 +274,10 @@ func (_m *Coupon) String() string {
 	builder.WriteString("currency_id=")
 	builder.WriteString(fmt.Sprintf("%v", _m.CurrencyID))
 	builder.WriteString(", ")
-	builder.WriteString("usage_limit=")
-	builder.WriteString(fmt.Sprintf("%v", _m.UsageLimit))
+	if v := _m.UsageLimit; v != nil {
+		builder.WriteString("usage_limit=")
+		builder.WriteString(fmt.Sprintf("%v", *v))
+	}
 	builder.WriteString(", ")
 	builder.WriteString("status=")
 	builder.WriteString(fmt.Sprintf("%v", _m.Status))

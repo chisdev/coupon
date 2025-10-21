@@ -82,6 +82,14 @@ func (_c *CouponBookingCreate) SetCustomerID(v string) *CouponBookingCreate {
 	return _c
 }
 
+// SetNillableCustomerID sets the "customer_id" field if the given value is not nil.
+func (_c *CouponBookingCreate) SetNillableCustomerID(v *string) *CouponBookingCreate {
+	if v != nil {
+		_c.SetCustomerID(*v)
+	}
+	return _c
+}
+
 // SetID sets the "id" field.
 func (_c *CouponBookingCreate) SetID(v uint64) *CouponBookingCreate {
 	_c.mutation.SetID(v)
@@ -158,9 +166,6 @@ func (_c *CouponBookingCreate) check() error {
 	if _, ok := _c.mutation.ServiceIds(); !ok {
 		return &ValidationError{Name: "service_ids", err: errors.New(`ent: missing required field "CouponBooking.service_ids"`)}
 	}
-	if _, ok := _c.mutation.CustomerID(); !ok {
-		return &ValidationError{Name: "customer_id", err: errors.New(`ent: missing required field "CouponBooking.customer_id"`)}
-	}
 	if len(_c.mutation.CouponIDs()) == 0 {
 		return &ValidationError{Name: "coupon", err: errors.New(`ent: missing required edge "CouponBooking.coupon"`)}
 	}
@@ -219,7 +224,7 @@ func (_c *CouponBookingCreate) createSpec() (*CouponBooking, *sqlgraph.CreateSpe
 	}
 	if value, ok := _c.mutation.CustomerID(); ok {
 		_spec.SetField(couponbooking.FieldCustomerID, field.TypeString, value)
-		_node.CustomerID = value
+		_node.CustomerID = &value
 	}
 	if nodes := _c.mutation.CouponIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -368,6 +373,12 @@ func (u *CouponBookingUpsert) UpdateCustomerID() *CouponBookingUpsert {
 	return u
 }
 
+// ClearCustomerID clears the value of the "customer_id" field.
+func (u *CouponBookingUpsert) ClearCustomerID() *CouponBookingUpsert {
+	u.SetNull(couponbooking.FieldCustomerID)
+	return u
+}
+
 // UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
@@ -507,6 +518,13 @@ func (u *CouponBookingUpsertOne) SetCustomerID(v string) *CouponBookingUpsertOne
 func (u *CouponBookingUpsertOne) UpdateCustomerID() *CouponBookingUpsertOne {
 	return u.Update(func(s *CouponBookingUpsert) {
 		s.UpdateCustomerID()
+	})
+}
+
+// ClearCustomerID clears the value of the "customer_id" field.
+func (u *CouponBookingUpsertOne) ClearCustomerID() *CouponBookingUpsertOne {
+	return u.Update(func(s *CouponBookingUpsert) {
+		s.ClearCustomerID()
 	})
 }
 
@@ -815,6 +833,13 @@ func (u *CouponBookingUpsertBulk) SetCustomerID(v string) *CouponBookingUpsertBu
 func (u *CouponBookingUpsertBulk) UpdateCustomerID() *CouponBookingUpsertBulk {
 	return u.Update(func(s *CouponBookingUpsert) {
 		s.UpdateCustomerID()
+	})
+}
+
+// ClearCustomerID clears the value of the "customer_id" field.
+func (u *CouponBookingUpsertBulk) ClearCustomerID() *CouponBookingUpsertBulk {
+	return u.Update(func(s *CouponBookingUpsert) {
+		s.ClearCustomerID()
 	})
 }
 

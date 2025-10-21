@@ -23,7 +23,7 @@ func (CouponBooking) Fields() []ent.Field {
 		field.String("booking_id"),
 		field.Int32("status").GoType(coupon.CouponUsedStatus(1)),
 		field.Strings("service_ids"),
-		field.String("customer_id"),
+		field.String("customer_id").Optional().Nillable(),
 	}
 }
 

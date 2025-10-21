@@ -361,6 +361,16 @@ func CustomerIDHasSuffix(v string) predicate.CouponBooking {
 	return predicate.CouponBooking(sql.FieldHasSuffix(FieldCustomerID, v))
 }
 
+// CustomerIDIsNil applies the IsNil predicate on the "customer_id" field.
+func CustomerIDIsNil() predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldIsNull(FieldCustomerID))
+}
+
+// CustomerIDNotNil applies the NotNil predicate on the "customer_id" field.
+func CustomerIDNotNil() predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldNotNull(FieldCustomerID))
+}
+
 // CustomerIDEqualFold applies the EqualFold predicate on the "customer_id" field.
 func CustomerIDEqualFold(v string) predicate.CouponBooking {
 	return predicate.CouponBooking(sql.FieldEqualFold(FieldCustomerID, v))

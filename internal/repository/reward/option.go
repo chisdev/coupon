@@ -7,7 +7,7 @@ import (
 type RewardOption struct {
 	ExpiredDuration *float64
 	CurrencyID      *uint64
-	UsageLimit      int32
+	UsageLimit      *int32
 	CouponValue     float64
 	ServiceIds      []uint64
 	CouponType      coupon.CouponType
@@ -36,7 +36,7 @@ func WithCurrencyID(currencyID *uint64) Option {
 		mo.CurrencyID = currencyID
 	})
 }
-func WithUsageLimit(usageLimit int32) Option {
+func WithUsageLimit(usageLimit *int32) Option {
 	return funcOption(func(mo *RewardOption) {
 		mo.UsageLimit = usageLimit
 	})
