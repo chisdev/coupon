@@ -1,17 +1,15 @@
-#build stage
-FROM registry.ugaming.io/marketplace/cicd/golang:1.18.2-builder-1.0 AS builder
+FROM golang:1.24.4 AS builder
 
-#final stage
-FROM alpine:3.15
-RUN apk --no-cache add ca-certificates bash
-ARG env=dev
-ARG service
-COPY --from=builder /tools/grpc_health_probe /grpc_health_probe
-COPY --from=builder /tools/wait-for-it.sh ./wait-for-it.sh
-COPY --from=builder /tools/envoy-preflight  /envoy-preflight
-COPY out/cmd/main /app/server
-COPY configs /app/
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN go build -o server ./cmd
 EXPOSE 8080
 
-#For custom CMD scripts, please create scripts folder in $service folder, and update helm value
-CMD ["/app/server", "-c", "/app/config.yaml"]
+CMD ["./server", "-c", "./configs/config.yaml"]
+
+
