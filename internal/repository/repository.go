@@ -3,6 +3,7 @@ package repository
 import (
 	"github.com/chisdev/coupon/internal/repository/coupon"
 	couponbooking "github.com/chisdev/coupon/internal/repository/coupon_booking"
+	"github.com/chisdev/coupon/internal/repository/currency"
 	"github.com/chisdev/coupon/internal/repository/milestone"
 	"github.com/chisdev/coupon/internal/repository/progress"
 	"github.com/chisdev/coupon/internal/repository/reward"
@@ -16,6 +17,7 @@ type Repository struct {
 	CouponBookingRepository couponbooking.CouponBooking
 	ProgressRepository      progress.Progress
 	RewardRepository        reward.Reward
+	CurrencyRepository      currency.Currency
 }
 
 func New(ent *ent.Client) *Repository {
@@ -25,6 +27,7 @@ func New(ent *ent.Client) *Repository {
 		CouponRepository:        coupon.New(ent),
 		CouponBookingRepository: couponbooking.New(ent),
 		ProgressRepository:      progress.New(ent),
+		CurrencyRepository:      currency.New(ent),
 		ent:                     ent,
 	}
 }

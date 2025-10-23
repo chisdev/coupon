@@ -779,6 +779,110 @@ var _ interface {
 	ErrorName() string
 } = CouponUsageValidationError{}
 
+// Validate checks the field values on Proress with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Proress) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Proress with the rules defined in the
+// proto definition for this message. If any rules are violated, the result is
+// a list of violation errors wrapped in ProressMultiError, or nil if none found.
+func (m *Proress) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Proress) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for MilestoneId
+
+	// no validation rules for Progress
+
+	// no validation rules for PassCount
+
+	if len(errors) > 0 {
+		return ProressMultiError(errors)
+	}
+
+	return nil
+}
+
+// ProressMultiError is an error wrapping multiple validation errors returned
+// by Proress.ValidateAll() if the designated constraints aren't met.
+type ProressMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ProressMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ProressMultiError) AllErrors() []error { return m }
+
+// ProressValidationError is the validation error returned by Proress.Validate
+// if the designated constraints aren't met.
+type ProressValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ProressValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ProressValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ProressValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ProressValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ProressValidationError) ErrorName() string { return "ProressValidationError" }
+
+// Error satisfies the builtin error interface
+func (e ProressValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sProress.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ProressValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ProressValidationError{}
+
 // Validate checks the field values on MilestoneProgress with the rules defined
 // in the proto definition for this message. If any rules are violated, the
 // first error encountered is returned, or nil if there are no violations.
@@ -1066,6 +1170,111 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = CreateMileStoneRequestValidationError{}
+
+// Validate checks the field values on Currency with the rules defined in the
+// proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *Currency) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on Currency with the rules defined in
+// the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in CurrencyMultiError, or nil
+// if none found.
+func (m *Currency) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *Currency) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Id
+
+	// no validation rules for Name
+
+	// no validation rules for Code
+
+	if len(errors) > 0 {
+		return CurrencyMultiError(errors)
+	}
+
+	return nil
+}
+
+// CurrencyMultiError is an error wrapping multiple validation errors returned
+// by Currency.ValidateAll() if the designated constraints aren't met.
+type CurrencyMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CurrencyMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CurrencyMultiError) AllErrors() []error { return m }
+
+// CurrencyValidationError is the validation error returned by
+// Currency.Validate if the designated constraints aren't met.
+type CurrencyValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CurrencyValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CurrencyValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CurrencyValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CurrencyValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CurrencyValidationError) ErrorName() string { return "CurrencyValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CurrencyValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCurrency.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CurrencyValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CurrencyValidationError{}
 
 // Validate checks the field values on CreateMileStoneResponse with the rules
 // defined in the proto definition for this message. If any rules are
@@ -2629,6 +2838,626 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = ListCouponResponseValidationError{}
+
+// Validate checks the field values on ListProgressRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListProgressRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListProgressRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListProgressRequestMultiError, or nil if none found.
+func (m *ListProgressRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListProgressRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for PageIndex
+
+	// no validation rules for PageSize
+
+	for idx, item := range m.GetSortMethods() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListProgressRequestValidationError{
+						field:  fmt.Sprintf("SortMethods[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListProgressRequestValidationError{
+						field:  fmt.Sprintf("SortMethods[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListProgressRequestValidationError{
+					field:  fmt.Sprintf("SortMethods[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return ListProgressRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListProgressRequestMultiError is an error wrapping multiple validation
+// errors returned by ListProgressRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ListProgressRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListProgressRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListProgressRequestMultiError) AllErrors() []error { return m }
+
+// ListProgressRequestValidationError is the validation error returned by
+// ListProgressRequest.Validate if the designated constraints aren't met.
+type ListProgressRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListProgressRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListProgressRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListProgressRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListProgressRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListProgressRequestValidationError) ErrorName() string {
+	return "ListProgressRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListProgressRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListProgressRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListProgressRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListProgressRequestValidationError{}
+
+// Validate checks the field values on ListProgressResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListProgressResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListProgressResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListProgressResponseMultiError, or nil if none found.
+func (m *ListProgressResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListProgressResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetProgressList() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListProgressResponseValidationError{
+						field:  fmt.Sprintf("ProgressList[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListProgressResponseValidationError{
+						field:  fmt.Sprintf("ProgressList[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListProgressResponseValidationError{
+					field:  fmt.Sprintf("ProgressList[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for TotalPage
+
+	// no validation rules for TotalCount
+
+	if all {
+		switch v := interface{}(m.GetRequest()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ListProgressResponseValidationError{
+					field:  "Request",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ListProgressResponseValidationError{
+					field:  "Request",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetRequest()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ListProgressResponseValidationError{
+				field:  "Request",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ListProgressResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListProgressResponseMultiError is an error wrapping multiple validation
+// errors returned by ListProgressResponse.ValidateAll() if the designated
+// constraints aren't met.
+type ListProgressResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListProgressResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListProgressResponseMultiError) AllErrors() []error { return m }
+
+// ListProgressResponseValidationError is the validation error returned by
+// ListProgressResponse.Validate if the designated constraints aren't met.
+type ListProgressResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListProgressResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListProgressResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListProgressResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListProgressResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListProgressResponseValidationError) ErrorName() string {
+	return "ListProgressResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListProgressResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListProgressResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListProgressResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListProgressResponseValidationError{}
+
+// Validate checks the field values on ListCurrencyRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListCurrencyRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListCurrencyRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListCurrencyRequestMultiError, or nil if none found.
+func (m *ListCurrencyRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListCurrencyRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for SearchContent
+
+	// no validation rules for PageIndex
+
+	// no validation rules for PageSize
+
+	for idx, item := range m.GetSortMethods() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListCurrencyRequestValidationError{
+						field:  fmt.Sprintf("SortMethods[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListCurrencyRequestValidationError{
+						field:  fmt.Sprintf("SortMethods[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListCurrencyRequestValidationError{
+					field:  fmt.Sprintf("SortMethods[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return ListCurrencyRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListCurrencyRequestMultiError is an error wrapping multiple validation
+// errors returned by ListCurrencyRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ListCurrencyRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListCurrencyRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListCurrencyRequestMultiError) AllErrors() []error { return m }
+
+// ListCurrencyRequestValidationError is the validation error returned by
+// ListCurrencyRequest.Validate if the designated constraints aren't met.
+type ListCurrencyRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListCurrencyRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListCurrencyRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListCurrencyRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListCurrencyRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListCurrencyRequestValidationError) ErrorName() string {
+	return "ListCurrencyRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListCurrencyRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListCurrencyRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListCurrencyRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListCurrencyRequestValidationError{}
+
+// Validate checks the field values on ListCurrencyResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListCurrencyResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListCurrencyResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListCurrencyResponseMultiError, or nil if none found.
+func (m *ListCurrencyResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListCurrencyResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetCurrencies() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListCurrencyResponseValidationError{
+						field:  fmt.Sprintf("Currencies[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListCurrencyResponseValidationError{
+						field:  fmt.Sprintf("Currencies[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListCurrencyResponseValidationError{
+					field:  fmt.Sprintf("Currencies[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	// no validation rules for TotalPage
+
+	// no validation rules for TotalCount
+
+	if all {
+		switch v := interface{}(m.GetRequest()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ListCurrencyResponseValidationError{
+					field:  "Request",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ListCurrencyResponseValidationError{
+					field:  "Request",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetRequest()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ListCurrencyResponseValidationError{
+				field:  "Request",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	if len(errors) > 0 {
+		return ListCurrencyResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListCurrencyResponseMultiError is an error wrapping multiple validation
+// errors returned by ListCurrencyResponse.ValidateAll() if the designated
+// constraints aren't met.
+type ListCurrencyResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListCurrencyResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListCurrencyResponseMultiError) AllErrors() []error { return m }
+
+// ListCurrencyResponseValidationError is the validation error returned by
+// ListCurrencyResponse.Validate if the designated constraints aren't met.
+type ListCurrencyResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListCurrencyResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListCurrencyResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListCurrencyResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListCurrencyResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListCurrencyResponseValidationError) ErrorName() string {
+	return "ListCurrencyResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListCurrencyResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListCurrencyResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListCurrencyResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListCurrencyResponseValidationError{}
 
 // Validate checks the field values on CreateMileStoneRequest_MilestoneReward
 // with the rules defined in the proto definition for this message. If any

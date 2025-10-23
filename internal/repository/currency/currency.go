@@ -1,4 +1,4 @@
-package coupontype
+package currency
 
 import (
 	"context"
@@ -18,5 +18,7 @@ type currency struct {
 }
 
 func New(ent *ent.Client) Currency {
-	return &currency{ent: ent}
+	c := &currency{ent: ent}
+	c.Init(context.Background())
+	return c
 }

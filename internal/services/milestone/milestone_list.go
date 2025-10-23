@@ -9,14 +9,10 @@ import (
 )
 
 func (m *milestone) ListMileStone(ctx context.Context, req *coupon.ListMileStoneRequest) (*coupon.ListMileStoneResponse, error) {
-	storeId := m.extractor.GetStoreID(ctx)
-	if storeId == "" {
-		return nil, errStoreIdNotFound
-	}
 
 	opts := []milestonerepo.Option{}
 
-	opts = append(opts, milestonerepo.WithStoreIDs([]string{storeId}))
+	opts = append(opts, milestonerepo.WithStoreIDs(req.StoreIds))
 	opts = append(opts, milestonerepo.WithSortMethods(req.SortMethods))
 	opts = append(opts, milestonerepo.WithReward(true))
 

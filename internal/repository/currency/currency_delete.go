@@ -1,4 +1,4 @@
-package coupontype
+package currency
 
 import (
 	"context"

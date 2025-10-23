@@ -33,6 +33,9 @@ func (p *progress) AddPoints(ctx context.Context, req *coupon.AddPointRequest) e
 			var goal int32 = 0
 			switch {
 			case m.MilestoneType == coupon.MilestoneType_MILESTONE_TYPE_FIXED && m.Threshold != nil:
+				if cusPro.PassCount >= 1 {
+					continue
+				}
 				goal = *m.Threshold
 			case m.MilestoneType == coupon.MilestoneType_MILESTONE_TYPE_RECURRING && m.Step != nil:
 				goal = *m.Step

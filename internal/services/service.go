@@ -3,6 +3,7 @@ package services
 import (
 	"github.com/chisdev/coupon/internal/repository"
 	"github.com/chisdev/coupon/internal/services/coupon"
+	"github.com/chisdev/coupon/internal/services/currency"
 	"github.com/chisdev/coupon/internal/services/milestone"
 	"github.com/chisdev/coupon/internal/services/progress"
 	"github.com/chisdev/coupon/internal/utiils/extractor"
@@ -12,6 +13,7 @@ type Services struct {
 	MileStoneService milestone.MileStone
 	ProgressService  progress.Progress
 	CouponService    coupon.Coupon
+	CurrencyService  currency.Currency
 }
 
 func New(repository *repository.Repository, extractor extractor.Extractor) *Services {
@@ -19,5 +21,6 @@ func New(repository *repository.Repository, extractor extractor.Extractor) *Serv
 		MileStoneService: milestone.New(repository, extractor),
 		ProgressService:  progress.New(repository),
 		CouponService:    coupon.New(repository, extractor),
+		CurrencyService:  currency.New(repository),
 	}
 }

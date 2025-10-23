@@ -109,3 +109,19 @@ func ConvertCoupons(ents []*ent.Coupon) []*coupon.StoreCoupon {
 	}
 	return coupons
 }
+
+func ConvertCurrency(ent *ent.Currency) *coupon.Currency {
+	return &coupon.Currency{
+		Id:   ent.ID,
+		Name: ent.Name,
+		Code: ent.Code,
+	}
+}
+
+func ConvertCurrencies(ents []*ent.Currency) []*coupon.Currency {
+	currencies := make([]*coupon.Currency, 0, len(ents))
+	for _, e := range ents {
+		currencies = append(currencies, ConvertCurrency(e))
+	}
+	return currencies
+}
