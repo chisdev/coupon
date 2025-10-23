@@ -2,12 +2,13 @@ name: Notify SysOps Repo
 
 on:
   workflow_run:
-    workflows: ["create tag"]
+    workflows: ["Build and Push Docker Image"]
     types:
       - completed
 
 jobs:
   notify-sysops:
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
