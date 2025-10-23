@@ -15,5 +15,6 @@ func (c *currency) Init(ctx context.Context) {
 		creates = append(creates, query)
 	}
 
-	c.ent.Currency.CreateBulk(creates...).OnConflict().DoNothing()
+	c.ent.Currency.CreateBulk(creates...).OnConflict().DoNothing().Exec(ctx)
+
 }
