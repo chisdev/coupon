@@ -7,6 +7,7 @@ import (
 )
 
 type CouponOpts struct {
+	IDs         []uint64
 	Code        string
 	UserIDs     []string
 	StoreIDs    []string
@@ -30,6 +31,12 @@ type funcOption func(*CouponOpts)
 
 func (f funcOption) Apply(o *CouponOpts) {
 	f(o)
+}
+
+func WithIDs(ids []uint64) Option {
+	return funcOption(func(co *CouponOpts) {
+		co.IDs = ids
+	})
 }
 
 func WithExpiredAt(expiredAt *time.Time) Option {

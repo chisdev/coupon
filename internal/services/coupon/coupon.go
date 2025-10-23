@@ -9,10 +9,13 @@ import (
 )
 
 type Coupon interface {
+	CreateCoupon(ctx context.Context, req *api.CreateCouponRequest) (*api.CreateCouponResponse, error)
+	DeleteCoupon(ctx context.Context, req *api.DeleteCouponRequest) error
 	ConfirmUsage(ctx context.Context, req *api.ConfirmCouponUsageRequest) error
 	Reserve(ctx context.Context, req *api.ReserveCouponRequest) error
 	UnReserve(ctx context.Context, req *api.UnReserveCouponRequest) error
-	ListCoupons(ctx context.Context, request *api.ListCouponRequest) (*api.ListCouponResponse, error)
+	ListCouponForCustomer(ctx context.Context, request *api.ListCouponForCustomerRequest) (*api.ListCouponForCustomerResponse, error)
+	ListCouponForCms(ctx context.Context, request *api.ListCouponForCmsRequest) (*api.ListCouponForCmsResponse, error)
 }
 
 type coupon struct {

@@ -16,7 +16,6 @@ import (
 	pb0 "github.com/chisdev/coupon/api"
 	"github.com/chisdev/coupon/internal/repository"
 	"github.com/chisdev/coupon/internal/server/coupon"
-	"github.com/chisdev/coupon/internal/server/couponcms"
 	"github.com/chisdev/coupon/internal/server/couponinternal"
 	"github.com/chisdev/coupon/internal/services"
 	"github.com/chisdev/coupon/internal/utiils/extractor"
@@ -68,7 +67,6 @@ func Serve(cfg *config.Config) {
 	services := services.New(repo, extractor)
 
 	couponServie := coupon.NewServer(services, logger)
-	couponCmsService := couponcms.NewServer(services, logger)
 	couponInternalService := couponinternal.NewServer(services, logger)
 
 	grpcGatewayMux := runtime.NewServeMux(
@@ -82,24 +80,19 @@ func Serve(cfg *config.Config) {
 		}),
 	)
 	service.HttpServeMux().Handle("/coupon/", grpcGatewayMux)
-	service.HttpServeMux().Handle("/couponcms/", grpcGatewayMux)
 	service.HttpServeMux().Handle("/couponint/", grpcGatewayMux)
 
 	err = pb0.RegisterCouponHandlerServer(context.Background(), grpcGatewayMux, couponServie)
 	if err != nil {
 		logger.Fatal("can not register http coupon server", zap.Error(err))
 	}
-	err = pb0.RegisterCouponCmsHandlerServer(context.Background(), grpcGatewayMux, couponCmsService)
-	if err != nil {
-		logger.Fatal("can not register http coupon cms server", zap.Error(err))
-	}
+
 	err = pb0.RegisterCouponInternalHandlerServer(context.Background(), grpcGatewayMux, couponInternalService)
 	if err != nil {
 		logger.Fatal("can not register http coupon internal server", zap.Error(err))
 	}
 
 	pb0.RegisterCouponServer(server, couponServie)
-	pb0.RegisterCouponCmsServer(server, couponCmsService)
 	// Register reflection service on gRPC server.
 	// Please remove if you it's not necessary for your service
 	reflection.Register(server)

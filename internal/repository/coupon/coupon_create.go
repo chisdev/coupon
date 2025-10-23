@@ -6,10 +6,11 @@ import (
 
 	api "github.com/chisdev/coupon/api"
 	"github.com/chisdev/coupon/internal/utiils/tx"
+	"github.com/chisdev/coupon/pkg/ent"
 	"github.com/google/uuid"
 )
 
-func (c *coupon) Create(ctx context.Context, value float64, opts ...Option) error {
+func (c *coupon) Create(ctx context.Context, value float64, opts ...Option) (*ent.Coupon, error) {
 	var couponOpts CouponOpts
 	for _, opt := range opts {
 		opt.Apply(&couponOpts)
@@ -30,7 +31,7 @@ func (c *coupon) Create(ctx context.Context, value float64, opts ...Option) erro
 
 	if couponOpts.ExpiredAt != nil {
 		if couponOpts.ExpiredAt.IsZero() || couponOpts.ExpiredAt.Before(time.Now()) {
-			return errInvalidExpiredAt
+			return nil, errInvalidExpiredAt
 		}
 		query = query.SetExpireAt(*couponOpts.ExpiredAt)
 	}
@@ -46,20 +47,20 @@ func (c *coupon) Create(ctx context.Context, value float64, opts ...Option) erro
 	switch couponOpts.Type {
 	case api.CouponType_COUPON_TYPE_PERCENTAGE:
 		if couponOpts.CurrencyID != nil {
-			return errConfigCouponTypeWithCurrencyID
+			return nil, errConfigCouponTypeWithCurrencyID
 		}
 		query = query.SetType(couponOpts.Type)
 	case api.CouponType_COUPON_TYPE_FIXED:
 		if couponOpts.CurrencyID == nil {
-			return errMissingCurrencyID
+			return nil, errMissingCurrencyID
 		}
 		query = query.SetType(couponOpts.Type)
 		query = query.SetCurrencyID(*couponOpts.CurrencyID)
 	default:
-		return errInvalidCouponType
+		return nil, errInvalidCouponType
 	}
 
-	return query.Exec(ctx)
+	return query.Save(ctx)
 }
 
 func (c *coupon) CreateTx(ctx context.Context, tx tx.Tx, value float64, opts ...Option) error {

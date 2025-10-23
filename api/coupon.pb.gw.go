@@ -35,73 +35,69 @@ var (
 	_ = metadata.Join
 )
 
-var filter_Coupon_ListCoupon_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+var filter_Coupon_ListCouponForCustomer_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 
-func request_Coupon_ListCoupon_0(ctx context.Context, marshaler runtime.Marshaler, client CouponClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Coupon_ListCouponForCustomer_0(ctx context.Context, marshaler runtime.Marshaler, client CouponClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq ListCouponRequest
+		protoReq ListCouponForCustomerRequest
 		metadata runtime.ServerMetadata
 	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
+	io.Copy(io.Discard, req.Body)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Coupon_ListCoupon_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Coupon_ListCouponForCustomer_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	msg, err := client.ListCoupon(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ListCouponForCustomer(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_Coupon_ListCoupon_0(ctx context.Context, marshaler runtime.Marshaler, server CouponServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Coupon_ListCouponForCustomer_0(ctx context.Context, marshaler runtime.Marshaler, server CouponServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq ListCouponRequest
+		protoReq ListCouponForCustomerRequest
 		metadata runtime.ServerMetadata
 	)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Coupon_ListCoupon_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Coupon_ListCouponForCustomer_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	msg, err := server.ListCoupon(ctx, &protoReq)
+	msg, err := server.ListCouponForCustomer(ctx, &protoReq)
 	return msg, metadata, err
 }
 
-var filter_Coupon_ListProgress_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+var filter_Coupon_ListCouponForCms_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 
-func request_Coupon_ListProgress_0(ctx context.Context, marshaler runtime.Marshaler, client CouponClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Coupon_ListCouponForCms_0(ctx context.Context, marshaler runtime.Marshaler, client CouponClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq ListProgressRequest
+		protoReq ListCouponForCmsRequest
 		metadata runtime.ServerMetadata
 	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
+	io.Copy(io.Discard, req.Body)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Coupon_ListProgress_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Coupon_ListCouponForCms_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	msg, err := client.ListProgress(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.ListCouponForCms(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_Coupon_ListProgress_0(ctx context.Context, marshaler runtime.Marshaler, server CouponServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Coupon_ListCouponForCms_0(ctx context.Context, marshaler runtime.Marshaler, server CouponServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
-		protoReq ListProgressRequest
+		protoReq ListCouponForCmsRequest
 		metadata runtime.ServerMetadata
 	)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Coupon_ListProgress_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Coupon_ListCouponForCms_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	msg, err := server.ListProgress(ctx, &protoReq)
+	msg, err := server.ListCouponForCms(ctx, &protoReq)
 	return msg, metadata, err
 }
 
@@ -112,9 +108,7 @@ func request_Coupon_ListCurrency_0(ctx context.Context, marshaler runtime.Marsha
 		protoReq ListCurrencyRequest
 		metadata runtime.ServerMetadata
 	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
+	io.Copy(io.Discard, req.Body)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
@@ -140,7 +134,7 @@ func local_request_Coupon_ListCurrency_0(ctx context.Context, marshaler runtime.
 	return msg, metadata, err
 }
 
-func request_CouponCms_CreateMileStone_0(ctx context.Context, marshaler runtime.Marshaler, client CouponCmsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Coupon_CreateMileStone_0(ctx context.Context, marshaler runtime.Marshaler, client CouponClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq CreateMileStoneRequest
 		metadata runtime.ServerMetadata
@@ -148,14 +142,11 @@ func request_CouponCms_CreateMileStone_0(ctx context.Context, marshaler runtime.
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
 	msg, err := client.CreateMileStone(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_CouponCms_CreateMileStone_0(ctx context.Context, marshaler runtime.Marshaler, server CouponCmsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Coupon_CreateMileStone_0(ctx context.Context, marshaler runtime.Marshaler, server CouponServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq CreateMileStoneRequest
 		metadata runtime.ServerMetadata
@@ -167,27 +158,25 @@ func local_request_CouponCms_CreateMileStone_0(ctx context.Context, marshaler ru
 	return msg, metadata, err
 }
 
-var filter_CouponCms_ListMileStone_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+var filter_Coupon_ListMileStone_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 
-func request_CouponCms_ListMileStone_0(ctx context.Context, marshaler runtime.Marshaler, client CouponCmsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Coupon_ListMileStone_0(ctx context.Context, marshaler runtime.Marshaler, client CouponClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq ListMileStoneRequest
 		metadata runtime.ServerMetadata
 	)
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
+	io.Copy(io.Discard, req.Body)
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_CouponCms_ListMileStone_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Coupon_ListMileStone_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := client.ListMileStone(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_CouponCms_ListMileStone_0(ctx context.Context, marshaler runtime.Marshaler, server CouponCmsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Coupon_ListMileStone_0(ctx context.Context, marshaler runtime.Marshaler, server CouponServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq ListMileStoneRequest
 		metadata runtime.ServerMetadata
@@ -195,14 +184,14 @@ func local_request_CouponCms_ListMileStone_0(ctx context.Context, marshaler runt
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_CouponCms_ListMileStone_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_Coupon_ListMileStone_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := server.ListMileStone(ctx, &protoReq)
 	return msg, metadata, err
 }
 
-func request_CouponCms_DeleteMileStone_0(ctx context.Context, marshaler runtime.Marshaler, client CouponCmsClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func request_Coupon_DeleteMileStone_0(ctx context.Context, marshaler runtime.Marshaler, client CouponClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq DeleteMileStoneRequest
 		metadata runtime.ServerMetadata
@@ -210,14 +199,11 @@ func request_CouponCms_DeleteMileStone_0(ctx context.Context, marshaler runtime.
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
 	msg, err := client.DeleteMileStone(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
 
-func local_request_CouponCms_DeleteMileStone_0(ctx context.Context, marshaler runtime.Marshaler, server CouponCmsServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+func local_request_Coupon_DeleteMileStone_0(ctx context.Context, marshaler runtime.Marshaler, server CouponServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq DeleteMileStoneRequest
 		metadata runtime.ServerMetadata
@@ -229,6 +215,54 @@ func local_request_CouponCms_DeleteMileStone_0(ctx context.Context, marshaler ru
 	return msg, metadata, err
 }
 
+func request_Coupon_CreateCoupon_0(ctx context.Context, marshaler runtime.Marshaler, client CouponClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq CreateCouponRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := client.CreateCoupon(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_Coupon_CreateCoupon_0(ctx context.Context, marshaler runtime.Marshaler, server CouponServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq CreateCouponRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.CreateCoupon(ctx, &protoReq)
+	return msg, metadata, err
+}
+
+func request_Coupon_DeleteCoupon_0(ctx context.Context, marshaler runtime.Marshaler, client CouponClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq DeleteCouponRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := client.DeleteCoupon(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+}
+
+func local_request_Coupon_DeleteCoupon_0(ctx context.Context, marshaler runtime.Marshaler, server CouponServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var (
+		protoReq DeleteCouponRequest
+		metadata runtime.ServerMetadata
+	)
+	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	msg, err := server.DeleteCoupon(ctx, &protoReq)
+	return msg, metadata, err
+}
+
 func request_CouponInternal_ReserveCoupon_0(ctx context.Context, marshaler runtime.Marshaler, client CouponInternalClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq ReserveCouponRequest
@@ -236,9 +270,6 @@ func request_CouponInternal_ReserveCoupon_0(ctx context.Context, marshaler runti
 	)
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
 	}
 	msg, err := client.ReserveCoupon(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -264,9 +295,6 @@ func request_CouponInternal_UnReserveCoupon_0(ctx context.Context, marshaler run
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
 	msg, err := client.UnReserveCoupon(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
@@ -291,9 +319,6 @@ func request_CouponInternal_ConfirmCouponUsage_0(ctx context.Context, marshaler 
 	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if req.Body != nil {
-		_, _ = io.Copy(io.Discard, req.Body)
-	}
 	msg, err := client.ConfirmCouponUsage(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 }
@@ -316,45 +341,45 @@ func local_request_CouponInternal_ConfirmCouponUsage_0(ctx context.Context, mars
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterCouponHandlerFromEndpoint instead.
 // GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
 func RegisterCouponHandlerServer(ctx context.Context, mux *runtime.ServeMux, server CouponServer) error {
-	mux.Handle(http.MethodGet, pattern_Coupon_ListCoupon_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_Coupon_ListCouponForCustomer_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.Coupon/ListCoupon", runtime.WithHTTPPathPattern("/coupon/list"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.Coupon/ListCouponForCustomer", runtime.WithHTTPPathPattern("/coupon/customer/list"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Coupon_ListCoupon_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Coupon_ListCouponForCustomer_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Coupon_ListCoupon_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Coupon_ListCouponForCustomer_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_Coupon_ListProgress_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_Coupon_ListCouponForCms_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.Coupon/ListProgress", runtime.WithHTTPPathPattern("/coupon/progress"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.Coupon/ListCouponForCms", runtime.WithHTTPPathPattern("/coupon/cms/list"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_Coupon_ListProgress_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Coupon_ListCouponForCms_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Coupon_ListProgress_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Coupon_ListCouponForCms_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodGet, pattern_Coupon_ListCurrency_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -376,75 +401,105 @@ func RegisterCouponHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 		}
 		forward_Coupon_ListCurrency_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-
-	return nil
-}
-
-// RegisterCouponCmsHandlerServer registers the http handlers for service CouponCms to "mux".
-// UnaryRPC     :call CouponCmsServer directly.
-// StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterCouponCmsHandlerFromEndpoint instead.
-// GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
-func RegisterCouponCmsHandlerServer(ctx context.Context, mux *runtime.ServeMux, server CouponCmsServer) error {
-	mux.Handle(http.MethodPost, pattern_CouponCms_CreateMileStone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_Coupon_CreateMileStone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.CouponCms/CreateMileStone", runtime.WithHTTPPathPattern("/coupon/milestone"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.Coupon/CreateMileStone", runtime.WithHTTPPathPattern("/coupon/milestone"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_CouponCms_CreateMileStone_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Coupon_CreateMileStone_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_CouponCms_CreateMileStone_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Coupon_CreateMileStone_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_CouponCms_ListMileStone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_Coupon_ListMileStone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.CouponCms/ListMileStone", runtime.WithHTTPPathPattern("/coupon/milestone"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.Coupon/ListMileStone", runtime.WithHTTPPathPattern("/coupon/milestone"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_CouponCms_ListMileStone_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Coupon_ListMileStone_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_CouponCms_ListMileStone_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Coupon_ListMileStone_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_CouponCms_DeleteMileStone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_Coupon_DeleteMileStone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.CouponCms/DeleteMileStone", runtime.WithHTTPPathPattern("/coupon/milestone/delete"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.Coupon/DeleteMileStone", runtime.WithHTTPPathPattern("/coupon/milestone/delete"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_CouponCms_DeleteMileStone_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_Coupon_DeleteMileStone_0(annotatedContext, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_CouponCms_DeleteMileStone_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Coupon_DeleteMileStone_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_Coupon_CreateCoupon_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.Coupon/CreateCoupon", runtime.WithHTTPPathPattern("/coupon/create"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Coupon_CreateCoupon_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_Coupon_CreateCoupon_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_Coupon_DeleteCoupon_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.Coupon/DeleteCoupon", runtime.WithHTTPPathPattern("/coupon/delete"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_Coupon_DeleteCoupon_0(annotatedContext, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_Coupon_DeleteCoupon_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 
 	return nil
@@ -556,39 +611,39 @@ func RegisterCouponHandler(ctx context.Context, mux *runtime.ServeMux, conn *grp
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "CouponClient" to call the correct interceptors. This client ignores the HTTP middlewares.
 func RegisterCouponHandlerClient(ctx context.Context, mux *runtime.ServeMux, client CouponClient) error {
-	mux.Handle(http.MethodGet, pattern_Coupon_ListCoupon_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_Coupon_ListCouponForCustomer_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.Coupon/ListCoupon", runtime.WithHTTPPathPattern("/coupon/list"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.Coupon/ListCouponForCustomer", runtime.WithHTTPPathPattern("/coupon/customer/list"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Coupon_ListCoupon_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Coupon_ListCouponForCustomer_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Coupon_ListCoupon_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Coupon_ListCouponForCustomer_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_Coupon_ListProgress_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_Coupon_ListCouponForCms_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.Coupon/ListProgress", runtime.WithHTTPPathPattern("/coupon/progress"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.Coupon/ListCouponForCms", runtime.WithHTTPPathPattern("/coupon/cms/list"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_Coupon_ListProgress_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Coupon_ListCouponForCms_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_Coupon_ListProgress_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Coupon_ListCouponForCms_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	mux.Handle(http.MethodGet, pattern_Coupon_ListCurrency_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
@@ -607,121 +662,114 @@ func RegisterCouponHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 		}
 		forward_Coupon_ListCurrency_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	return nil
-}
-
-var (
-	pattern_Coupon_ListCoupon_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"coupon", "list"}, ""))
-	pattern_Coupon_ListProgress_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"coupon", "progress"}, ""))
-	pattern_Coupon_ListCurrency_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"coupon", "currency"}, ""))
-)
-
-var (
-	forward_Coupon_ListCoupon_0   = runtime.ForwardResponseMessage
-	forward_Coupon_ListProgress_0 = runtime.ForwardResponseMessage
-	forward_Coupon_ListCurrency_0 = runtime.ForwardResponseMessage
-)
-
-// RegisterCouponCmsHandlerFromEndpoint is same as RegisterCouponCmsHandler but
-// automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterCouponCmsHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
-	conn, err := grpc.NewClient(endpoint, opts...)
-	if err != nil {
-		return err
-	}
-	defer func() {
-		if err != nil {
-			if cerr := conn.Close(); cerr != nil {
-				grpclog.Errorf("Failed to close conn to %s: %v", endpoint, cerr)
-			}
-			return
-		}
-		go func() {
-			<-ctx.Done()
-			if cerr := conn.Close(); cerr != nil {
-				grpclog.Errorf("Failed to close conn to %s: %v", endpoint, cerr)
-			}
-		}()
-	}()
-	return RegisterCouponCmsHandler(ctx, mux, conn)
-}
-
-// RegisterCouponCmsHandler registers the http handlers for service CouponCms to "mux".
-// The handlers forward requests to the grpc endpoint over "conn".
-func RegisterCouponCmsHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterCouponCmsHandlerClient(ctx, mux, NewCouponCmsClient(conn))
-}
-
-// RegisterCouponCmsHandlerClient registers the http handlers for service CouponCms
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "CouponCmsClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "CouponCmsClient"
-// doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "CouponCmsClient" to call the correct interceptors. This client ignores the HTTP middlewares.
-func RegisterCouponCmsHandlerClient(ctx context.Context, mux *runtime.ServeMux, client CouponCmsClient) error {
-	mux.Handle(http.MethodPost, pattern_CouponCms_CreateMileStone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_Coupon_CreateMileStone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.CouponCms/CreateMileStone", runtime.WithHTTPPathPattern("/coupon/milestone"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.Coupon/CreateMileStone", runtime.WithHTTPPathPattern("/coupon/milestone"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_CouponCms_CreateMileStone_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Coupon_CreateMileStone_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_CouponCms_CreateMileStone_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Coupon_CreateMileStone_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_CouponCms_ListMileStone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_Coupon_ListMileStone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.CouponCms/ListMileStone", runtime.WithHTTPPathPattern("/coupon/milestone"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.Coupon/ListMileStone", runtime.WithHTTPPathPattern("/coupon/milestone"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_CouponCms_ListMileStone_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Coupon_ListMileStone_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_CouponCms_ListMileStone_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Coupon_ListMileStone_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_CouponCms_DeleteMileStone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_Coupon_DeleteMileStone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.CouponCms/DeleteMileStone", runtime.WithHTTPPathPattern("/coupon/milestone/delete"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.Coupon/DeleteMileStone", runtime.WithHTTPPathPattern("/coupon/milestone/delete"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_CouponCms_DeleteMileStone_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_Coupon_DeleteMileStone_0(annotatedContext, inboundMarshaler, client, req, pathParams)
 		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
 		if err != nil {
 			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		forward_CouponCms_DeleteMileStone_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_Coupon_DeleteMileStone_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_Coupon_CreateCoupon_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.Coupon/CreateCoupon", runtime.WithHTTPPathPattern("/coupon/create"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_Coupon_CreateCoupon_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_Coupon_CreateCoupon_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+	})
+	mux.Handle(http.MethodPost, pattern_Coupon_DeleteCoupon_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.Coupon/DeleteCoupon", runtime.WithHTTPPathPattern("/coupon/delete"))
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_Coupon_DeleteCoupon_0(annotatedContext, inboundMarshaler, client, req, pathParams)
+		annotatedContext = runtime.NewServerMetadataContext(annotatedContext, md)
+		if err != nil {
+			runtime.HTTPError(annotatedContext, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		forward_Coupon_DeleteCoupon_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
 	return nil
 }
 
 var (
-	pattern_CouponCms_CreateMileStone_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"coupon", "milestone"}, ""))
-	pattern_CouponCms_ListMileStone_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"coupon", "milestone"}, ""))
-	pattern_CouponCms_DeleteMileStone_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"coupon", "milestone", "delete"}, ""))
+	pattern_Coupon_ListCouponForCustomer_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"coupon", "customer", "list"}, ""))
+	pattern_Coupon_ListCouponForCms_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"coupon", "cms", "list"}, ""))
+	pattern_Coupon_ListCurrency_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"coupon", "currency"}, ""))
+	pattern_Coupon_CreateMileStone_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"coupon", "milestone"}, ""))
+	pattern_Coupon_ListMileStone_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"coupon", "milestone"}, ""))
+	pattern_Coupon_DeleteMileStone_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"coupon", "milestone", "delete"}, ""))
+	pattern_Coupon_CreateCoupon_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"coupon", "create"}, ""))
+	pattern_Coupon_DeleteCoupon_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"coupon", "delete"}, ""))
 )
 
 var (
-	forward_CouponCms_CreateMileStone_0 = runtime.ForwardResponseMessage
-	forward_CouponCms_ListMileStone_0   = runtime.ForwardResponseMessage
-	forward_CouponCms_DeleteMileStone_0 = runtime.ForwardResponseMessage
+	forward_Coupon_ListCouponForCustomer_0 = runtime.ForwardResponseMessage
+	forward_Coupon_ListCouponForCms_0      = runtime.ForwardResponseMessage
+	forward_Coupon_ListCurrency_0          = runtime.ForwardResponseMessage
+	forward_Coupon_CreateMileStone_0       = runtime.ForwardResponseMessage
+	forward_Coupon_ListMileStone_0         = runtime.ForwardResponseMessage
+	forward_Coupon_DeleteMileStone_0       = runtime.ForwardResponseMessage
+	forward_Coupon_CreateCoupon_0          = runtime.ForwardResponseMessage
+	forward_Coupon_DeleteCoupon_0          = runtime.ForwardResponseMessage
 )
 
 // RegisterCouponInternalHandlerFromEndpoint is same as RegisterCouponInternalHandler but

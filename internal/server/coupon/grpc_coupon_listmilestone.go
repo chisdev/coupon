@@ -1,4 +1,4 @@
-package couponcms
+package coupon
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func (s *couponCmsServer) ListMileStone(ctx context.Context, request *coupon.ListMileStoneRequest) (*coupon.ListMileStoneResponse, error) {
+func (s *couponServer) ListMileStone(ctx context.Context, request *coupon.ListMileStoneRequest) (*coupon.ListMileStoneResponse, error) {
 	if err := request.Validate(); err != nil {
 		return nil, err
 	}

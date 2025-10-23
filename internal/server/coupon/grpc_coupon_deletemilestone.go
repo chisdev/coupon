@@ -1,4 +1,4 @@
-package couponcms
+package coupon
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	coupon "github.com/chisdev/coupon/api"
 )
 
-func (s *couponCmsServer) DeleteMileStone(ctx context.Context, request *coupon.DeleteMileStoneRequest) (*emptypb.Empty, error) {
+func (s *couponServer) DeleteMileStone(ctx context.Context, request *coupon.DeleteMileStoneRequest) (*emptypb.Empty, error) {
 	if err := request.Validate(); err != nil {
 		return nil, err
 	}
@@ -18,6 +18,6 @@ func (s *couponCmsServer) DeleteMileStone(ctx context.Context, request *coupon.D
 		s.logger.Error("failed to delete milestone", zap.Error(err))
 		return nil, err
 	}
-
+	
 	return &emptypb.Empty{}, nil
 }

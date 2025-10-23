@@ -10,28 +10,31 @@ import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
 
 service Coupon {
-    rpc ListCoupon (ListCouponRequest) returns (ListCouponResponse) {
+    rpc ListCouponForCustomer (ListCouponForCustomerRequest) returns (ListCouponForCustomerResponse) {
         option (google.api.http) = {
-            get: "/coupon/list"
+            get: "/coupon/customer/list"
         };
     };
 
-    rpc ListProgress (ListProgressRequest) returns (ListProgressResponse) {
+    rpc ListCouponForCms (ListCouponForCmsRequest) returns (ListCouponForCmsResponse) {
         option (google.api.http) = {
-            get: "/coupon/progress"
+            get: "/coupon/cms/list"
         };
-    } 
+    };
+
+    // rpc ListProgress (ListProgressRequest) returns (ListProgressResponse) {
+    //     option (google.api.http) = {
+    //         get: "/coupon/progress"
+    //     };
+    // } 
 
     rpc ListCurrency (ListCurrencyRequest) returns (ListCurrencyResponse) {
           option (google.api.http) = {
             get: "/coupon/currency"
         };
     }
-}
 
-service CouponCms {
-    // Milestone API
-    rpc CreateMileStone (CreateMileStoneRequest) returns (CreateMileStoneResponse) {
+        rpc CreateMileStone (CreateMileStoneRequest) returns (CreateMileStoneResponse) {
       option (google.api.http) = {
         post: "/coupon/milestone"
         body: "*"
@@ -52,7 +55,23 @@ service CouponCms {
         };
     };
 
+
+    rpc CreateCoupon (CreateCouponRequest) returns (CreateCouponResponse) {
+      option (google.api.http) = {
+        post: "/coupon/create"
+        body: "*"
+      };
+    }
+
+    rpc DeleteCoupon (DeleteCouponRequest) returns (google.protobuf.Empty) {
+      option (google.api.http) = {
+        post: "/coupon/delete"
+        body: "*"
+      };
+    }
 }
+
+
 
 service CouponInternal {
     rpc ReserveCoupon (ReserveCouponRequest) returns (google.protobuf.Empty) {
@@ -156,6 +175,7 @@ message StoreCoupon {
     int32 used_count = 11;
     int32 reserved_count = 12;
     repeated CouponUsage coupon_usages = 13;
+    double coupon_value = 14;
 }
 
 message CouponUsage {
@@ -254,7 +274,7 @@ message AddPointRequest {
     string store_id = 3;
 }
 
-message ListCouponRequest {
+message ListCouponForCustomerRequest {
     int32 page_index = 1 [(validate.rules).int32 = {gte: 0}];
     int32 page_size = 2 [(validate.rules).int32 = {gte: 0}];
     repeated SortMethod sort_methods = 3;
@@ -263,13 +283,28 @@ message ListCouponRequest {
     CouponStatus status = 6;
 }
 
-message ListCouponResponse {
+message ListCouponForCustomerResponse {
     repeated StoreCoupon coupons = 1;
     int32 total_count = 2;
     int32 total_pages = 3;
-    ListCouponRequest request = 4;
+    ListCouponForCustomerRequest request = 4;
 }
 
+message ListCouponForCmsRequest {
+    int32 page_index = 1 [(validate.rules).int32 = {gte: 0}];
+    int32 page_size = 2 [(validate.rules).int32 = {gte: 0}];
+    repeated SortMethod sort_methods = 3;
+    repeated string customer_ids = 4;
+    repeated string service_ids = 5;
+    CouponStatus status = 6;
+}
+
+message ListCouponForCmsResponse {
+    repeated StoreCoupon coupons = 1;
+    int32 total_count = 2;
+    int32 total_pages = 3;
+    ListCouponForCmsRequest request = 4;
+}
 
 message ListProgressRequest {
     repeated string store_ids = 1;
@@ -298,4 +333,21 @@ message ListCurrencyResponse {
     int32 total_page = 2;
     int32 total_count = 3;
     ListProgressRequest request = 4;
+}
+
+message CreateCouponRequest {
+    optional double expired_duration = 1;
+    optional string customer_id = 2;
+    repeated string service_ids = 3;
+    optional uint64 currency_id = 4;
+    optional int32 usage_limit = 5;
+    double coupon_value = 6;
+}
+
+message CreateCouponResponse {
+    StoreCoupon coupon = 1;
+}   
+
+message DeleteCouponRequest {
+    repeated uint64 ids = 1;    
 }
