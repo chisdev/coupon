@@ -23,6 +23,10 @@ func (c *coupon) CreateCoupon(ctx context.Context, req *api.CreateCouponRequest)
 		couponrepo.WithUsageLimit(req.UsageLimit),
 	}
 
+	if req.CustomerId != nil {
+		opts = append(opts, couponrepo.WithUserIDs([]string{*req.CustomerId}))
+	}
+
 	if req.ExpiredDuration != nil {
 		expiredAt := time.Now().Add(time.Duration(*req.ExpiredDuration) * time.Second)
 		opts = append(opts, couponrepo.WithExpiredAt(&expiredAt))

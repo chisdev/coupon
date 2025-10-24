@@ -21,7 +21,6 @@ database:
   name: ${DATABASE_NAME}
   username: ${DATABASE_USERNAME}
   password: ${DATABASE_PASSWORD}
-  aws_region: ${DATABASE_AWS_REGION}
   debug: false
   tracing_enabled: false
   max_idle_conns: 5

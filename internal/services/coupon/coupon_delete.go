@@ -4,6 +4,7 @@ import (
 	"context"
 
 	couponrepo "github.com/chisdev/coupon/internal/repository/coupon"
+	"github.com/chisdev/coupon/internal/utiils/tx"
 
 	api "github.com/chisdev/coupon/api"
 )
@@ -19,10 +20,7 @@ func (c *coupon) DeleteCoupon(ctx context.Context, req *api.DeleteCouponRequest)
 		couponrepo.WithIDs(req.Ids),
 	}
 
-	err := c.repo.CouponRepository.Delete(ctx, nil, opts...)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return tx.WithTransaction(ctx, c.repo.GetEntClient(), func(ctx context.Context, tx tx.Tx) error {
+		return c.repo.CouponRepository.Delete(ctx, tx, opts...)
+	})
 }

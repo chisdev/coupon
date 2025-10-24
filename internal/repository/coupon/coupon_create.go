@@ -44,20 +44,11 @@ func (c *coupon) Create(ctx context.Context, value float64, opts ...Option) (*en
 		query = query.SetServiceIds(couponOpts.ServiceIds)
 	}
 
-	switch couponOpts.Type {
-	case api.CouponType_COUPON_TYPE_PERCENTAGE:
-		if couponOpts.CurrencyID != nil {
-			return nil, errConfigCouponTypeWithCurrencyID
-		}
-		query = query.SetType(couponOpts.Type)
-	case api.CouponType_COUPON_TYPE_FIXED:
-		if couponOpts.CurrencyID == nil {
-			return nil, errMissingCurrencyID
-		}
-		query = query.SetType(couponOpts.Type)
-		query = query.SetCurrencyID(*couponOpts.CurrencyID)
+	switch {
+	case couponOpts.CurrencyID != nil:
+		query = query.SetType(api.CouponType_COUPON_TYPE_FIXED)
 	default:
-		return nil, errInvalidCouponType
+		query = query.SetType(api.CouponType_COUPON_TYPE_PERCENTAGE)
 	}
 
 	return query.Save(ctx)
