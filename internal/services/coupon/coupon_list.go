@@ -65,3 +65,14 @@ func (c *coupon) ListCouponForCms(ctx context.Context, request *api.ListCouponFo
 	}, nil
 
 }
+
+func (c *coupon) ListAppliedCoupons(ctx context.Context, request *api.ListAppliedCouponRequest) (*api.ListAppliedCouponResponse, error) {
+	coupons, err := c.repo.CouponRepository.ListAppliedCoupons(ctx, request.BookingId)
+	if err != nil {
+		return nil, err
+	}
+
+	return &api.ListAppliedCouponResponse{
+		Coupons: convert.ConvertCoupons(coupons),
+	}, nil
+}

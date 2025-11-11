@@ -387,5 +387,5 @@ message  ListAppliedCouponRequest {
 }
 
 message ListAppliedCouponResponse {
-    repeated StoreCoupon soupons = 1;
+    repeated StoreCoupon coupons = 1;
 }

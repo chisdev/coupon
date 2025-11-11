@@ -11,6 +11,7 @@ import (
 	utils "github.com/chisdev/coupon/internal/utiils/sort"
 	"github.com/chisdev/coupon/pkg/ent"
 	entcoupon "github.com/chisdev/coupon/pkg/ent/coupon"
+	"github.com/chisdev/coupon/pkg/ent/couponbooking"
 )
 
 func (c *coupon) List(ctx context.Context, opts ...Option) ([]*ent.Coupon, int32, int32, error) {
@@ -31,6 +32,10 @@ func (c *coupon) List(ctx context.Context, opts ...Option) ([]*ent.Coupon, int32
 
 	if couponOpts.Status != 0 {
 		query = query.Where(entcoupon.StatusEQ(couponOpts.Status))
+	}
+
+	if couponOpts.BookingiD != "" {
+		query = query.Where(entcoupon.HasCouponBookingsWith(couponbooking.BookingID(couponOpts.BookingiD), couponbooking.StatusEQ(api.CouponUsedStatus_COUPON_USED_STATUS_RESERVED)))
 	}
 
 	for _, serviceID := range couponOpts.ServiceIds {
@@ -83,4 +88,20 @@ func (c *coupon) List(ctx context.Context, opts ...Option) ([]*ent.Coupon, int32
 	}
 
 	return entCoupons, int32(totalCount), totalPage, nil
+}
+
+func (c *coupon) ListAppliedCoupons(ctx context.Context, bookingID string) ([]*ent.Coupon, error) {
+	entCoupons, err := c.ent.Coupon.Query().
+		Where(
+			entcoupon.HasCouponBookingsWith(
+				couponbooking.BookingID(bookingID),
+				couponbooking.StatusEQ(api.CouponUsedStatus_COUPON_USED_STATUS_RESERVED),
+			),
+		).
+		Order(entcoupon.ByCreatedAt(), ent.Asc()).
+		All(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return entCoupons, nil
 }

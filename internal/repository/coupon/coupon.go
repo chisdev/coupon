@@ -16,6 +16,7 @@ type Coupon interface {
 	Update(ctx context.Context, tx tx.Tx, id uint64, opts ...Option) error
 	Delete(ctx context.Context, tx tx.Tx, opts ...Option) error
 	Check(ctx context.Context, opts ...Option) ([]*api.CheckCouponsResponse_Result, error)
+	ListAppliedCoupons(ctx context.Context, bookingID string) ([]*ent.Coupon, error)
 }
 
 type coupon struct {
