@@ -163,9 +163,6 @@ func (_c *CouponBookingCreate) check() error {
 	if _, ok := _c.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "CouponBooking.status"`)}
 	}
-	if _, ok := _c.mutation.ServiceIds(); !ok {
-		return &ValidationError{Name: "service_ids", err: errors.New(`ent: missing required field "CouponBooking.service_ids"`)}
-	}
 	if len(_c.mutation.CouponIDs()) == 0 {
 		return &ValidationError{Name: "coupon", err: errors.New(`ent: missing required edge "CouponBooking.coupon"`)}
 	}
@@ -361,6 +358,12 @@ func (u *CouponBookingUpsert) UpdateServiceIds() *CouponBookingUpsert {
 	return u
 }
 
+// ClearServiceIds clears the value of the "service_ids" field.
+func (u *CouponBookingUpsert) ClearServiceIds() *CouponBookingUpsert {
+	u.SetNull(couponbooking.FieldServiceIds)
+	return u
+}
+
 // SetCustomerID sets the "customer_id" field.
 func (u *CouponBookingUpsert) SetCustomerID(v string) *CouponBookingUpsert {
 	u.Set(couponbooking.FieldCustomerID, v)
@@ -504,6 +507,13 @@ func (u *CouponBookingUpsertOne) SetServiceIds(v []string) *CouponBookingUpsertO
 func (u *CouponBookingUpsertOne) UpdateServiceIds() *CouponBookingUpsertOne {
 	return u.Update(func(s *CouponBookingUpsert) {
 		s.UpdateServiceIds()
+	})
+}
+
+// ClearServiceIds clears the value of the "service_ids" field.
+func (u *CouponBookingUpsertOne) ClearServiceIds() *CouponBookingUpsertOne {
+	return u.Update(func(s *CouponBookingUpsert) {
+		s.ClearServiceIds()
 	})
 }
 
@@ -819,6 +829,13 @@ func (u *CouponBookingUpsertBulk) SetServiceIds(v []string) *CouponBookingUpsert
 func (u *CouponBookingUpsertBulk) UpdateServiceIds() *CouponBookingUpsertBulk {
 	return u.Update(func(s *CouponBookingUpsert) {
 		s.UpdateServiceIds()
+	})
+}
+
+// ClearServiceIds clears the value of the "service_ids" field.
+func (u *CouponBookingUpsertBulk) ClearServiceIds() *CouponBookingUpsertBulk {
+	return u.Update(func(s *CouponBookingUpsert) {
+		s.ClearServiceIds()
 	})
 }
 

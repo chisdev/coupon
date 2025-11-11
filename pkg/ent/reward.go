@@ -30,7 +30,7 @@ type Reward struct {
 	// ExpiredDuration holds the value of the "expired_duration" field.
 	ExpiredDuration *float64 `json:"expired_duration,omitempty"`
 	// ServiceIds holds the value of the "service_ids" field.
-	ServiceIds []uint64 `json:"service_ids,omitempty"`
+	ServiceIds []string `json:"service_ids,omitempty"`
 	// CouponType holds the value of the "coupon_type" field.
 	CouponType coupon.CouponType `json:"coupon_type,omitempty"`
 	// CurrencyID holds the value of the "currency_id" field.

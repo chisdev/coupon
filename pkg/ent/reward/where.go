@@ -247,6 +247,16 @@ func ExpiredDurationNotNil() predicate.Reward {
 	return predicate.Reward(sql.FieldNotNull(FieldExpiredDuration))
 }
 
+// ServiceIdsIsNil applies the IsNil predicate on the "service_ids" field.
+func ServiceIdsIsNil() predicate.Reward {
+	return predicate.Reward(sql.FieldIsNull(FieldServiceIds))
+}
+
+// ServiceIdsNotNil applies the NotNil predicate on the "service_ids" field.
+func ServiceIdsNotNil() predicate.Reward {
+	return predicate.Reward(sql.FieldNotNull(FieldServiceIds))
+}
+
 // CouponTypeEQ applies the EQ predicate on the "coupon_type" field.
 func CouponTypeEQ(v coupon.CouponType) predicate.Reward {
 	vc := int32(v)

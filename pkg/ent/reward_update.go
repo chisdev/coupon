@@ -81,14 +81,20 @@ func (_u *RewardUpdate) ClearExpiredDuration() *RewardUpdate {
 }
 
 // SetServiceIds sets the "service_ids" field.
-func (_u *RewardUpdate) SetServiceIds(v []uint64) *RewardUpdate {
+func (_u *RewardUpdate) SetServiceIds(v []string) *RewardUpdate {
 	_u.mutation.SetServiceIds(v)
 	return _u
 }
 
 // AppendServiceIds appends value to the "service_ids" field.
-func (_u *RewardUpdate) AppendServiceIds(v []uint64) *RewardUpdate {
+func (_u *RewardUpdate) AppendServiceIds(v []string) *RewardUpdate {
 	_u.mutation.AppendServiceIds(v)
+	return _u
+}
+
+// ClearServiceIds clears the value of the "service_ids" field.
+func (_u *RewardUpdate) ClearServiceIds() *RewardUpdate {
+	_u.mutation.ClearServiceIds()
 	return _u
 }
 
@@ -290,6 +296,9 @@ func (_u *RewardUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 			sqljson.Append(u, reward.FieldServiceIds, value)
 		})
 	}
+	if _u.mutation.ServiceIdsCleared() {
+		_spec.ClearField(reward.FieldServiceIds, field.TypeJSON)
+	}
 	if value, ok := _u.mutation.CouponType(); ok {
 		_spec.SetField(reward.FieldCouponType, field.TypeInt32, value)
 	}
@@ -439,14 +448,20 @@ func (_u *RewardUpdateOne) ClearExpiredDuration() *RewardUpdateOne {
 }
 
 // SetServiceIds sets the "service_ids" field.
-func (_u *RewardUpdateOne) SetServiceIds(v []uint64) *RewardUpdateOne {
+func (_u *RewardUpdateOne) SetServiceIds(v []string) *RewardUpdateOne {
 	_u.mutation.SetServiceIds(v)
 	return _u
 }
 
 // AppendServiceIds appends value to the "service_ids" field.
-func (_u *RewardUpdateOne) AppendServiceIds(v []uint64) *RewardUpdateOne {
+func (_u *RewardUpdateOne) AppendServiceIds(v []string) *RewardUpdateOne {
 	_u.mutation.AppendServiceIds(v)
+	return _u
+}
+
+// ClearServiceIds clears the value of the "service_ids" field.
+func (_u *RewardUpdateOne) ClearServiceIds() *RewardUpdateOne {
+	_u.mutation.ClearServiceIds()
 	return _u
 }
 
@@ -677,6 +692,9 @@ func (_u *RewardUpdateOne) sqlSave(ctx context.Context) (_node *Reward, err erro
 		_spec.AddModifier(func(u *sql.UpdateBuilder) {
 			sqljson.Append(u, reward.FieldServiceIds, value)
 		})
+	}
+	if _u.mutation.ServiceIdsCleared() {
+		_spec.ClearField(reward.FieldServiceIds, field.TypeJSON)
 	}
 	if value, ok := _u.mutation.CouponType(); ok {
 		_spec.SetField(reward.FieldCouponType, field.TypeInt32, value)

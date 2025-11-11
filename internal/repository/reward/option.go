@@ -9,7 +9,7 @@ type RewardOption struct {
 	CurrencyID      *uint64
 	UsageLimit      *int32
 	CouponValue     float64
-	ServiceIds      []uint64
+	ServiceIds      []string
 	CouponType      coupon.CouponType
 	IDs             []uint64
 	MilestoneID     *uint64
@@ -48,7 +48,7 @@ func WithCouponValue(couponValue float64) Option {
 	})
 }
 
-func WithServiceIds(serviceIds []uint64) Option {
+func WithServiceIds(serviceIds []string) Option {
 	return funcOption(func(mo *RewardOption) {
 		mo.ServiceIds = serviceIds
 	})

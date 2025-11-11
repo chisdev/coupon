@@ -74,7 +74,7 @@ func (_c *RewardCreate) SetNillableExpiredDuration(v *float64) *RewardCreate {
 }
 
 // SetServiceIds sets the "service_ids" field.
-func (_c *RewardCreate) SetServiceIds(v []uint64) *RewardCreate {
+func (_c *RewardCreate) SetServiceIds(v []string) *RewardCreate {
 	_c.mutation.SetServiceIds(v)
 	return _c
 }
@@ -186,10 +186,6 @@ func (_c *RewardCreate) defaults() {
 		v := reward.DefaultUpdatedAt()
 		_c.mutation.SetUpdatedAt(v)
 	}
-	if _, ok := _c.mutation.ServiceIds(); !ok {
-		v := reward.DefaultServiceIds
-		_c.mutation.SetServiceIds(v)
-	}
 	if _, ok := _c.mutation.CouponValue(); !ok {
 		v := reward.DefaultCouponValue
 		_c.mutation.SetCouponValue(v)
@@ -206,9 +202,6 @@ func (_c *RewardCreate) check() error {
 	}
 	if _, ok := _c.mutation.MilestoneID(); !ok {
 		return &ValidationError{Name: "milestone_id", err: errors.New(`ent: missing required field "Reward.milestone_id"`)}
-	}
-	if _, ok := _c.mutation.ServiceIds(); !ok {
-		return &ValidationError{Name: "service_ids", err: errors.New(`ent: missing required field "Reward.service_ids"`)}
 	}
 	if _, ok := _c.mutation.CouponType(); !ok {
 		return &ValidationError{Name: "coupon_type", err: errors.New(`ent: missing required field "Reward.coupon_type"`)}
@@ -415,7 +408,7 @@ func (u *RewardUpsert) ClearExpiredDuration() *RewardUpsert {
 }
 
 // SetServiceIds sets the "service_ids" field.
-func (u *RewardUpsert) SetServiceIds(v []uint64) *RewardUpsert {
+func (u *RewardUpsert) SetServiceIds(v []string) *RewardUpsert {
 	u.Set(reward.FieldServiceIds, v)
 	return u
 }
@@ -423,6 +416,12 @@ func (u *RewardUpsert) SetServiceIds(v []uint64) *RewardUpsert {
 // UpdateServiceIds sets the "service_ids" field to the value that was provided on create.
 func (u *RewardUpsert) UpdateServiceIds() *RewardUpsert {
 	u.SetExcluded(reward.FieldServiceIds)
+	return u
+}
+
+// ClearServiceIds clears the value of the "service_ids" field.
+func (u *RewardUpsert) ClearServiceIds() *RewardUpsert {
+	u.SetNull(reward.FieldServiceIds)
 	return u
 }
 
@@ -612,7 +611,7 @@ func (u *RewardUpsertOne) ClearExpiredDuration() *RewardUpsertOne {
 }
 
 // SetServiceIds sets the "service_ids" field.
-func (u *RewardUpsertOne) SetServiceIds(v []uint64) *RewardUpsertOne {
+func (u *RewardUpsertOne) SetServiceIds(v []string) *RewardUpsertOne {
 	return u.Update(func(s *RewardUpsert) {
 		s.SetServiceIds(v)
 	})
@@ -622,6 +621,13 @@ func (u *RewardUpsertOne) SetServiceIds(v []uint64) *RewardUpsertOne {
 func (u *RewardUpsertOne) UpdateServiceIds() *RewardUpsertOne {
 	return u.Update(func(s *RewardUpsert) {
 		s.UpdateServiceIds()
+	})
+}
+
+// ClearServiceIds clears the value of the "service_ids" field.
+func (u *RewardUpsertOne) ClearServiceIds() *RewardUpsertOne {
+	return u.Update(func(s *RewardUpsert) {
+		s.ClearServiceIds()
 	})
 }
 
@@ -990,7 +996,7 @@ func (u *RewardUpsertBulk) ClearExpiredDuration() *RewardUpsertBulk {
 }
 
 // SetServiceIds sets the "service_ids" field.
-func (u *RewardUpsertBulk) SetServiceIds(v []uint64) *RewardUpsertBulk {
+func (u *RewardUpsertBulk) SetServiceIds(v []string) *RewardUpsertBulk {
 	return u.Update(func(s *RewardUpsert) {
 		s.SetServiceIds(v)
 	})
@@ -1000,6 +1006,13 @@ func (u *RewardUpsertBulk) SetServiceIds(v []uint64) *RewardUpsertBulk {
 func (u *RewardUpsertBulk) UpdateServiceIds() *RewardUpsertBulk {
 	return u.Update(func(s *RewardUpsert) {
 		s.UpdateServiceIds()
+	})
+}
+
+// ClearServiceIds clears the value of the "service_ids" field.
+func (u *RewardUpsertBulk) ClearServiceIds() *RewardUpsertBulk {
+	return u.Update(func(s *RewardUpsert) {
+		s.ClearServiceIds()
 	})
 }
 

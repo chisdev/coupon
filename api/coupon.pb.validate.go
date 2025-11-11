@@ -2096,17 +2096,6 @@ func (m *ReserveCouponRequest) validate(all bool) error {
 
 	var errors []error
 
-	if utf8.RuneCountInString(m.GetCode()) < 1 {
-		err := ReserveCouponRequestValidationError{
-			field:  "Code",
-			reason: "value length must be at least 1 runes",
-		}
-		if !all {
-			return err
-		}
-		errors = append(errors, err)
-	}
-
 	// no validation rules for BookingId
 
 	// no validation rules for StoreId
@@ -4172,6 +4161,8 @@ func (m *CheckCouponsRequest) validate(all bool) error {
 
 	var errors []error
 
+	// no validation rules for BookingId
+
 	if m.CustomerId != nil {
 		// no validation rules for CustomerId
 	}
@@ -4391,6 +4382,246 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = CheckCouponsResponseValidationError{}
+
+// Validate checks the field values on ListAppliedCouponRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListAppliedCouponRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListAppliedCouponRequest with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListAppliedCouponRequestMultiError, or nil if none found.
+func (m *ListAppliedCouponRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListAppliedCouponRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for BookingId
+
+	if len(errors) > 0 {
+		return ListAppliedCouponRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListAppliedCouponRequestMultiError is an error wrapping multiple validation
+// errors returned by ListAppliedCouponRequest.ValidateAll() if the designated
+// constraints aren't met.
+type ListAppliedCouponRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListAppliedCouponRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListAppliedCouponRequestMultiError) AllErrors() []error { return m }
+
+// ListAppliedCouponRequestValidationError is the validation error returned by
+// ListAppliedCouponRequest.Validate if the designated constraints aren't met.
+type ListAppliedCouponRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListAppliedCouponRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListAppliedCouponRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListAppliedCouponRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListAppliedCouponRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListAppliedCouponRequestValidationError) ErrorName() string {
+	return "ListAppliedCouponRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListAppliedCouponRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListAppliedCouponRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListAppliedCouponRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListAppliedCouponRequestValidationError{}
+
+// Validate checks the field values on ListAppliedCouponResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *ListAppliedCouponResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on ListAppliedCouponResponse with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// ListAppliedCouponResponseMultiError, or nil if none found.
+func (m *ListAppliedCouponResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *ListAppliedCouponResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	for idx, item := range m.GetSoupons() {
+		_, _ = idx, item
+
+		if all {
+			switch v := interface{}(item).(type) {
+			case interface{ ValidateAll() error }:
+				if err := v.ValidateAll(); err != nil {
+					errors = append(errors, ListAppliedCouponResponseValidationError{
+						field:  fmt.Sprintf("Soupons[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			case interface{ Validate() error }:
+				if err := v.Validate(); err != nil {
+					errors = append(errors, ListAppliedCouponResponseValidationError{
+						field:  fmt.Sprintf("Soupons[%v]", idx),
+						reason: "embedded message failed validation",
+						cause:  err,
+					})
+				}
+			}
+		} else if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return ListAppliedCouponResponseValidationError{
+					field:  fmt.Sprintf("Soupons[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if len(errors) > 0 {
+		return ListAppliedCouponResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// ListAppliedCouponResponseMultiError is an error wrapping multiple validation
+// errors returned by ListAppliedCouponResponse.ValidateAll() if the
+// designated constraints aren't met.
+type ListAppliedCouponResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m ListAppliedCouponResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m ListAppliedCouponResponseMultiError) AllErrors() []error { return m }
+
+// ListAppliedCouponResponseValidationError is the validation error returned by
+// ListAppliedCouponResponse.Validate if the designated constraints aren't met.
+type ListAppliedCouponResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e ListAppliedCouponResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e ListAppliedCouponResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e ListAppliedCouponResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e ListAppliedCouponResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e ListAppliedCouponResponseValidationError) ErrorName() string {
+	return "ListAppliedCouponResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e ListAppliedCouponResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sListAppliedCouponResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = ListAppliedCouponResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = ListAppliedCouponResponseValidationError{}
 
 // Validate checks the field values on CreateMileStoneRequest_MilestoneReward
 // with the rules defined in the proto definition for this message. If any

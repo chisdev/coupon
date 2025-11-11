@@ -136,10 +136,6 @@ func init() {
 	reward.DefaultUpdatedAt = rewardDescUpdatedAt.Default.(func() time.Time)
 	// reward.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
 	reward.UpdateDefaultUpdatedAt = rewardDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// rewardDescServiceIds is the schema descriptor for service_ids field.
-	rewardDescServiceIds := rewardFields[2].Descriptor()
-	// reward.DefaultServiceIds holds the default value on creation for the service_ids field.
-	reward.DefaultServiceIds = rewardDescServiceIds.Default.([]uint64)
 	// rewardDescCouponValue is the schema descriptor for coupon_value field.
 	rewardDescCouponValue := rewardFields[6].Descriptor()
 	// reward.DefaultCouponValue holds the default value on creation for the coupon_value field.

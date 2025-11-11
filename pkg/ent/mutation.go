@@ -1725,10 +1725,24 @@ func (m *CouponBookingMutation) AppendedServiceIds() ([]string, bool) {
 	return m.appendservice_ids, true
 }
 
+// ClearServiceIds clears the value of the "service_ids" field.
+func (m *CouponBookingMutation) ClearServiceIds() {
+	m.service_ids = nil
+	m.appendservice_ids = nil
+	m.clearedFields[couponbooking.FieldServiceIds] = struct{}{}
+}
+
+// ServiceIdsCleared returns if the "service_ids" field was cleared in this mutation.
+func (m *CouponBookingMutation) ServiceIdsCleared() bool {
+	_, ok := m.clearedFields[couponbooking.FieldServiceIds]
+	return ok
+}
+
 // ResetServiceIds resets all changes to the "service_ids" field.
 func (m *CouponBookingMutation) ResetServiceIds() {
 	m.service_ids = nil
 	m.appendservice_ids = nil
+	delete(m.clearedFields, couponbooking.FieldServiceIds)
 }
 
 // SetCustomerID sets the "customer_id" field.
@@ -2011,6 +2025,9 @@ func (m *CouponBookingMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *CouponBookingMutation) ClearedFields() []string {
 	var fields []string
+	if m.FieldCleared(couponbooking.FieldServiceIds) {
+		fields = append(fields, couponbooking.FieldServiceIds)
+	}
 	if m.FieldCleared(couponbooking.FieldCustomerID) {
 		fields = append(fields, couponbooking.FieldCustomerID)
 	}
@@ -2028,6 +2045,9 @@ func (m *CouponBookingMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *CouponBookingMutation) ClearField(name string) error {
 	switch name {
+	case couponbooking.FieldServiceIds:
+		m.ClearServiceIds()
+		return nil
 	case couponbooking.FieldCustomerID:
 		m.ClearCustomerID()
 		return nil
@@ -4520,8 +4540,8 @@ type RewardMutation struct {
 	updated_at          *time.Time
 	expired_duration    *float64
 	addexpired_duration *float64
-	service_ids         *[]uint64
-	appendservice_ids   []uint64
+	service_ids         *[]string
+	appendservice_ids   []string
 	coupon_type         *coupon.CouponType
 	addcoupon_type      *coupon.CouponType
 	usage_limit         *int32
@@ -4821,13 +4841,13 @@ func (m *RewardMutation) ResetExpiredDuration() {
 }
 
 // SetServiceIds sets the "service_ids" field.
-func (m *RewardMutation) SetServiceIds(u []uint64) {
-	m.service_ids = &u
+func (m *RewardMutation) SetServiceIds(s []string) {
+	m.service_ids = &s
 	m.appendservice_ids = nil
 }
 
 // ServiceIds returns the value of the "service_ids" field in the mutation.
-func (m *RewardMutation) ServiceIds() (r []uint64, exists bool) {
+func (m *RewardMutation) ServiceIds() (r []string, exists bool) {
 	v := m.service_ids
 	if v == nil {
 		return
@@ -4838,7 +4858,7 @@ func (m *RewardMutation) ServiceIds() (r []uint64, exists bool) {
 // OldServiceIds returns the old "service_ids" field's value of the Reward entity.
 // If the Reward object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *RewardMutation) OldServiceIds(ctx context.Context) (v []uint64, err error) {
+func (m *RewardMutation) OldServiceIds(ctx context.Context) (v []string, err error) {
 	if !m.op.Is(OpUpdateOne) {
 		return v, errors.New("OldServiceIds is only allowed on UpdateOne operations")
 	}
@@ -4852,23 +4872,37 @@ func (m *RewardMutation) OldServiceIds(ctx context.Context) (v []uint64, err err
 	return oldValue.ServiceIds, nil
 }
 
-// AppendServiceIds adds u to the "service_ids" field.
-func (m *RewardMutation) AppendServiceIds(u []uint64) {
-	m.appendservice_ids = append(m.appendservice_ids, u...)
+// AppendServiceIds adds s to the "service_ids" field.
+func (m *RewardMutation) AppendServiceIds(s []string) {
+	m.appendservice_ids = append(m.appendservice_ids, s...)
 }
 
 // AppendedServiceIds returns the list of values that were appended to the "service_ids" field in this mutation.
-func (m *RewardMutation) AppendedServiceIds() ([]uint64, bool) {
+func (m *RewardMutation) AppendedServiceIds() ([]string, bool) {
 	if len(m.appendservice_ids) == 0 {
 		return nil, false
 	}
 	return m.appendservice_ids, true
 }
 
+// ClearServiceIds clears the value of the "service_ids" field.
+func (m *RewardMutation) ClearServiceIds() {
+	m.service_ids = nil
+	m.appendservice_ids = nil
+	m.clearedFields[reward.FieldServiceIds] = struct{}{}
+}
+
+// ServiceIdsCleared returns if the "service_ids" field was cleared in this mutation.
+func (m *RewardMutation) ServiceIdsCleared() bool {
+	_, ok := m.clearedFields[reward.FieldServiceIds]
+	return ok
+}
+
 // ResetServiceIds resets all changes to the "service_ids" field.
 func (m *RewardMutation) ResetServiceIds() {
 	m.service_ids = nil
 	m.appendservice_ids = nil
+	delete(m.clearedFields, reward.FieldServiceIds)
 }
 
 // SetCouponType sets the "coupon_type" field.
@@ -5309,7 +5343,7 @@ func (m *RewardMutation) SetField(name string, value ent.Value) error {
 		m.SetExpiredDuration(v)
 		return nil
 	case reward.FieldServiceIds:
-		v, ok := value.([]uint64)
+		v, ok := value.([]string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
@@ -5427,6 +5461,9 @@ func (m *RewardMutation) ClearedFields() []string {
 	if m.FieldCleared(reward.FieldExpiredDuration) {
 		fields = append(fields, reward.FieldExpiredDuration)
 	}
+	if m.FieldCleared(reward.FieldServiceIds) {
+		fields = append(fields, reward.FieldServiceIds)
+	}
 	if m.FieldCleared(reward.FieldCurrencyID) {
 		fields = append(fields, reward.FieldCurrencyID)
 	}
@@ -5449,6 +5486,9 @@ func (m *RewardMutation) ClearField(name string) error {
 	switch name {
 	case reward.FieldExpiredDuration:
 		m.ClearExpiredDuration()
+		return nil
+	case reward.FieldServiceIds:
+		m.ClearServiceIds()
 		return nil
 	case reward.FieldCurrencyID:
 		m.ClearCurrencyID()

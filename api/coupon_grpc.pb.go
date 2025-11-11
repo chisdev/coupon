@@ -22,6 +22,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	Coupon_ListCouponForCustomer_FullMethodName = "/coupon.Coupon/ListCouponForCustomer"
 	Coupon_ListCouponForCms_FullMethodName      = "/coupon.Coupon/ListCouponForCms"
+	Coupon_ListAppliedCoupon_FullMethodName     = "/coupon.Coupon/ListAppliedCoupon"
 	Coupon_ListProgress_FullMethodName          = "/coupon.Coupon/ListProgress"
 	Coupon_ListCurrency_FullMethodName          = "/coupon.Coupon/ListCurrency"
 	Coupon_CreateMileStone_FullMethodName       = "/coupon.Coupon/CreateMileStone"
@@ -38,6 +39,7 @@ const (
 type CouponClient interface {
 	ListCouponForCustomer(ctx context.Context, in *ListCouponForCustomerRequest, opts ...grpc.CallOption) (*ListCouponForCustomerResponse, error)
 	ListCouponForCms(ctx context.Context, in *ListCouponForCmsRequest, opts ...grpc.CallOption) (*ListCouponForCmsResponse, error)
+	ListAppliedCoupon(ctx context.Context, in *ListAppliedCouponRequest, opts ...grpc.CallOption) (*ListAppliedCouponResponse, error)
 	ListProgress(ctx context.Context, in *ListProgressRequest, opts ...grpc.CallOption) (*ListProgressResponse, error)
 	ListCurrency(ctx context.Context, in *ListCurrencyRequest, opts ...grpc.CallOption) (*ListCurrencyResponse, error)
 	CreateMileStone(ctx context.Context, in *CreateMileStoneRequest, opts ...grpc.CallOption) (*CreateMileStoneResponse, error)
@@ -70,6 +72,16 @@ func (c *couponClient) ListCouponForCms(ctx context.Context, in *ListCouponForCm
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListCouponForCmsResponse)
 	err := c.cc.Invoke(ctx, Coupon_ListCouponForCms_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *couponClient) ListAppliedCoupon(ctx context.Context, in *ListAppliedCouponRequest, opts ...grpc.CallOption) (*ListAppliedCouponResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ListAppliedCouponResponse)
+	err := c.cc.Invoke(ctx, Coupon_ListAppliedCoupon_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -162,6 +174,7 @@ func (c *couponClient) DeleteCoupon(ctx context.Context, in *DeleteCouponRequest
 type CouponServer interface {
 	ListCouponForCustomer(context.Context, *ListCouponForCustomerRequest) (*ListCouponForCustomerResponse, error)
 	ListCouponForCms(context.Context, *ListCouponForCmsRequest) (*ListCouponForCmsResponse, error)
+	ListAppliedCoupon(context.Context, *ListAppliedCouponRequest) (*ListAppliedCouponResponse, error)
 	ListProgress(context.Context, *ListProgressRequest) (*ListProgressResponse, error)
 	ListCurrency(context.Context, *ListCurrencyRequest) (*ListCurrencyResponse, error)
 	CreateMileStone(context.Context, *CreateMileStoneRequest) (*CreateMileStoneResponse, error)
@@ -185,6 +198,9 @@ func (UnimplementedCouponServer) ListCouponForCustomer(context.Context, *ListCou
 }
 func (UnimplementedCouponServer) ListCouponForCms(context.Context, *ListCouponForCmsRequest) (*ListCouponForCmsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListCouponForCms not implemented")
+}
+func (UnimplementedCouponServer) ListAppliedCoupon(context.Context, *ListAppliedCouponRequest) (*ListAppliedCouponResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ListAppliedCoupon not implemented")
 }
 func (UnimplementedCouponServer) ListProgress(context.Context, *ListProgressRequest) (*ListProgressResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListProgress not implemented")
@@ -263,6 +279,24 @@ func _Coupon_ListCouponForCms_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CouponServer).ListCouponForCms(ctx, req.(*ListCouponForCmsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Coupon_ListAppliedCoupon_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ListAppliedCouponRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CouponServer).ListAppliedCoupon(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coupon_ListAppliedCoupon_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CouponServer).ListAppliedCoupon(ctx, req.(*ListAppliedCouponRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -425,6 +459,10 @@ var Coupon_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListCouponForCms",
 			Handler:    _Coupon_ListCouponForCms_Handler,
+		},
+		{
+			MethodName: "ListAppliedCoupon",
+			Handler:    _Coupon_ListAppliedCoupon_Handler,
 		},
 		{
 			MethodName: "ListProgress",

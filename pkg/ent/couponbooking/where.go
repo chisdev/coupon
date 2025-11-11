@@ -306,6 +306,16 @@ func StatusLTE(v coupon.CouponUsedStatus) predicate.CouponBooking {
 	return predicate.CouponBooking(sql.FieldLTE(FieldStatus, vc))
 }
 
+// ServiceIdsIsNil applies the IsNil predicate on the "service_ids" field.
+func ServiceIdsIsNil() predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldIsNull(FieldServiceIds))
+}
+
+// ServiceIdsNotNil applies the NotNil predicate on the "service_ids" field.
+func ServiceIdsNotNil() predicate.CouponBooking {
+	return predicate.CouponBooking(sql.FieldNotNull(FieldServiceIds))
+}
+
 // CustomerIDEQ applies the EQ predicate on the "customer_id" field.
 func CustomerIDEQ(v string) predicate.CouponBooking {
 	return predicate.CouponBooking(sql.FieldEQ(FieldCustomerID, v))

@@ -33,3 +33,13 @@ func (c *couponBooking) UpdateStatusV2(ctx context.Context, storeId, bookingID s
 		return query.Exec(ctx)
 	})
 }
+
+func (c *couponBooking) UpdateStatusTx(ctx context.Context, tx tx.Tx, storeId, bookingID string, status, newStatus coupon.CouponUsedStatus) error {
+	query := tx.Client().CouponBooking.Update().
+		Where(entcouponbooking.BookingID(bookingID)).
+		Where(entcouponbooking.HasCouponWith(entcoupon.StoreID(storeId))).
+		Where(entcouponbooking.Status(status)).
+		SetStatus(newStatus)
+
+	return query.Exec(ctx)
+}

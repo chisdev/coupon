@@ -86,6 +86,7 @@ func (c *coupon) Check(ctx context.Context, opts ...Option) ([]*api.CheckCoupons
 		Select(entcoupon.FieldCode, entcoupon.FieldCustomerID, entcoupon.FieldExpireAt, entcoupon.FieldUsageLimit, entcoupon.FieldServiceIds).
 		WithCouponBookings(func(cbq *ent.CouponBookingQuery) {
 			cbq.Select(couponbooking.FieldID)
+			cbq.Select(couponbooking.FieldBookingID)
 		})
 
 	// for _, serviceID := range couponOpts.ServiceIds {
@@ -107,6 +108,13 @@ func (c *coupon) Check(ctx context.Context, opts ...Option) ([]*api.CheckCoupons
 	for _, cp := range coupons {
 		result := checkMap[cp.Code] // chỉ lookup 1 lần
 		if result == nil {
+			continue
+		}
+
+		exist, _ := c.ent.CouponBooking.Query().Where(couponbooking.HasCouponWith(entcoupon.Code(cp.Code)), couponbooking.BookingID(couponOpts.BookingiD)).Exist(ctx)
+		if exist {
+			result.Msg = "has been use"
+			result.StatusCode = int32(codeInvalid)
 			continue
 		}
 

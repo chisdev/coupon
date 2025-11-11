@@ -99,6 +99,12 @@ func (_u *CouponBookingUpdate) AppendServiceIds(v []string) *CouponBookingUpdate
 	return _u
 }
 
+// ClearServiceIds clears the value of the "service_ids" field.
+func (_u *CouponBookingUpdate) ClearServiceIds() *CouponBookingUpdate {
+	_u.mutation.ClearServiceIds()
+	return _u
+}
+
 // SetCustomerID sets the "customer_id" field.
 func (_u *CouponBookingUpdate) SetCustomerID(v string) *CouponBookingUpdate {
 	_u.mutation.SetCustomerID(v)
@@ -216,6 +222,9 @@ func (_u *CouponBookingUpdate) sqlSave(ctx context.Context) (_node int, err erro
 		_spec.AddModifier(func(u *sql.UpdateBuilder) {
 			sqljson.Append(u, couponbooking.FieldServiceIds, value)
 		})
+	}
+	if _u.mutation.ServiceIdsCleared() {
+		_spec.ClearField(couponbooking.FieldServiceIds, field.TypeJSON)
 	}
 	if value, ok := _u.mutation.CustomerID(); ok {
 		_spec.SetField(couponbooking.FieldCustomerID, field.TypeString, value)
@@ -338,6 +347,12 @@ func (_u *CouponBookingUpdateOne) SetServiceIds(v []string) *CouponBookingUpdate
 // AppendServiceIds appends value to the "service_ids" field.
 func (_u *CouponBookingUpdateOne) AppendServiceIds(v []string) *CouponBookingUpdateOne {
 	_u.mutation.AppendServiceIds(v)
+	return _u
+}
+
+// ClearServiceIds clears the value of the "service_ids" field.
+func (_u *CouponBookingUpdateOne) ClearServiceIds() *CouponBookingUpdateOne {
+	_u.mutation.ClearServiceIds()
 	return _u
 }
 
@@ -488,6 +503,9 @@ func (_u *CouponBookingUpdateOne) sqlSave(ctx context.Context) (_node *CouponBoo
 		_spec.AddModifier(func(u *sql.UpdateBuilder) {
 			sqljson.Append(u, couponbooking.FieldServiceIds, value)
 		})
+	}
+	if _u.mutation.ServiceIdsCleared() {
+		_spec.ClearField(couponbooking.FieldServiceIds, field.TypeJSON)
 	}
 	if value, ok := _u.mutation.CustomerID(); ok {
 		_spec.SetField(couponbooking.FieldCustomerID, field.TypeString, value)

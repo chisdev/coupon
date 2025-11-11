@@ -22,6 +22,12 @@ service Coupon {
         };
     };
 
+    rpc ListAppliedCoupon(ListAppliedCouponRequest) returns (ListAppliedCouponResponse) {
+         option (google.api.http) = {
+            get: "/coupon/applied"
+        };
+    }
+
     rpc ListProgress (ListProgressRequest) returns (ListProgressResponse) {
         option (google.api.http) = {
             get: "/coupon/progress"
@@ -34,7 +40,7 @@ service Coupon {
         };
     }
 
-        rpc CreateMileStone (CreateMileStoneRequest) returns (CreateMileStoneResponse) {
+    rpc CreateMileStone (CreateMileStoneRequest) returns (CreateMileStoneResponse) {
       option (google.api.http) = {
         post: "/coupon/milestone"
         body: "*"
@@ -75,6 +81,7 @@ service Coupon {
         body: "*"
       };
     }
+
 }
 
 
@@ -256,7 +263,7 @@ message DeleteMileStoneRequest {
 }
 
 message ReserveCouponRequest {
-    string code = 1 [(validate.rules).string = {min_len: 1}];
+    repeated string codes = 1 ;
     string booking_id = 2;
     // repeated string service_ids = 3;    
     optional string customer_id = 4;
@@ -361,8 +368,8 @@ message DeleteCouponRequest {
 
 message CheckCouponsRequest {
     repeated string codes = 1;
-    optional string customer_id = 2;
-    repeated string services = 3;
+    string booking_id = 2;
+    optional string customer_id = 3;
 }
 
 message CheckCouponsResponse {
@@ -373,4 +380,12 @@ message CheckCouponsResponse {
         bool ok = 3;
         int32 status_code = 4;
     }
+}
+
+message  ListAppliedCouponRequest {
+    string booking_id = 1;
+}
+
+message ListAppliedCouponResponse {
+    repeated StoreCoupon soupons = 1;
 }

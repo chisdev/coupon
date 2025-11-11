@@ -22,6 +22,7 @@ type CouponOpts struct {
 	ServiceIds  []string
 	SortMethods []*api.SortMethod
 	WithUsage   bool
+	BookingiD   string
 }
 
 type Option interface {
@@ -116,5 +117,11 @@ func WithUsage(withUsage bool) Option {
 func WithSortMethods(sortMethods []*api.SortMethod) Option {
 	return funcOption(func(co *CouponOpts) {
 		co.SortMethods = sortMethods
+	})
+}
+
+func WithBookingId(id string) Option {
+	return funcOption(func(co *CouponOpts) {
+		co.BookingiD = co.BookingiD
 	})
 }

@@ -45,7 +45,7 @@ var (
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "booking_id", Type: field.TypeString},
 		{Name: "status", Type: field.TypeInt32},
-		{Name: "service_ids", Type: field.TypeJSON},
+		{Name: "service_ids", Type: field.TypeJSON, Nullable: true},
 		{Name: "customer_id", Type: field.TypeString, Nullable: true},
 		{Name: "coupon_id", Type: field.TypeUint64},
 	}
@@ -60,6 +60,13 @@ var (
 				Columns:    []*schema.Column{CouponBookingsColumns[7]},
 				RefColumns: []*schema.Column{CouponsColumns[0]},
 				OnDelete:   schema.Cascade,
+			},
+		},
+		Indexes: []*schema.Index{
+			{
+				Name:    "couponbooking_coupon_id_booking_id",
+				Unique:  true,
+				Columns: []*schema.Column{CouponBookingsColumns[7], CouponBookingsColumns[3]},
 			},
 		},
 	}
@@ -124,7 +131,7 @@ var (
 		{Name: "created_at", Type: field.TypeTime},
 		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "expired_duration", Type: field.TypeFloat64, Nullable: true},
-		{Name: "service_ids", Type: field.TypeJSON},
+		{Name: "service_ids", Type: field.TypeJSON, Nullable: true},
 		{Name: "coupon_type", Type: field.TypeInt32},
 		{Name: "usage_limit", Type: field.TypeInt32, Nullable: true},
 		{Name: "coupon_value", Type: field.TypeFloat64, Default: 0},

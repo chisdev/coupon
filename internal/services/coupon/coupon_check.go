@@ -10,7 +10,6 @@ import (
 func (c *coupon) CheckCoupons(ctx context.Context, req *api.CheckCouponsRequest) (*api.CheckCouponsResponse, error) {
 	opts := []couponrepo.Option{
 		couponrepo.WithCodes(req.Codes),
-		couponrepo.WithServiceIds(req.Services),
 	}
 
 	if req.CustomerId != nil {
