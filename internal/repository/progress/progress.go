@@ -13,8 +13,8 @@ type Progress interface {
 	GetTx(ctx context.Context, tx tx.Tx, customerId string, milestonerId uint64) (*ent.Progress, error)
 	CreateBulkTx(ctx context.Context, tx tx.Tx, entites []*ent.Progress) ([]*ent.Progress, error)
 	UpdateBulkTx(ctx context.Context, tx tx.Tx, pList []*ent.Progress) error
-	List(ctx context.Context, opts ...Option) ([]*ent.Progress, error)
-	ListTx(ctx context.Context, tx tx.Tx, opts ...Option) ([]*ent.Progress, error)
+	List(ctx context.Context, opts ...Option) ([]*ent.Progress, int32, int32, error)
+	ListTx(ctx context.Context, tx tx.Tx, opts ...Option) ([]*ent.Progress, int32, int32, error)
 }
 
 type progress struct {

@@ -79,6 +79,7 @@ func (r *reward) CreateBulk(ctx context.Context, tx tx.Tx, entities []*ent.Rewar
 			if *entity.UsageLimit < 1 {
 				return nil, errInvaliedUsageLimit
 			}
+			query = query.SetUsageLimit(*entity.UsageLimit)
 		}
 
 		if entity.CurrencyID != nil {

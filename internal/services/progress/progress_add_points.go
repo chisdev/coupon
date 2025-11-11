@@ -16,7 +16,7 @@ func (p *progress) AddPoints(ctx context.Context, req *coupon.AddPointRequest) e
 	return tx.WithTransaction(ctx, p.repository.GetEntClient(), func(ctx context.Context, tx tx.Tx) error {
 
 		eMilestones, _, _, err := p.repository.MileStoneRepository.ListTx(ctx, tx,
-			milestone.WithStoreIDs([]string{req.String()}),
+			milestone.WithStoreIDs([]string{req.StoreId}),
 			milestone.WithReward(true))
 		if err != nil && !ent.IsNotFound(err) {
 			return err
@@ -30,22 +30,31 @@ func (p *progress) AddPoints(ctx context.Context, req *coupon.AddPointRequest) e
 				return err
 			}
 
-			var goal int32 = 0
+			var (
+				goal     int32 = 0
+				pass     int32 = 0
+				progress int32 = 0
+			)
 			switch {
 			case m.MilestoneType == coupon.MilestoneType_MILESTONE_TYPE_FIXED && m.Threshold != nil:
 				if cusPro.PassCount >= 1 {
 					continue
 				}
 				goal = *m.Threshold
+				progress = (req.Points + cusPro.Progress) % goal
+				if (req.Points+cusPro.Progress)/goal > 0 {
+					pass = 1
+					progress = goal
+				}
 			case m.MilestoneType == coupon.MilestoneType_MILESTONE_TYPE_RECURRING && m.Step != nil:
 				goal = *m.Step
+				pass = (req.Points + cusPro.Progress) / goal
+				progress = (req.Points + cusPro.Progress) % goal
 			default:
 				return errors.New("")
 			}
 
-			pass := (req.Points + cusPro.Progress) / goal
 			for range pass {
-
 				for _, reward := range m.Edges.Reward {
 					opts := []couponrepo.Option{
 						couponrepo.WithUserIDs([]string{req.CustomerId}),
@@ -54,11 +63,12 @@ func (p *progress) AddPoints(ctx context.Context, req *coupon.AddPointRequest) e
 						couponrepo.WithCurrencyID(reward.CurrencyID),
 						couponrepo.WithUsageLimit(reward.UsageLimit),
 					}
-
+					var expiredAt *time.Time = nil
 					if reward.ExpiredDuration != nil {
-						expiredAt := time.Now().Add(time.Duration(*reward.ExpiredDuration * float64(time.Second)))
-						opts = append(opts, couponrepo.WithExpiredAt(&expiredAt))
+						t := time.Now().Add(time.Duration(*reward.ExpiredDuration * float64(time.Second)))
+						expiredAt = &t
 					}
+					opts = append(opts, couponrepo.WithExpiredAt(expiredAt))
 
 					if err := p.repository.CouponRepository.CreateTx(ctx, tx, reward.CouponValue,
 						opts...,
@@ -69,7 +79,7 @@ func (p *progress) AddPoints(ctx context.Context, req *coupon.AddPointRequest) e
 			}
 
 			cusPro.PassCount += pass
-			cusPro.Progress = (req.Points + cusPro.Progress) % goal
+			cusPro.Progress = progress
 			cusProList = append(cusProList, cusPro)
 		}
 

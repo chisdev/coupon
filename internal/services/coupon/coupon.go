@@ -9,6 +9,7 @@ import (
 )
 
 type Coupon interface {
+	CheckCoupons(ctx context.Context, req *api.CheckCouponsRequest) (*api.CheckCouponsResponse, error)
 	CreateCoupon(ctx context.Context, req *api.CreateCouponRequest) (*api.CreateCouponResponse, error)
 	DeleteCoupon(ctx context.Context, req *api.DeleteCouponRequest) error
 	ConfirmUsage(ctx context.Context, req *api.ConfirmCouponUsageRequest) error

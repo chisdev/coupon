@@ -16,7 +16,7 @@ func (c *coupon) ListCouponForCustomer(ctx context.Context, request *api.ListCou
 
 	opts := []couponrepo.Option{
 		couponrepo.WithStoreIDs(request.StoreId),
-		couponrepo.WithServiceIds(request.ServiceIds),
+		// couponrepo.WithServiceIds(request.ServiceIds),
 		couponrepo.WithPaging(request.PageSize, request.PageIndex),
 		couponrepo.WithUserIDs([]string{customerId}),
 		couponrepo.WithStatus(request.Status),
@@ -45,7 +45,7 @@ func (c *coupon) ListCouponForCms(ctx context.Context, request *api.ListCouponFo
 
 	opts := []couponrepo.Option{
 		couponrepo.WithStoreIDs([]string{storeId}),
-		couponrepo.WithServiceIds(request.ServiceIds),
+		// couponrepo.WithServiceIds(request.ServiceIds),
 		couponrepo.WithPaging(request.PageSize, request.PageIndex),
 		couponrepo.WithUserIDs(request.CustomerIds),
 		couponrepo.WithStatus(request.Status),

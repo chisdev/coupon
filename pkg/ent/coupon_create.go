@@ -250,9 +250,6 @@ func (_c *CouponCreate) check() error {
 			return &ValidationError{Name: "store_id", err: fmt.Errorf(`ent: validator failed for field "Coupon.store_id": %w`, err)}
 		}
 	}
-	if _, ok := _c.mutation.ServiceIds(); !ok {
-		return &ValidationError{Name: "service_ids", err: errors.New(`ent: missing required field "Coupon.service_ids"`)}
-	}
 	if _, ok := _c.mutation.GetType(); !ok {
 		return &ValidationError{Name: "type", err: errors.New(`ent: missing required field "Coupon.type"`)}
 	}
@@ -523,6 +520,12 @@ func (u *CouponUpsert) UpdateServiceIds() *CouponUpsert {
 	return u
 }
 
+// ClearServiceIds clears the value of the "service_ids" field.
+func (u *CouponUpsert) ClearServiceIds() *CouponUpsert {
+	u.SetNull(entcoupon.FieldServiceIds)
+	return u
+}
+
 // SetType sets the "type" field.
 func (u *CouponUpsert) SetType(v coupon.CouponType) *CouponUpsert {
 	u.Set(entcoupon.FieldType, v)
@@ -768,6 +771,13 @@ func (u *CouponUpsertOne) SetServiceIds(v []string) *CouponUpsertOne {
 func (u *CouponUpsertOne) UpdateServiceIds() *CouponUpsertOne {
 	return u.Update(func(s *CouponUpsert) {
 		s.UpdateServiceIds()
+	})
+}
+
+// ClearServiceIds clears the value of the "service_ids" field.
+func (u *CouponUpsertOne) ClearServiceIds() *CouponUpsertOne {
+	return u.Update(func(s *CouponUpsert) {
+		s.ClearServiceIds()
 	})
 }
 
@@ -1195,6 +1205,13 @@ func (u *CouponUpsertBulk) SetServiceIds(v []string) *CouponUpsertBulk {
 func (u *CouponUpsertBulk) UpdateServiceIds() *CouponUpsertBulk {
 	return u.Update(func(s *CouponUpsert) {
 		s.UpdateServiceIds()
+	})
+}
+
+// ClearServiceIds clears the value of the "service_ids" field.
+func (u *CouponUpsertBulk) ClearServiceIds() *CouponUpsertBulk {
+	return u.Update(func(s *CouponUpsert) {
+		s.ClearServiceIds()
 	})
 }
 

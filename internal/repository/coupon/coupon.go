@@ -3,6 +3,7 @@ package coupon
 import (
 	"context"
 
+	api "github.com/chisdev/coupon/api"
 	"github.com/chisdev/coupon/internal/utiils/tx"
 	"github.com/chisdev/coupon/pkg/ent"
 )
@@ -14,6 +15,7 @@ type Coupon interface {
 	CreateTx(ctx context.Context, tx tx.Tx, value float64, opts ...Option) error
 	Update(ctx context.Context, tx tx.Tx, id uint64, opts ...Option) error
 	Delete(ctx context.Context, tx tx.Tx, opts ...Option) error
+	Check(ctx context.Context, opts ...Option) ([]*api.CheckCouponsResponse_Result, error)
 }
 
 type coupon struct {

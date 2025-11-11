@@ -9,6 +9,7 @@ import (
 type CouponOpts struct {
 	IDs         []uint64
 	Code        string
+	Codes       []string
 	UserIDs     []string
 	StoreIDs    []string
 	ExpiredAt   *time.Time
@@ -67,6 +68,12 @@ func WithStoreIDs(storeIDs []string) Option {
 func WithCode(code string) Option {
 	return funcOption(func(co *CouponOpts) {
 		co.Code = code
+	})
+}
+
+func WithCodes(codes []string) Option {
+	return funcOption(func(co *CouponOpts) {
+		co.Codes = codes
 	})
 }
 

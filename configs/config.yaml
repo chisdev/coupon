@@ -15,7 +15,7 @@ logger:
   level: DEBUG
 
 database:
-  auth_method: ${DATABASE_AUTH_METHOD}
+  auth_method: 2 
   host: ${DATABASE_HOST}
   port: 3306
   name: ${DATABASE_NAME}

@@ -61,7 +61,7 @@ func (m *milestone) CreateMilestone(ctx context.Context, req *coupon.CreateMileS
 				CurrencyID:      reward.CurrencyId,
 				UsageLimit:      reward.UsageLimit,
 				CouponValue:     reward.CouponValue,
-				ServiceIds:      reward.ServiceIds,
+				// ServiceIds:      reward.ServiceIds,
 			})
 		}
 

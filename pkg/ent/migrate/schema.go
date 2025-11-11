@@ -18,7 +18,7 @@ var (
 		{Name: "store_id", Type: field.TypeString},
 		{Name: "expire_at", Type: field.TypeTime, Nullable: true},
 		{Name: "customer_id", Type: field.TypeString, Nullable: true},
-		{Name: "service_ids", Type: field.TypeJSON},
+		{Name: "service_ids", Type: field.TypeJSON, Nullable: true},
 		{Name: "type", Type: field.TypeInt32},
 		{Name: "usage_limit", Type: field.TypeInt32, Nullable: true},
 		{Name: "status", Type: field.TypeInt32},

@@ -22,11 +22,11 @@ service Coupon {
         };
     };
 
-    // rpc ListProgress (ListProgressRequest) returns (ListProgressResponse) {
-    //     option (google.api.http) = {
-    //         get: "/coupon/progress"
-    //     };
-    // } 
+    rpc ListProgress (ListProgressRequest) returns (ListProgressResponse) {
+        option (google.api.http) = {
+            get: "/coupon/progress"
+        };
+    } 
 
     rpc ListCurrency (ListCurrencyRequest) returns (ListCurrencyResponse) {
           option (google.api.http) = {
@@ -55,6 +55,12 @@ service Coupon {
         };
     };
 
+    rpc CheckCoupon(CheckCouponsRequest) returns (CheckCouponsResponse) {
+      option (google.api.http) = {
+        post: "/coupon/check"
+        body: "*"
+      };
+    }
 
     rpc CreateCoupon (CreateCouponRequest) returns (CreateCouponResponse) {
       option (google.api.http) = {
@@ -149,7 +155,7 @@ message Reward {
     optional int32 usage_limit = 5;
     uint64 milestone_id = 6;
     CouponType coupon_type = 7;
-    repeated uint64 service_ids = 8;
+    // repeated uint64 service_ids = 8;
 }
 
 message Milestone {
@@ -167,7 +173,7 @@ message StoreCoupon {
     string store_id = 3;
     optional google.protobuf.Timestamp expired_at = 4;
     optional string customer_id = 5;
-    repeated string service_ids = 6;
+    // repeated string service_ids = 6;
     optional uint64 currency_id = 7;
     CouponType coupon_type = 8;
     CouponStatus status = 9;
@@ -181,14 +187,14 @@ message StoreCoupon {
 message CouponUsage {
     uint64 id = 1;
     string booking_id = 2;
-    repeated  string service_ids = 3;
+    // repeated  string service_ids = 3;
     optional string customer_id = 4;
     CouponUsedStatus status = 5;
     optional google.protobuf.Timestamp reserved_at = 6;
     optional google.protobuf.Timestamp used_at = 7;
 }
 
-message Proress {
+message Progress {
     uint64  milestone_id = 1;
     int32   progress = 2;
     int32   pass_count = 3;
@@ -209,8 +215,7 @@ message CreateMileStoneRequest {
         optional double expired_duration = 2;
         optional uint64 currency_id = 3;
         optional int32 usage_limit = 4;
-        uint64 milestone_id = 5;
-        repeated uint64 service_ids = 6;
+        // repeated uint64 service_ids = 5;
     }
 }
 
@@ -253,7 +258,7 @@ message DeleteMileStoneRequest {
 message ReserveCouponRequest {
     string code = 1 [(validate.rules).string = {min_len: 1}];
     string booking_id = 2;
-    repeated string service_ids = 3;    
+    // repeated string service_ids = 3;    
     optional string customer_id = 4;
     string store_id = 6;
 }
@@ -266,6 +271,8 @@ message UnReserveCouponRequest {
 message ConfirmCouponUsageRequest {
     string booking_id = 1;
     string store_id = 2;
+    repeated string codes = 3;
+    optional string customer_id = 4;
 }
 
 message AddPointRequest {
@@ -279,7 +286,7 @@ message ListCouponForCustomerRequest {
     int32 page_size = 2 [(validate.rules).int32 = {gte: 0}];
     repeated SortMethod sort_methods = 3;
     repeated string store_id = 4;
-    repeated string service_ids = 5;
+    // repeated string service_ids = 5;
     CouponStatus status = 6;
 }
 
@@ -295,7 +302,7 @@ message ListCouponForCmsRequest {
     int32 page_size = 2 [(validate.rules).int32 = {gte: 0}];
     repeated SortMethod sort_methods = 3;
     repeated string customer_ids = 4;
-    repeated string service_ids = 5;
+    // repeated string service_ids = 5;
     CouponStatus status = 6;
 }
 
@@ -315,7 +322,7 @@ message ListProgressRequest {
 
 
 message ListProgressResponse {
-    repeated Proress  progress_list = 1;
+    repeated Progress  progress_list = 1;
     int32 total_page = 2;
     int32 total_count = 3;
     ListProgressRequest request = 4;
@@ -338,7 +345,7 @@ message ListCurrencyResponse {
 message CreateCouponRequest {
     optional double expired_duration = 1;
     optional string customer_id = 2;
-    repeated string service_ids = 3;
+    // repeated string service_ids = 3;
     optional uint64 currency_id = 4;
     optional int32 usage_limit = 5;
     double coupon_value = 6;
@@ -350,4 +357,20 @@ message CreateCouponResponse {
 
 message DeleteCouponRequest {
     repeated uint64 ids = 1;    
+}
+
+message CheckCouponsRequest {
+    repeated string codes = 1;
+    optional string customer_id = 2;
+    repeated string services = 3;
+}
+
+message CheckCouponsResponse {
+    repeated Result check_result = 1;
+    message Result {
+        string code = 1;
+        string msg = 2;
+        bool ok = 3;
+        int32 status_code = 4;
+    }
 }

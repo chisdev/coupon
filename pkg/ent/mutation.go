@@ -518,10 +518,24 @@ func (m *CouponMutation) AppendedServiceIds() ([]string, bool) {
 	return m.appendservice_ids, true
 }
 
+// ClearServiceIds clears the value of the "service_ids" field.
+func (m *CouponMutation) ClearServiceIds() {
+	m.service_ids = nil
+	m.appendservice_ids = nil
+	m.clearedFields[entcoupon.FieldServiceIds] = struct{}{}
+}
+
+// ServiceIdsCleared returns if the "service_ids" field was cleared in this mutation.
+func (m *CouponMutation) ServiceIdsCleared() bool {
+	_, ok := m.clearedFields[entcoupon.FieldServiceIds]
+	return ok
+}
+
 // ResetServiceIds resets all changes to the "service_ids" field.
 func (m *CouponMutation) ResetServiceIds() {
 	m.service_ids = nil
 	m.appendservice_ids = nil
+	delete(m.clearedFields, entcoupon.FieldServiceIds)
 }
 
 // SetType sets the "type" field.
@@ -1152,6 +1166,9 @@ func (m *CouponMutation) ClearedFields() []string {
 	if m.FieldCleared(entcoupon.FieldCustomerID) {
 		fields = append(fields, entcoupon.FieldCustomerID)
 	}
+	if m.FieldCleared(entcoupon.FieldServiceIds) {
+		fields = append(fields, entcoupon.FieldServiceIds)
+	}
 	if m.FieldCleared(entcoupon.FieldCurrencyID) {
 		fields = append(fields, entcoupon.FieldCurrencyID)
 	}
@@ -1177,6 +1194,9 @@ func (m *CouponMutation) ClearField(name string) error {
 		return nil
 	case entcoupon.FieldCustomerID:
 		m.ClearCustomerID()
+		return nil
+	case entcoupon.FieldServiceIds:
+		m.ClearServiceIds()
 		return nil
 	case entcoupon.FieldCurrencyID:
 		m.ClearCurrencyID()

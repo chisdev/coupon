@@ -140,6 +140,12 @@ func (_u *CouponUpdate) AppendServiceIds(v []string) *CouponUpdate {
 	return _u
 }
 
+// ClearServiceIds clears the value of the "service_ids" field.
+func (_u *CouponUpdate) ClearServiceIds() *CouponUpdate {
+	_u.mutation.ClearServiceIds()
+	return _u
+}
+
 // SetType sets the "type" field.
 func (_u *CouponUpdate) SetType(v coupon.CouponType) *CouponUpdate {
 	_u.mutation.ResetType()
@@ -380,6 +386,9 @@ func (_u *CouponUpdate) sqlSave(ctx context.Context) (_node int, err error) {
 			sqljson.Append(u, entcoupon.FieldServiceIds, value)
 		})
 	}
+	if _u.mutation.ServiceIdsCleared() {
+		_spec.ClearField(entcoupon.FieldServiceIds, field.TypeJSON)
+	}
 	if value, ok := _u.mutation.GetType(); ok {
 		_spec.SetField(entcoupon.FieldType, field.TypeInt32, value)
 	}
@@ -601,6 +610,12 @@ func (_u *CouponUpdateOne) SetServiceIds(v []string) *CouponUpdateOne {
 // AppendServiceIds appends value to the "service_ids" field.
 func (_u *CouponUpdateOne) AppendServiceIds(v []string) *CouponUpdateOne {
 	_u.mutation.AppendServiceIds(v)
+	return _u
+}
+
+// ClearServiceIds clears the value of the "service_ids" field.
+func (_u *CouponUpdateOne) ClearServiceIds() *CouponUpdateOne {
+	_u.mutation.ClearServiceIds()
 	return _u
 }
 
@@ -873,6 +888,9 @@ func (_u *CouponUpdateOne) sqlSave(ctx context.Context) (_node *Coupon, err erro
 		_spec.AddModifier(func(u *sql.UpdateBuilder) {
 			sqljson.Append(u, entcoupon.FieldServiceIds, value)
 		})
+	}
+	if _u.mutation.ServiceIdsCleared() {
+		_spec.ClearField(entcoupon.FieldServiceIds, field.TypeJSON)
 	}
 	if value, ok := _u.mutation.GetType(); ok {
 		_spec.SetField(entcoupon.FieldType, field.TypeInt32, value)

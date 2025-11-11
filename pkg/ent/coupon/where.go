@@ -488,6 +488,16 @@ func CustomerIDContainsFold(v string) predicate.Coupon {
 	return predicate.Coupon(sql.FieldContainsFold(FieldCustomerID, v))
 }
 
+// ServiceIdsIsNil applies the IsNil predicate on the "service_ids" field.
+func ServiceIdsIsNil() predicate.Coupon {
+	return predicate.Coupon(sql.FieldIsNull(FieldServiceIds))
+}
+
+// ServiceIdsNotNil applies the NotNil predicate on the "service_ids" field.
+func ServiceIdsNotNil() predicate.Coupon {
+	return predicate.Coupon(sql.FieldNotNull(FieldServiceIds))
+}
+
 // TypeEQ applies the EQ predicate on the "type" field.
 func TypeEQ(v coupon.CouponType) predicate.Coupon {
 	vc := int32(v)

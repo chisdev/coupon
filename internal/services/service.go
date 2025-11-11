@@ -19,7 +19,7 @@ type Services struct {
 func New(repository *repository.Repository, extractor extractor.Extractor) *Services {
 	return &Services{
 		MileStoneService: milestone.New(repository, extractor),
-		ProgressService:  progress.New(repository),
+		ProgressService:  progress.New(repository, extractor),
 		CouponService:    coupon.New(repository, extractor),
 		CurrencyService:  currency.New(repository),
 	}

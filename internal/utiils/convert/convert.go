@@ -15,7 +15,7 @@ func ConvertReward(e *ent.Reward) *coupon.Reward {
 		UsageLimit:      e.UsageLimit,
 		MilestoneId:     e.MilestoneID,
 		CouponType:      e.CouponType,
-		ServiceIds:      e.ServiceIds,
+		// ServiceIds:      e.ServiceIds,
 	}
 }
 
@@ -48,9 +48,9 @@ func ConvertMilestones(ents []*ent.Milestone) []*coupon.Milestone {
 
 func ConvertUsage(couponBooking *ent.CouponBooking) *coupon.CouponUsage {
 	out := &coupon.CouponUsage{
-		Id:         couponBooking.ID,
-		BookingId:  couponBooking.BookingID,
-		ServiceIds: couponBooking.ServiceIds,
+		Id:        couponBooking.ID,
+		BookingId: couponBooking.BookingID,
+		// ServiceIds: couponBooking.ServiceIds,
 		CustomerId: couponBooking.CustomerID,
 		Status:     couponBooking.Status,
 		ReservedAt: timestamppb.New(couponBooking.CreatedAt),
@@ -72,15 +72,15 @@ func ConvertUsages(ents []*ent.CouponBooking) []*coupon.CouponUsage {
 
 func ConvertCoupon(e *ent.Coupon) *coupon.StoreCoupon {
 	out := &coupon.StoreCoupon{
-		Id:            e.ID,
-		Code:          e.Code,
-		CustomerId:    e.CustomerID,
-		StoreId:       e.StoreID,
-		UsageLimit:    e.UsageLimit,
-		Status:        e.Status,
-		CouponType:    e.Type,
-		CurrencyId:    e.CurrencyID,
-		ServiceIds:    e.ServiceIds,
+		Id:         e.ID,
+		Code:       e.Code,
+		CustomerId: e.CustomerID,
+		StoreId:    e.StoreID,
+		UsageLimit: e.UsageLimit,
+		Status:     e.Status,
+		CouponType: e.Type,
+		CurrencyId: e.CurrencyID,
+		// ServiceIds:    e.ServiceIds,
 		CouponUsages:  ConvertUsages(e.Edges.CouponBookings),
 		UsedCount:     0,
 		ReservedCount: 0,
@@ -124,4 +124,21 @@ func ConvertCurrencies(ents []*ent.Currency) []*coupon.Currency {
 		currencies = append(currencies, ConvertCurrency(e))
 	}
 	return currencies
+}
+
+func ConvertProgress(ent *ent.Progress) *coupon.Progress {
+	return &coupon.Progress{
+		MilestoneId: ent.ID,
+		Progress:    ent.Progress,
+		PassCount:   ent.PassCount,
+	}
+}
+
+func ConvertProgresses(ents []*ent.Progress) []*coupon.Progress {
+	progresses := make([]*coupon.Progress, 0, len(ents))
+	for _, e := range ents {
+		progresses = append(progresses, ConvertProgress(e))
+	}
+
+	return progresses
 }

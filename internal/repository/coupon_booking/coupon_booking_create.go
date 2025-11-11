@@ -4,7 +4,6 @@ import (
 	"context"
 
 	coupon "github.com/chisdev/coupon/api"
-	"github.com/chisdev/coupon/internal/utiils/checker"
 	"github.com/chisdev/coupon/internal/utiils/tx"
 	entcoupon "github.com/chisdev/coupon/pkg/ent/coupon"
 )
@@ -31,13 +30,13 @@ func (c *couponBooking) Create(ctx context.Context, storeId, couponCode, booking
 			query = query.SetCustomerID(*customerID)
 		}
 
-		if len(eCoupon.ServiceIds) > 0 {
-			acceptedServiceIds, ok := checker.IsContains(eCoupon.ServiceIds, serviceIds)
-			if !ok {
-				return errServiceIdsNotAccepted
-			}
-			query = query.SetServiceIds(acceptedServiceIds)
-		}
+		// if len(eCoupon.ServiceIds) > 0 {
+		// 	acceptedServiceIds, ok := checker.IsContains(eCoupon.ServiceIds, serviceIds)
+		// 	if !ok {
+		// 		return errServiceIdsNotAccepted
+		// 	}
+		// 	query = query.SetServiceIds(acceptedServiceIds)
+		// }
 
 		if eCoupon.Status != coupon.CouponStatus_COUPON_STATUS_ACTIVE {
 			return errCouponNotActive

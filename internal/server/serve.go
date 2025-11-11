@@ -93,6 +93,7 @@ func Serve(cfg *config.Config) {
 	}
 
 	pb0.RegisterCouponServer(server, couponServie)
+	pb0.RegisterCouponInternalServer(server, couponInternalService)
 	// Register reflection service on gRPC server.
 	// Please remove if you it's not necessary for your service
 	reflection.Register(server)

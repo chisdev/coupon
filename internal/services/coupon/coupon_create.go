@@ -19,7 +19,7 @@ func (c *coupon) CreateCoupon(ctx context.Context, req *api.CreateCouponRequest)
 	opts := []couponrepo.Option{
 		couponrepo.WithCurrencyID(req.CurrencyId),
 		couponrepo.WithStoreIDs([]string{storeId}),
-		couponrepo.WithServiceIds(req.ServiceIds),
+		// couponrepo.WithServiceIds(req.ServiceIds),
 		couponrepo.WithUsageLimit(req.UsageLimit),
 	}
 
