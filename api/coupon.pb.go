@@ -2851,15 +2851,15 @@ const file_coupon_api_coupon_proto_rawDesc = "" +
 	"\rMilestoneType\x12\x1a\n" +
 	"\x16MILESTONE_TYPE_UNKNOWN\x10\x00\x12\x18\n" +
 	"\x14MILESTONE_TYPE_FIXED\x10\x01\x12\x1c\n" +
-	"\x18MILESTONE_TYPE_RECURRING\x10\x022\xb1\t\n" +
+	"\x18MILESTONE_TYPE_RECURRING\x10\x022\xc2\t\n" +
 	"\x06Coupon\x12\x83\x01\n" +
-	"\x15ListCouponForCustomer\x12$.coupon.ListCouponForCustomerRequest\x1a%.coupon.ListCouponForCustomerResponse\"\x1d\x82\xd3\xe4\x93\x02\x17\x12\x15/coupon/customer/list\x12o\n" +
-	"\x10ListCouponForCms\x12\x1f.coupon.ListCouponForCmsRequest\x1a .coupon.ListCouponForCmsResponse\"\x18\x82\xd3\xe4\x93\x02\x12\x12\x10/coupon/cms/list\x12q\n" +
-	"\x11ListAppliedCoupon\x12 .coupon.ListAppliedCouponRequest\x1a!.coupon.ListAppliedCouponResponse\"\x17\x82\xd3\xe4\x93\x02\x11\x12\x0f/coupon/applied\x12c\n" +
-	"\fListProgress\x12\x1b.coupon.ListProgressRequest\x1a\x1c.coupon.ListProgressResponse\"\x18\x82\xd3\xe4\x93\x02\x12\x12\x10/coupon/progress\x12c\n" +
-	"\fListCurrency\x12\x1b.coupon.ListCurrencyRequest\x1a\x1c.coupon.ListCurrencyResponse\"\x18\x82\xd3\xe4\x93\x02\x12\x12\x10/coupon/currency\x12p\n" +
-	"\x0fCreateMileStone\x12\x1e.coupon.CreateMileStoneRequest\x1a\x1f.coupon.CreateMileStoneResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/coupon/milestone\x12g\n" +
-	"\rListMileStone\x12\x1c.coupon.ListMileStoneRequest\x1a\x1d.coupon.ListMileStoneResponse\"\x19\x82\xd3\xe4\x93\x02\x13\x12\x11/coupon/milestone\x12n\n" +
+	"\x15ListCouponForCustomer\x12$.coupon.ListCouponForCustomerRequest\x1a%.coupon.ListCouponForCustomerResponse\"\x1d\x82\xd3\xe4\x93\x02\x17\"\x15/coupon/customer/list\x12o\n" +
+	"\x10ListCouponForCms\x12\x1f.coupon.ListCouponForCmsRequest\x1a .coupon.ListCouponForCmsResponse\"\x18\x82\xd3\xe4\x93\x02\x12\"\x10/coupon/cms/list\x12q\n" +
+	"\x11ListAppliedCoupon\x12 .coupon.ListAppliedCouponRequest\x1a!.coupon.ListAppliedCouponResponse\"\x17\x82\xd3\xe4\x93\x02\x11\"\x0f/coupon/applied\x12h\n" +
+	"\fListProgress\x12\x1b.coupon.ListProgressRequest\x1a\x1c.coupon.ListProgressResponse\"\x1d\x82\xd3\xe4\x93\x02\x17\"\x15/coupon/progress/list\x12c\n" +
+	"\fListCurrency\x12\x1b.coupon.ListCurrencyRequest\x1a\x1c.coupon.ListCurrencyResponse\"\x18\x82\xd3\xe4\x93\x02\x12\"\x10/coupon/currency\x12w\n" +
+	"\x0fCreateMileStone\x12\x1e.coupon.CreateMileStoneRequest\x1a\x1f.coupon.CreateMileStoneResponse\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/coupon/milestone/create\x12l\n" +
+	"\rListMileStone\x12\x1c.coupon.ListMileStoneRequest\x1a\x1d.coupon.ListMileStoneResponse\"\x1e\x82\xd3\xe4\x93\x02\x18\"\x16/coupon/milestone/list\x12n\n" +
 	"\x0fDeleteMileStone\x12\x1e.coupon.DeleteMileStoneRequest\x1a\x16.google.protobuf.Empty\"#\x82\xd3\xe4\x93\x02\x1d:\x01*\"\x18/coupon/milestone/delete\x12b\n" +
 	"\vCheckCoupon\x12\x1b.coupon.CheckCouponsRequest\x1a\x1c.coupon.CheckCouponsResponse\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/coupon/check\x12d\n" +
 	"\fCreateCoupon\x12\x1b.coupon.CreateCouponRequest\x1a\x1c.coupon.CreateCouponResponse\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/coupon/create\x12^\n" +

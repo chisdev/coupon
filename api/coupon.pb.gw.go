@@ -431,7 +431,7 @@ func local_request_CouponInternal_ConfirmCouponUsage_0(ctx context.Context, mars
 // Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterCouponHandlerFromEndpoint instead.
 // GRPC interceptors will not work for this type of registration. To use interceptors, you must use the "runtime.WithMiddlewares" option in the "runtime.NewServeMux" call.
 func RegisterCouponHandlerServer(ctx context.Context, mux *runtime.ServeMux, server CouponServer) error {
-	mux.Handle(http.MethodGet, pattern_Coupon_ListCouponForCustomer_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_Coupon_ListCouponForCustomer_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -451,7 +451,7 @@ func RegisterCouponHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 		}
 		forward_Coupon_ListCouponForCustomer_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_Coupon_ListCouponForCms_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_Coupon_ListCouponForCms_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -471,7 +471,7 @@ func RegisterCouponHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 		}
 		forward_Coupon_ListCouponForCms_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_Coupon_ListAppliedCoupon_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_Coupon_ListAppliedCoupon_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -491,13 +491,13 @@ func RegisterCouponHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 		}
 		forward_Coupon_ListAppliedCoupon_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_Coupon_ListProgress_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_Coupon_ListProgress_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.Coupon/ListProgress", runtime.WithHTTPPathPattern("/coupon/progress"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.Coupon/ListProgress", runtime.WithHTTPPathPattern("/coupon/progress/list"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -511,7 +511,7 @@ func RegisterCouponHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 		}
 		forward_Coupon_ListProgress_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_Coupon_ListCurrency_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_Coupon_ListCurrency_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -537,7 +537,7 @@ func RegisterCouponHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.Coupon/CreateMileStone", runtime.WithHTTPPathPattern("/coupon/milestone"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.Coupon/CreateMileStone", runtime.WithHTTPPathPattern("/coupon/milestone/create"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -551,13 +551,13 @@ func RegisterCouponHandlerServer(ctx context.Context, mux *runtime.ServeMux, ser
 		}
 		forward_Coupon_CreateMileStone_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_Coupon_ListMileStone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_Coupon_ListMileStone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.Coupon/ListMileStone", runtime.WithHTTPPathPattern("/coupon/milestone"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/coupon.Coupon/ListMileStone", runtime.WithHTTPPathPattern("/coupon/milestone/list"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -761,7 +761,7 @@ func RegisterCouponHandler(ctx context.Context, mux *runtime.ServeMux, conn *grp
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
 // "CouponClient" to call the correct interceptors. This client ignores the HTTP middlewares.
 func RegisterCouponHandlerClient(ctx context.Context, mux *runtime.ServeMux, client CouponClient) error {
-	mux.Handle(http.MethodGet, pattern_Coupon_ListCouponForCustomer_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_Coupon_ListCouponForCustomer_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -778,7 +778,7 @@ func RegisterCouponHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 		}
 		forward_Coupon_ListCouponForCustomer_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_Coupon_ListCouponForCms_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_Coupon_ListCouponForCms_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -795,7 +795,7 @@ func RegisterCouponHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 		}
 		forward_Coupon_ListCouponForCms_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_Coupon_ListAppliedCoupon_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_Coupon_ListAppliedCoupon_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -812,11 +812,11 @@ func RegisterCouponHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 		}
 		forward_Coupon_ListAppliedCoupon_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_Coupon_ListProgress_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_Coupon_ListProgress_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.Coupon/ListProgress", runtime.WithHTTPPathPattern("/coupon/progress"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.Coupon/ListProgress", runtime.WithHTTPPathPattern("/coupon/progress/list"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -829,7 +829,7 @@ func RegisterCouponHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 		}
 		forward_Coupon_ListProgress_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_Coupon_ListCurrency_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_Coupon_ListCurrency_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -850,7 +850,7 @@ func RegisterCouponHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.Coupon/CreateMileStone", runtime.WithHTTPPathPattern("/coupon/milestone"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.Coupon/CreateMileStone", runtime.WithHTTPPathPattern("/coupon/milestone/create"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -863,11 +863,11 @@ func RegisterCouponHandlerClient(ctx context.Context, mux *runtime.ServeMux, cli
 		}
 		forward_Coupon_CreateMileStone_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodGet, pattern_Coupon_ListMileStone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodPost, pattern_Coupon_ListMileStone_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.Coupon/ListMileStone", runtime.WithHTTPPathPattern("/coupon/milestone"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/coupon.Coupon/ListMileStone", runtime.WithHTTPPathPattern("/coupon/milestone/list"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -955,10 +955,10 @@ var (
 	pattern_Coupon_ListCouponForCustomer_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"coupon", "customer", "list"}, ""))
 	pattern_Coupon_ListCouponForCms_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"coupon", "cms", "list"}, ""))
 	pattern_Coupon_ListAppliedCoupon_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"coupon", "applied"}, ""))
-	pattern_Coupon_ListProgress_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"coupon", "progress"}, ""))
+	pattern_Coupon_ListProgress_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"coupon", "progress", "list"}, ""))
 	pattern_Coupon_ListCurrency_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"coupon", "currency"}, ""))
-	pattern_Coupon_CreateMileStone_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"coupon", "milestone"}, ""))
-	pattern_Coupon_ListMileStone_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"coupon", "milestone"}, ""))
+	pattern_Coupon_CreateMileStone_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"coupon", "milestone", "create"}, ""))
+	pattern_Coupon_ListMileStone_0         = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"coupon", "milestone", "list"}, ""))
 	pattern_Coupon_DeleteMileStone_0       = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"coupon", "milestone", "delete"}, ""))
 	pattern_Coupon_CheckCoupon_0           = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"coupon", "check"}, ""))
 	pattern_Coupon_CreateCoupon_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"coupon", "create"}, ""))

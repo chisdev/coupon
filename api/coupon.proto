@@ -12,44 +12,44 @@ import "google/api/annotations.proto";
 service Coupon {
     rpc ListCouponForCustomer (ListCouponForCustomerRequest) returns (ListCouponForCustomerResponse) {
         option (google.api.http) = {
-            get: "/coupon/customer/list"
+            post: "/coupon/customer/list"
         };
     };
 
     rpc ListCouponForCms (ListCouponForCmsRequest) returns (ListCouponForCmsResponse) {
         option (google.api.http) = {
-            get: "/coupon/cms/list"
+            post: "/coupon/cms/list"
         };
     };
 
     rpc ListAppliedCoupon(ListAppliedCouponRequest) returns (ListAppliedCouponResponse) {
          option (google.api.http) = {
-            get: "/coupon/applied"
+            post: "/coupon/applied"
         };
     }
 
     rpc ListProgress (ListProgressRequest) returns (ListProgressResponse) {
         option (google.api.http) = {
-            get: "/coupon/progress"
+            post: "/coupon/progress/list"
         };
     } 
 
     rpc ListCurrency (ListCurrencyRequest) returns (ListCurrencyResponse) {
           option (google.api.http) = {
-            get: "/coupon/currency"
+            post: "/coupon/currency"
         };
     }
 
     rpc CreateMileStone (CreateMileStoneRequest) returns (CreateMileStoneResponse) {
       option (google.api.http) = {
-        post: "/coupon/milestone"
+        post: "/coupon/milestone/create"
         body: "*"
       };
     }
 
     rpc ListMileStone (ListMileStoneRequest) returns (ListMileStoneResponse) {
       option (google.api.http) = {
-        get: "/coupon/milestone"
+        post: "/coupon/milestone/list"
       };
     }
  
