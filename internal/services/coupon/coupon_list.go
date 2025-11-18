@@ -6,6 +6,8 @@ import (
 	api "github.com/chisdev/coupon/api"
 	couponrepo "github.com/chisdev/coupon/internal/repository/coupon"
 	"github.com/chisdev/coupon/internal/utiils/convert"
+	"github.com/chisdev/coupon/internal/utiils/tx"
+	"github.com/chisdev/coupon/pkg/ent"
 )
 
 func (c *coupon) ListCouponForCustomer(ctx context.Context, request *api.ListCouponForCustomerRequest) (*api.ListCouponForCustomerResponse, error) {
@@ -23,8 +25,16 @@ func (c *coupon) ListCouponForCustomer(ctx context.Context, request *api.ListCou
 		couponrepo.WithUsage(true),
 	}
 
-	coupons, totalCount, totalPage, err := c.repo.CouponRepository.List(ctx, opts...)
-	if err != nil {
+	var (
+		coupons    []*ent.Coupon
+		totalCount int32
+		totalPage  int32
+		err        error
+	)
+	if err := tx.WithTransaction(ctx, c.repo.GetEntClient(), func(ctx context.Context, tx tx.Tx) error {
+		coupons, totalCount, totalPage, err = c.repo.CouponRepository.List(ctx, tx, opts...)
+		return err
+	}); err != nil {
 		return nil, err
 	}
 
@@ -50,10 +60,19 @@ func (c *coupon) ListCouponForCms(ctx context.Context, request *api.ListCouponFo
 		couponrepo.WithUserIDs(request.CustomerIds),
 		couponrepo.WithStatus(request.Status),
 		couponrepo.WithUsage(true),
+		couponrepo.WithSearchContent(request.SearchContent),
 	}
 
-	coupons, totalCount, totalPage, err := c.repo.CouponRepository.List(ctx, opts...)
-	if err != nil {
+	var (
+		coupons    []*ent.Coupon
+		totalCount int32
+		totalPage  int32
+		err        error
+	)
+	if err := tx.WithTransaction(ctx, c.repo.GetEntClient(), func(ctx context.Context, tx tx.Tx) error {
+		coupons, totalCount, totalPage, err = c.repo.CouponRepository.List(ctx, tx, opts...)
+		return err
+	}); err != nil {
 		return nil, err
 	}
 

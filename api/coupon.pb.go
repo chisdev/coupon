@@ -1684,6 +1684,7 @@ type ListCouponForCmsRequest struct {
 	CustomerIds []string               `protobuf:"bytes,4,rep,name=customer_ids,json=customerIds,proto3" json:"customer_ids,omitempty"`
 	// repeated string service_ids = 5;
 	Status        CouponStatus `protobuf:"varint,6,opt,name=status,proto3,enum=coupon.CouponStatus" json:"status,omitempty"`
+	SearchContent string       `protobuf:"bytes,7,opt,name=search_content,json=searchContent,proto3" json:"search_content,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1751,6 +1752,13 @@ func (x *ListCouponForCmsRequest) GetStatus() CouponStatus {
 		return x.Status
 	}
 	return CouponStatus_COUPON_STATUS_UNKNOWN
+}
+
+func (x *ListCouponForCmsRequest) GetSearchContent() string {
+	if x != nil {
+		return x.SearchContent
+	}
+	return ""
 }
 
 type ListCouponForCmsResponse struct {
@@ -2749,14 +2757,15 @@ const file_coupon_api_coupon_proto_rawDesc = "" +
 	"totalCount\x12\x1f\n" +
 	"\vtotal_pages\x18\x03 \x01(\x05R\n" +
 	"totalPages\x12>\n" +
-	"\arequest\x18\x04 \x01(\v2$.coupon.ListCouponForCustomerRequestR\arequest\"\xef\x01\n" +
+	"\arequest\x18\x04 \x01(\v2$.coupon.ListCouponForCustomerRequestR\arequest\"\x96\x02\n" +
 	"\x17ListCouponForCmsRequest\x12&\n" +
 	"\n" +
 	"page_index\x18\x01 \x01(\x05B\a\xfaB\x04\x1a\x02(\x00R\tpageIndex\x12$\n" +
 	"\tpage_size\x18\x02 \x01(\x05B\a\xfaB\x04\x1a\x02(\x00R\bpageSize\x125\n" +
 	"\fsort_methods\x18\x03 \x03(\v2\x12.coupon.SortMethodR\vsortMethods\x12!\n" +
 	"\fcustomer_ids\x18\x04 \x03(\tR\vcustomerIds\x12,\n" +
-	"\x06status\x18\x06 \x01(\x0e2\x14.coupon.CouponStatusR\x06status\"\xc6\x01\n" +
+	"\x06status\x18\x06 \x01(\x0e2\x14.coupon.CouponStatusR\x06status\x12%\n" +
+	"\x0esearch_content\x18\a \x01(\tR\rsearchContent\"\xc6\x01\n" +
 	"\x18ListCouponForCmsResponse\x12-\n" +
 	"\acoupons\x18\x01 \x03(\v2\x13.coupon.StoreCouponR\acoupons\x12\x1f\n" +
 	"\vtotal_count\x18\x02 \x01(\x05R\n" +

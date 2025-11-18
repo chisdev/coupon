@@ -7,22 +7,23 @@ import (
 )
 
 type CouponOpts struct {
-	IDs         []uint64
-	Code        string
-	Codes       []string
-	UserIDs     []string
-	StoreIDs    []string
-	ExpiredAt   *time.Time
-	Limit       int32
-	PageIndex   int32
-	UsageLimit  *int32
-	Status      api.CouponStatus
-	Type        api.CouponType
-	CurrencyID  *uint64
-	ServiceIds  []string
-	SortMethods []*api.SortMethod
-	WithUsage   bool
-	BookingiD   string
+	IDs           []uint64
+	Code          string
+	Codes         []string
+	UserIDs       []string
+	StoreIDs      []string
+	ExpiredAt     *time.Time
+	Limit         int32
+	PageIndex     int32
+	UsageLimit    *int32
+	Status        api.CouponStatus
+	Type          api.CouponType
+	CurrencyID    *uint64
+	ServiceIds    []string
+	SortMethods   []*api.SortMethod
+	WithUsage     bool
+	BookingiD     string
+	SearchContent string
 }
 
 type Option interface {
@@ -123,5 +124,11 @@ func WithSortMethods(sortMethods []*api.SortMethod) Option {
 func WithBookingId(id string) Option {
 	return funcOption(func(co *CouponOpts) {
 		co.BookingiD = co.BookingiD
+	})
+}
+
+func WithSearchContent(content string) Option {
+	return funcOption(func(co *CouponOpts) {
+		co.SearchContent = content
 	})
 }

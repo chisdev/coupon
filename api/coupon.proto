@@ -317,6 +317,7 @@ message ListCouponForCmsRequest {
     repeated string customer_ids = 4;
     // repeated string service_ids = 5;
     CouponStatus status = 6;
+    string search_content = 7;
 }
 
 message ListCouponForCmsResponse {

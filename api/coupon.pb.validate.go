@@ -2917,6 +2917,8 @@ func (m *ListCouponForCmsRequest) validate(all bool) error {
 
 	// no validation rules for Status
 
+	// no validation rules for SearchContent
+
 	if len(errors) > 0 {
 		return ListCouponForCmsRequestMultiError(errors)
 	}
