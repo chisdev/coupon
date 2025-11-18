@@ -13,30 +13,35 @@ service Coupon {
     rpc ListCouponForCustomer (ListCouponForCustomerRequest) returns (ListCouponForCustomerResponse) {
         option (google.api.http) = {
             post: "/coupon/customer/list"
+            body: "*"
         };
     };
 
     rpc ListCouponForCms (ListCouponForCmsRequest) returns (ListCouponForCmsResponse) {
         option (google.api.http) = {
             post: "/coupon/cms/list"
+            body: "*"
         };
     };
 
     rpc ListAppliedCoupon(ListAppliedCouponRequest) returns (ListAppliedCouponResponse) {
          option (google.api.http) = {
             post: "/coupon/applied"
+            body: "*"
         };
     }
 
     rpc ListProgress (ListProgressRequest) returns (ListProgressResponse) {
         option (google.api.http) = {
             post: "/coupon/progress/list"
+            body: "*"
         };
     } 
 
     rpc ListCurrency (ListCurrencyRequest) returns (ListCurrencyResponse) {
           option (google.api.http) = {
             post: "/coupon/currency"
+            body: "*"
         };
     }
 
@@ -50,6 +55,7 @@ service Coupon {
     rpc ListMileStone (ListMileStoneRequest) returns (ListMileStoneResponse) {
       option (google.api.http) = {
         post: "/coupon/milestone/list"
+        body: "*"
       };
     }
  
