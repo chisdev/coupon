@@ -24,3 +24,10 @@ database:
   debug: false
   tracing_enabled: false
   max_idle_conns: 5
+
+
+
+redis:
+  address: ${REDIS_ADDRESS}
+  namespace: ${REDIS_NAMESPACE}
+  password: ${REDIS_PASSWORD}

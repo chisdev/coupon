@@ -428,6 +428,7 @@ type Milestone struct {
 	Step          *int32                 `protobuf:"varint,4,opt,name=step,proto3,oneof" json:"step,omitempty"`
 	StoreId       string                 `protobuf:"bytes,5,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
 	Rewards       []*Reward              `protobuf:"bytes,6,rep,name=rewards,proto3" json:"rewards,omitempty"`
+	Name          string                 `protobuf:"bytes,7,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -502,6 +503,13 @@ func (x *Milestone) GetRewards() []*Reward {
 		return x.Rewards
 	}
 	return nil
+}
+
+func (x *Milestone) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
 }
 
 type StoreCoupon struct {
@@ -2616,14 +2624,15 @@ const file_coupon_api_coupon_proto_rawDesc = "" +
 	"couponTypeB\x13\n" +
 	"\x11_expired_durationB\x0e\n" +
 	"\f_currency_idB\x0e\n" +
-	"\f_usage_limit\"\xde\x01\n" +
+	"\f_usage_limit\"\xf2\x01\n" +
 	"\tMilestone\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x04R\x02id\x12)\n" +
 	"\x04type\x18\x02 \x01(\x0e2\x15.coupon.MilestoneTypeR\x04type\x12!\n" +
 	"\tthreshold\x18\x03 \x01(\x05H\x00R\tthreshold\x88\x01\x01\x12\x17\n" +
 	"\x04step\x18\x04 \x01(\x05H\x01R\x04step\x88\x01\x01\x12\x19\n" +
 	"\bstore_id\x18\x05 \x01(\tR\astoreId\x12(\n" +
-	"\arewards\x18\x06 \x03(\v2\x0e.coupon.RewardR\arewardsB\f\n" +
+	"\arewards\x18\x06 \x03(\v2\x0e.coupon.RewardR\arewards\x12\x12\n" +
+	"\x04name\x18\a \x01(\tR\x04nameB\f\n" +
 	"\n" +
 	"_thresholdB\a\n" +
 	"\x05_step\"\xc3\x04\n" +

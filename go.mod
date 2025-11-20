@@ -8,6 +8,7 @@ require (
 	github.com/ChisTrun/database v1.0.3
 	github.com/ChisTrun/grpc v0.0.0-20250810180513-657d6e12dbc4
 	github.com/ChisTrun/logger v1.0.3
+	github.com/ChisTrun/redis v1.0.2
 	github.com/ChisTrun/trunkit v1.0.6
 	github.com/DataDog/datadog-go v4.8.3+incompatible
 	github.com/envoyproxy/protoc-gen-validate v1.2.1

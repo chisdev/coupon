@@ -14,6 +14,8 @@ github.com/ChisTrun/grpc v0.0.0-20250810180513-657d6e12dbc4 h1:QXoFM2V0ZJ1Lya5vM
 github.com/ChisTrun/grpc v0.0.0-20250810180513-657d6e12dbc4/go.mod h1:I6wqrmFM+OEUa7OXpCjHLl+Cu7jfxQOePu+Rm2wnUYE=
 github.com/ChisTrun/logger v1.0.3 h1:kjyI/yTd7jh0TnJt7jVQc1RTG2mstsCwIssTujJMq6I=
 github.com/ChisTrun/logger v1.0.3/go.mod h1:80RE1TrdomXU3nqsNnjb56EIDb5hBhqEPkfAc2oZ5lw=
+github.com/ChisTrun/redis v1.0.2 h1:Y62KWo6DY9dYJnkI7DVLAx1dJDd04VGy6863ahWhFLg=
+github.com/ChisTrun/redis v1.0.2/go.mod h1:WiKe2PJ3YeBdYQZrhqPt3D7s2CzsrnGaeGcXFqt8p64=
 github.com/ChisTrun/trunkit v1.0.6 h1:7sT/agP4LShTwPsIDWRtb8EKFggioujRjwXoTUY48ww=
 github.com/ChisTrun/trunkit v1.0.6/go.mod h1:/Obw/NyvoTW17LcXxFtHXqdvdEP/RtiHS+KTNG40q28=
 github.com/DATA-DOG/go-sqlmock v1.5.0 h1:Shsta01QNfFxHCfpW6YH2STWB0MudeXXEWMr20OEh60=

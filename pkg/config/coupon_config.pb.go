@@ -10,6 +10,7 @@ import (
 	api "github.com/ChisTrun/carbon/api"
 	api2 "github.com/ChisTrun/database/api"
 	api1 "github.com/ChisTrun/logger/api"
+	api3 "github.com/ChisTrun/redis/api"
 	_ "github.com/envoyproxy/protoc-gen-validate/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -31,6 +32,7 @@ type Config struct {
 	Logger        *api1.Logger           `protobuf:"bytes,2,opt,name=logger,proto3" json:"logger,omitempty"`
 	HttpListener  *api.Listener          `protobuf:"bytes,3,opt,name=http_listener,json=httpListener,proto3" json:"http_listener,omitempty"`
 	Database      *api2.Database         `protobuf:"bytes,4,opt,name=database,proto3" json:"database,omitempty"`
+	Redis         *api3.Redis            `protobuf:"bytes,5,opt,name=redis,proto3" json:"redis,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -93,16 +95,24 @@ func (x *Config) GetDatabase() *api2.Database {
 	return nil
 }
 
+func (x *Config) GetRedis() *api3.Redis {
+	if x != nil {
+		return x.Redis
+	}
+	return nil
+}
+
 var File_coupon_api_coupon_config_proto protoreflect.FileDescriptor
 
 const file_coupon_api_coupon_config_proto_rawDesc = "" +
 	"\n" +
-	"\x1ecoupon/api/coupon_config.proto\x12\rcoupon.config\x1a\x17validate/validate.proto\x1a\x17logger/api/logger.proto\x1a\x17carbon/api/carbon.proto\x1a\x1bdatabase/api/database.proto\"\x91\x02\n" +
+	"\x1ecoupon/api/coupon_config.proto\x12\rcoupon.config\x1a\x17validate/validate.proto\x1a\x17logger/api/logger.proto\x1a\x17carbon/api/carbon.proto\x1a\x1bdatabase/api/database.proto\x1a\x15redis/api/redis.proto\"\xc8\x02\n" +
 	"\x06Config\x12?\n" +
 	"\blistener\x18\x01 \x01(\v2\x19.greyhole.carbon.ListenerB\b\xfaB\x05\x8a\x01\x02\x10\x01R\blistener\x129\n" +
 	"\x06logger\x18\x02 \x01(\v2\x17.greyhole.logger.LoggerB\b\xfaB\x05\x8a\x01\x02\x10\x01R\x06logger\x12H\n" +
 	"\rhttp_listener\x18\x03 \x01(\v2\x19.greyhole.carbon.ListenerB\b\xfaB\x05\x8a\x01\x02\x10\x01R\fhttpListener\x12A\n" +
-	"\bdatabase\x18\x04 \x01(\v2\x1b.greyhole.database.DatabaseB\b\xfaB\x05\x8a\x01\x02\x10\x01R\bdatabaseB-Z+github.com/chisdev/coupon/pkg/config;couponb\x06proto3"
+	"\bdatabase\x18\x04 \x01(\v2\x1b.greyhole.database.DatabaseB\b\xfaB\x05\x8a\x01\x02\x10\x01R\bdatabase\x125\n" +
+	"\x05redis\x18\x05 \x01(\v2\x15.greyhole.redis.RedisB\b\xfaB\x05\x8a\x01\x02\x10\x01R\x05redisB-Z+github.com/chisdev/coupon/pkg/config;couponb\x06proto3"
 
 var (
 	file_coupon_api_coupon_config_proto_rawDescOnce sync.Once
@@ -122,17 +132,19 @@ var file_coupon_api_coupon_config_proto_goTypes = []any{
 	(*api.Listener)(nil),  // 1: greyhole.carbon.Listener
 	(*api1.Logger)(nil),   // 2: greyhole.logger.Logger
 	(*api2.Database)(nil), // 3: greyhole.database.Database
+	(*api3.Redis)(nil),    // 4: greyhole.redis.Redis
 }
 var file_coupon_api_coupon_config_proto_depIdxs = []int32{
 	1, // 0: coupon.config.Config.listener:type_name -> greyhole.carbon.Listener
 	2, // 1: coupon.config.Config.logger:type_name -> greyhole.logger.Logger
 	1, // 2: coupon.config.Config.http_listener:type_name -> greyhole.carbon.Listener
 	3, // 3: coupon.config.Config.database:type_name -> greyhole.database.Database
-	4, // [4:4] is the sub-list for method output_type
-	4, // [4:4] is the sub-list for method input_type
-	4, // [4:4] is the sub-list for extension type_name
-	4, // [4:4] is the sub-list for extension extendee
-	0, // [0:4] is the sub-list for field type_name
+	4, // 4: coupon.config.Config.redis:type_name -> greyhole.redis.Redis
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_coupon_api_coupon_config_proto_init() }

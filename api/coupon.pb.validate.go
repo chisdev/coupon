@@ -327,6 +327,8 @@ func (m *Milestone) validate(all bool) error {
 
 	}
 
+	// no validation rules for Name
+
 	if m.Threshold != nil {
 		// no validation rules for Threshold
 	}

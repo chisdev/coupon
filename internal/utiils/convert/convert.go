@@ -29,6 +29,7 @@ func ConvertRewards(ents []*ent.Reward) []*coupon.Reward {
 
 func ConvertMilestone(e *ent.Milestone) *coupon.Milestone {
 	return &coupon.Milestone{
+		Name:      e.Name,
 		Id:        e.ID,
 		Type:      e.MilestoneType,
 		Threshold: e.Threshold,

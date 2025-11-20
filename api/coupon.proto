@@ -178,6 +178,7 @@ message Milestone {
     optional int32 step = 4;
     string store_id = 5;
     repeated Reward  rewards = 6;
+    string name = 7;
 }
 
 message StoreCoupon {
