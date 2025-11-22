@@ -88,7 +88,22 @@ service Coupon {
       };
     }
 
+    rpc GetSecretCode(google.protobuf.Empty) returns (GetSecretCodeResponse) {
+        option (google.api.http) = {
+            post: "/coupon/secret-code"
+        };
+    }
+
+    rpc AddSecretPoints(AddSecretPointsRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/coupon/secret-code/add-points"
+            body: "*"
+        };
+    }
+    
+
 }
+
 
 
 
@@ -114,7 +129,12 @@ service CouponInternal {
         };
     };
 
-    rpc AddPoint (AddPointRequest) returns (google.protobuf.Empty);
+    rpc AddPoint (AddPointRequest)  returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/couponint/add-point"
+            body: "*"
+        };
+    };
     
 }
 
@@ -396,4 +416,14 @@ message  ListAppliedCouponRequest {
 
 message ListAppliedCouponResponse {
     repeated StoreCoupon coupons = 1;
+}
+
+message GetSecretCodeResponse {
+    string secret_code = 1;
+}
+
+message AddSecretPointsRequest {
+    string secret_code = 1;
+    int32 points = 2;
+    string customer_id = 3;
 }

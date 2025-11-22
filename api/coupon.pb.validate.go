@@ -4627,6 +4627,218 @@ var _ interface {
 	ErrorName() string
 } = ListAppliedCouponResponseValidationError{}
 
+// Validate checks the field values on GetSecretCodeResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *GetSecretCodeResponse) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on GetSecretCodeResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// GetSecretCodeResponseMultiError, or nil if none found.
+func (m *GetSecretCodeResponse) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *GetSecretCodeResponse) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for SecretCode
+
+	if len(errors) > 0 {
+		return GetSecretCodeResponseMultiError(errors)
+	}
+
+	return nil
+}
+
+// GetSecretCodeResponseMultiError is an error wrapping multiple validation
+// errors returned by GetSecretCodeResponse.ValidateAll() if the designated
+// constraints aren't met.
+type GetSecretCodeResponseMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m GetSecretCodeResponseMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m GetSecretCodeResponseMultiError) AllErrors() []error { return m }
+
+// GetSecretCodeResponseValidationError is the validation error returned by
+// GetSecretCodeResponse.Validate if the designated constraints aren't met.
+type GetSecretCodeResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetSecretCodeResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetSecretCodeResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetSecretCodeResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetSecretCodeResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetSecretCodeResponseValidationError) ErrorName() string {
+	return "GetSecretCodeResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetSecretCodeResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetSecretCodeResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetSecretCodeResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetSecretCodeResponseValidationError{}
+
+// Validate checks the field values on AddSecretPointsRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the first error encountered is returned, or nil if there are no violations.
+func (m *AddSecretPointsRequest) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on AddSecretPointsRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, the result is a list of violation errors wrapped in
+// AddSecretPointsRequestMultiError, or nil if none found.
+func (m *AddSecretPointsRequest) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *AddSecretPointsRequest) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for SecretCode
+
+	// no validation rules for Points
+
+	// no validation rules for CustomerId
+
+	if len(errors) > 0 {
+		return AddSecretPointsRequestMultiError(errors)
+	}
+
+	return nil
+}
+
+// AddSecretPointsRequestMultiError is an error wrapping multiple validation
+// errors returned by AddSecretPointsRequest.ValidateAll() if the designated
+// constraints aren't met.
+type AddSecretPointsRequestMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m AddSecretPointsRequestMultiError) Error() string {
+	msgs := make([]string, 0, len(m))
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m AddSecretPointsRequestMultiError) AllErrors() []error { return m }
+
+// AddSecretPointsRequestValidationError is the validation error returned by
+// AddSecretPointsRequest.Validate if the designated constraints aren't met.
+type AddSecretPointsRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e AddSecretPointsRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e AddSecretPointsRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e AddSecretPointsRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e AddSecretPointsRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e AddSecretPointsRequestValidationError) ErrorName() string {
+	return "AddSecretPointsRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e AddSecretPointsRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sAddSecretPointsRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = AddSecretPointsRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = AddSecretPointsRequestValidationError{}
+
 // Validate checks the field values on CreateMileStoneRequest_MilestoneReward
 // with the rules defined in the proto definition for this message. If any
 // rules are violated, the first error encountered is returned, or nil if

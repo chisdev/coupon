@@ -373,6 +373,94 @@
         ]
       }
     },
+    "/coupon/secret-code": {
+      "post": {
+        "operationId": "Coupon_GetSecretCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/couponGetSecretCodeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "Coupon"
+        ]
+      }
+    },
+    "/coupon/secret-code/add-points": {
+      "post": {
+        "operationId": "Coupon_AddSecretPoints",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/couponAddSecretPointsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Coupon"
+        ]
+      }
+    },
+    "/couponint/add-point": {
+      "post": {
+        "operationId": "CouponInternal_AddPoint",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/couponAddPointRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CouponInternal"
+        ]
+      }
+    },
     "/couponint/confirm-usage": {
       "post": {
         "operationId": "CouponInternal_ConfirmCouponUsage",
@@ -511,6 +599,36 @@
           "type": "integer",
           "format": "int32",
           "title": "repeated uint64 service_ids = 5;"
+        }
+      }
+    },
+    "couponAddPointRequest": {
+      "type": "object",
+      "properties": {
+        "points": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "customer_id": {
+          "type": "string"
+        },
+        "store_id": {
+          "type": "string"
+        }
+      }
+    },
+    "couponAddSecretPointsRequest": {
+      "type": "object",
+      "properties": {
+        "secret_code": {
+          "type": "string"
+        },
+        "points": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "customer_id": {
+          "type": "string"
         }
       }
     },
@@ -719,6 +837,14 @@
             "type": "string",
             "format": "uint64"
           }
+        }
+      }
+    },
+    "couponGetSecretCodeResponse": {
+      "type": "object",
+      "properties": {
+        "secret_code": {
+          "type": "string"
         }
       }
     },

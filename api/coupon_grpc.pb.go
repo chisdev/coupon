@@ -31,6 +31,8 @@ const (
 	Coupon_CheckCoupon_FullMethodName           = "/coupon.Coupon/CheckCoupon"
 	Coupon_CreateCoupon_FullMethodName          = "/coupon.Coupon/CreateCoupon"
 	Coupon_DeleteCoupon_FullMethodName          = "/coupon.Coupon/DeleteCoupon"
+	Coupon_GetSecretCode_FullMethodName         = "/coupon.Coupon/GetSecretCode"
+	Coupon_AddSecretPoints_FullMethodName       = "/coupon.Coupon/AddSecretPoints"
 )
 
 // CouponClient is the client API for Coupon service.
@@ -48,6 +50,8 @@ type CouponClient interface {
 	CheckCoupon(ctx context.Context, in *CheckCouponsRequest, opts ...grpc.CallOption) (*CheckCouponsResponse, error)
 	CreateCoupon(ctx context.Context, in *CreateCouponRequest, opts ...grpc.CallOption) (*CreateCouponResponse, error)
 	DeleteCoupon(ctx context.Context, in *DeleteCouponRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetSecretCode(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetSecretCodeResponse, error)
+	AddSecretPoints(ctx context.Context, in *AddSecretPointsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type couponClient struct {
@@ -168,6 +172,26 @@ func (c *couponClient) DeleteCoupon(ctx context.Context, in *DeleteCouponRequest
 	return out, nil
 }
 
+func (c *couponClient) GetSecretCode(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*GetSecretCodeResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetSecretCodeResponse)
+	err := c.cc.Invoke(ctx, Coupon_GetSecretCode_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *couponClient) AddSecretPoints(ctx context.Context, in *AddSecretPointsRequest, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, Coupon_AddSecretPoints_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CouponServer is the server API for Coupon service.
 // All implementations must embed UnimplementedCouponServer
 // for forward compatibility.
@@ -183,6 +207,8 @@ type CouponServer interface {
 	CheckCoupon(context.Context, *CheckCouponsRequest) (*CheckCouponsResponse, error)
 	CreateCoupon(context.Context, *CreateCouponRequest) (*CreateCouponResponse, error)
 	DeleteCoupon(context.Context, *DeleteCouponRequest) (*emptypb.Empty, error)
+	GetSecretCode(context.Context, *emptypb.Empty) (*GetSecretCodeResponse, error)
+	AddSecretPoints(context.Context, *AddSecretPointsRequest) (*emptypb.Empty, error)
 	mustEmbedUnimplementedCouponServer()
 }
 
@@ -225,6 +251,12 @@ func (UnimplementedCouponServer) CreateCoupon(context.Context, *CreateCouponRequ
 }
 func (UnimplementedCouponServer) DeleteCoupon(context.Context, *DeleteCouponRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeleteCoupon not implemented")
+}
+func (UnimplementedCouponServer) GetSecretCode(context.Context, *emptypb.Empty) (*GetSecretCodeResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSecretCode not implemented")
+}
+func (UnimplementedCouponServer) AddSecretPoints(context.Context, *AddSecretPointsRequest) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddSecretPoints not implemented")
 }
 func (UnimplementedCouponServer) mustEmbedUnimplementedCouponServer() {}
 func (UnimplementedCouponServer) testEmbeddedByValue()                {}
@@ -445,6 +477,42 @@ func _Coupon_DeleteCoupon_Handler(srv interface{}, ctx context.Context, dec func
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Coupon_GetSecretCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CouponServer).GetSecretCode(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coupon_GetSecretCode_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CouponServer).GetSecretCode(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Coupon_AddSecretPoints_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddSecretPointsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CouponServer).AddSecretPoints(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Coupon_AddSecretPoints_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CouponServer).AddSecretPoints(ctx, req.(*AddSecretPointsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Coupon_ServiceDesc is the grpc.ServiceDesc for Coupon service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -495,6 +563,14 @@ var Coupon_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "DeleteCoupon",
 			Handler:    _Coupon_DeleteCoupon_Handler,
+		},
+		{
+			MethodName: "GetSecretCode",
+			Handler:    _Coupon_GetSecretCode_Handler,
+		},
+		{
+			MethodName: "AddSecretPoints",
+			Handler:    _Coupon_AddSecretPoints_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
