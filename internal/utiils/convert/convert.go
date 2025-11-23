@@ -128,11 +128,17 @@ func ConvertCurrencies(ents []*ent.Currency) []*coupon.Currency {
 }
 
 func ConvertProgress(ent *ent.Progress) *coupon.Progress {
-	return &coupon.Progress{
-		MilestoneId: ent.ID,
-		Progress:    ent.Progress,
-		PassCount:   ent.PassCount,
+	out := &coupon.Progress{
+		// MilestoneId: ent.ID,
+		Progress:  ent.Progress,
+		PassCount: ent.PassCount,
 	}
+
+	if ent.Edges.Milestone != nil {
+		out.Milestone = ConvertMilestone(ent.Edges.Milestone)
+	}
+
+	return out
 }
 
 func ConvertProgresses(ents []*ent.Progress) []*coupon.Progress {

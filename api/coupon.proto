@@ -229,7 +229,7 @@ message CouponUsage {
 }
 
 message Progress {
-    uint64  milestone_id = 1;
+    Milestone  Milestone = 1;
     int32   progress = 2;
     int32   pass_count = 3;
 }

@@ -740,7 +740,7 @@ func (x *CouponUsage) GetUsedAt() *timestamppb.Timestamp {
 
 type Progress struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	MilestoneId   uint64                 `protobuf:"varint,1,opt,name=milestone_id,json=milestoneId,proto3" json:"milestone_id,omitempty"`
+	Milestone     *Milestone             `protobuf:"bytes,1,opt,name=Milestone,proto3" json:"Milestone,omitempty"`
 	Progress      int32                  `protobuf:"varint,2,opt,name=progress,proto3" json:"progress,omitempty"`
 	PassCount     int32                  `protobuf:"varint,3,opt,name=pass_count,json=passCount,proto3" json:"pass_count,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -777,11 +777,11 @@ func (*Progress) Descriptor() ([]byte, []int) {
 	return file_coupon_api_coupon_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *Progress) GetMilestoneId() uint64 {
+func (x *Progress) GetMilestone() *Milestone {
 	if x != nil {
-		return x.MilestoneId
+		return x.Milestone
 	}
-	return 0
+	return nil
 }
 
 func (x *Progress) GetProgress() int32 {
@@ -2778,9 +2778,9 @@ const file_coupon_api_coupon_proto_rawDesc = "" +
 	"\f_customer_idB\x0e\n" +
 	"\f_reserved_atB\n" +
 	"\n" +
-	"\b_used_at\"h\n" +
-	"\bProgress\x12!\n" +
-	"\fmilestone_id\x18\x01 \x01(\x04R\vmilestoneId\x12\x1a\n" +
+	"\b_used_at\"v\n" +
+	"\bProgress\x12/\n" +
+	"\tMilestone\x18\x01 \x01(\v2\x11.coupon.MilestoneR\tMilestone\x12\x1a\n" +
 	"\bprogress\x18\x02 \x01(\x05R\bprogress\x12\x1d\n" +
 	"\n" +
 	"pass_count\x18\x03 \x01(\x05R\tpassCount\"`\n" +
@@ -3076,69 +3076,70 @@ var file_coupon_api_coupon_proto_depIdxs = []int32{
 	0,  // 8: coupon.CouponUsage.status:type_name -> coupon.CouponUsedStatus
 	43, // 9: coupon.CouponUsage.reserved_at:type_name -> google.protobuf.Timestamp
 	43, // 10: coupon.CouponUsage.used_at:type_name -> google.protobuf.Timestamp
-	7,  // 11: coupon.MilestoneProgress.Milestone:type_name -> coupon.Milestone
-	41, // 12: coupon.CreateMileStoneRequest.rewards:type_name -> coupon.CreateMileStoneRequest.MilestoneReward
-	7,  // 13: coupon.CreateMileStoneResponse.milestone:type_name -> coupon.Milestone
-	7,  // 14: coupon.GetMileStoneResponse.milestone:type_name -> coupon.Milestone
-	5,  // 15: coupon.ListMileStoneRequest.sort_methods:type_name -> coupon.SortMethod
-	7,  // 16: coupon.ListMileStoneResponse.milestones:type_name -> coupon.Milestone
-	17, // 17: coupon.ListMileStoneResponse.request:type_name -> coupon.ListMileStoneRequest
-	5,  // 18: coupon.ListCouponForCustomerRequest.sort_methods:type_name -> coupon.SortMethod
-	3,  // 19: coupon.ListCouponForCustomerRequest.status:type_name -> coupon.CouponStatus
-	8,  // 20: coupon.ListCouponForCustomerResponse.coupons:type_name -> coupon.StoreCoupon
-	24, // 21: coupon.ListCouponForCustomerResponse.request:type_name -> coupon.ListCouponForCustomerRequest
-	5,  // 22: coupon.ListCouponForCmsRequest.sort_methods:type_name -> coupon.SortMethod
-	3,  // 23: coupon.ListCouponForCmsRequest.status:type_name -> coupon.CouponStatus
-	8,  // 24: coupon.ListCouponForCmsResponse.coupons:type_name -> coupon.StoreCoupon
-	26, // 25: coupon.ListCouponForCmsResponse.request:type_name -> coupon.ListCouponForCmsRequest
-	5,  // 26: coupon.ListProgressRequest.sort_methods:type_name -> coupon.SortMethod
-	10, // 27: coupon.ListProgressResponse.progress_list:type_name -> coupon.Progress
-	28, // 28: coupon.ListProgressResponse.request:type_name -> coupon.ListProgressRequest
-	5,  // 29: coupon.ListCurrencyRequest.sort_methods:type_name -> coupon.SortMethod
-	13, // 30: coupon.ListCurrencyResponse.currencies:type_name -> coupon.Currency
-	28, // 31: coupon.ListCurrencyResponse.request:type_name -> coupon.ListProgressRequest
-	8,  // 32: coupon.CreateCouponResponse.coupon:type_name -> coupon.StoreCoupon
-	42, // 33: coupon.CheckCouponsResponse.check_result:type_name -> coupon.CheckCouponsResponse.Result
-	8,  // 34: coupon.ListAppliedCouponResponse.coupons:type_name -> coupon.StoreCoupon
-	24, // 35: coupon.Coupon.ListCouponForCustomer:input_type -> coupon.ListCouponForCustomerRequest
-	26, // 36: coupon.Coupon.ListCouponForCms:input_type -> coupon.ListCouponForCmsRequest
-	37, // 37: coupon.Coupon.ListAppliedCoupon:input_type -> coupon.ListAppliedCouponRequest
-	28, // 38: coupon.Coupon.ListProgress:input_type -> coupon.ListProgressRequest
-	30, // 39: coupon.Coupon.ListCurrency:input_type -> coupon.ListCurrencyRequest
-	12, // 40: coupon.Coupon.CreateMileStone:input_type -> coupon.CreateMileStoneRequest
-	17, // 41: coupon.Coupon.ListMileStone:input_type -> coupon.ListMileStoneRequest
-	19, // 42: coupon.Coupon.DeleteMileStone:input_type -> coupon.DeleteMileStoneRequest
-	35, // 43: coupon.Coupon.CheckCoupon:input_type -> coupon.CheckCouponsRequest
-	32, // 44: coupon.Coupon.CreateCoupon:input_type -> coupon.CreateCouponRequest
-	34, // 45: coupon.Coupon.DeleteCoupon:input_type -> coupon.DeleteCouponRequest
-	44, // 46: coupon.Coupon.GetSecretCode:input_type -> google.protobuf.Empty
-	40, // 47: coupon.Coupon.AddSecretPoints:input_type -> coupon.AddSecretPointsRequest
-	20, // 48: coupon.CouponInternal.ReserveCoupon:input_type -> coupon.ReserveCouponRequest
-	21, // 49: coupon.CouponInternal.UnReserveCoupon:input_type -> coupon.UnReserveCouponRequest
-	22, // 50: coupon.CouponInternal.ConfirmCouponUsage:input_type -> coupon.ConfirmCouponUsageRequest
-	23, // 51: coupon.CouponInternal.AddPoint:input_type -> coupon.AddPointRequest
-	25, // 52: coupon.Coupon.ListCouponForCustomer:output_type -> coupon.ListCouponForCustomerResponse
-	27, // 53: coupon.Coupon.ListCouponForCms:output_type -> coupon.ListCouponForCmsResponse
-	38, // 54: coupon.Coupon.ListAppliedCoupon:output_type -> coupon.ListAppliedCouponResponse
-	29, // 55: coupon.Coupon.ListProgress:output_type -> coupon.ListProgressResponse
-	31, // 56: coupon.Coupon.ListCurrency:output_type -> coupon.ListCurrencyResponse
-	14, // 57: coupon.Coupon.CreateMileStone:output_type -> coupon.CreateMileStoneResponse
-	18, // 58: coupon.Coupon.ListMileStone:output_type -> coupon.ListMileStoneResponse
-	44, // 59: coupon.Coupon.DeleteMileStone:output_type -> google.protobuf.Empty
-	36, // 60: coupon.Coupon.CheckCoupon:output_type -> coupon.CheckCouponsResponse
-	33, // 61: coupon.Coupon.CreateCoupon:output_type -> coupon.CreateCouponResponse
-	44, // 62: coupon.Coupon.DeleteCoupon:output_type -> google.protobuf.Empty
-	39, // 63: coupon.Coupon.GetSecretCode:output_type -> coupon.GetSecretCodeResponse
-	44, // 64: coupon.Coupon.AddSecretPoints:output_type -> google.protobuf.Empty
-	44, // 65: coupon.CouponInternal.ReserveCoupon:output_type -> google.protobuf.Empty
-	44, // 66: coupon.CouponInternal.UnReserveCoupon:output_type -> google.protobuf.Empty
-	44, // 67: coupon.CouponInternal.ConfirmCouponUsage:output_type -> google.protobuf.Empty
-	44, // 68: coupon.CouponInternal.AddPoint:output_type -> google.protobuf.Empty
-	52, // [52:69] is the sub-list for method output_type
-	35, // [35:52] is the sub-list for method input_type
-	35, // [35:35] is the sub-list for extension type_name
-	35, // [35:35] is the sub-list for extension extendee
-	0,  // [0:35] is the sub-list for field type_name
+	7,  // 11: coupon.Progress.Milestone:type_name -> coupon.Milestone
+	7,  // 12: coupon.MilestoneProgress.Milestone:type_name -> coupon.Milestone
+	41, // 13: coupon.CreateMileStoneRequest.rewards:type_name -> coupon.CreateMileStoneRequest.MilestoneReward
+	7,  // 14: coupon.CreateMileStoneResponse.milestone:type_name -> coupon.Milestone
+	7,  // 15: coupon.GetMileStoneResponse.milestone:type_name -> coupon.Milestone
+	5,  // 16: coupon.ListMileStoneRequest.sort_methods:type_name -> coupon.SortMethod
+	7,  // 17: coupon.ListMileStoneResponse.milestones:type_name -> coupon.Milestone
+	17, // 18: coupon.ListMileStoneResponse.request:type_name -> coupon.ListMileStoneRequest
+	5,  // 19: coupon.ListCouponForCustomerRequest.sort_methods:type_name -> coupon.SortMethod
+	3,  // 20: coupon.ListCouponForCustomerRequest.status:type_name -> coupon.CouponStatus
+	8,  // 21: coupon.ListCouponForCustomerResponse.coupons:type_name -> coupon.StoreCoupon
+	24, // 22: coupon.ListCouponForCustomerResponse.request:type_name -> coupon.ListCouponForCustomerRequest
+	5,  // 23: coupon.ListCouponForCmsRequest.sort_methods:type_name -> coupon.SortMethod
+	3,  // 24: coupon.ListCouponForCmsRequest.status:type_name -> coupon.CouponStatus
+	8,  // 25: coupon.ListCouponForCmsResponse.coupons:type_name -> coupon.StoreCoupon
+	26, // 26: coupon.ListCouponForCmsResponse.request:type_name -> coupon.ListCouponForCmsRequest
+	5,  // 27: coupon.ListProgressRequest.sort_methods:type_name -> coupon.SortMethod
+	10, // 28: coupon.ListProgressResponse.progress_list:type_name -> coupon.Progress
+	28, // 29: coupon.ListProgressResponse.request:type_name -> coupon.ListProgressRequest
+	5,  // 30: coupon.ListCurrencyRequest.sort_methods:type_name -> coupon.SortMethod
+	13, // 31: coupon.ListCurrencyResponse.currencies:type_name -> coupon.Currency
+	28, // 32: coupon.ListCurrencyResponse.request:type_name -> coupon.ListProgressRequest
+	8,  // 33: coupon.CreateCouponResponse.coupon:type_name -> coupon.StoreCoupon
+	42, // 34: coupon.CheckCouponsResponse.check_result:type_name -> coupon.CheckCouponsResponse.Result
+	8,  // 35: coupon.ListAppliedCouponResponse.coupons:type_name -> coupon.StoreCoupon
+	24, // 36: coupon.Coupon.ListCouponForCustomer:input_type -> coupon.ListCouponForCustomerRequest
+	26, // 37: coupon.Coupon.ListCouponForCms:input_type -> coupon.ListCouponForCmsRequest
+	37, // 38: coupon.Coupon.ListAppliedCoupon:input_type -> coupon.ListAppliedCouponRequest
+	28, // 39: coupon.Coupon.ListProgress:input_type -> coupon.ListProgressRequest
+	30, // 40: coupon.Coupon.ListCurrency:input_type -> coupon.ListCurrencyRequest
+	12, // 41: coupon.Coupon.CreateMileStone:input_type -> coupon.CreateMileStoneRequest
+	17, // 42: coupon.Coupon.ListMileStone:input_type -> coupon.ListMileStoneRequest
+	19, // 43: coupon.Coupon.DeleteMileStone:input_type -> coupon.DeleteMileStoneRequest
+	35, // 44: coupon.Coupon.CheckCoupon:input_type -> coupon.CheckCouponsRequest
+	32, // 45: coupon.Coupon.CreateCoupon:input_type -> coupon.CreateCouponRequest
+	34, // 46: coupon.Coupon.DeleteCoupon:input_type -> coupon.DeleteCouponRequest
+	44, // 47: coupon.Coupon.GetSecretCode:input_type -> google.protobuf.Empty
+	40, // 48: coupon.Coupon.AddSecretPoints:input_type -> coupon.AddSecretPointsRequest
+	20, // 49: coupon.CouponInternal.ReserveCoupon:input_type -> coupon.ReserveCouponRequest
+	21, // 50: coupon.CouponInternal.UnReserveCoupon:input_type -> coupon.UnReserveCouponRequest
+	22, // 51: coupon.CouponInternal.ConfirmCouponUsage:input_type -> coupon.ConfirmCouponUsageRequest
+	23, // 52: coupon.CouponInternal.AddPoint:input_type -> coupon.AddPointRequest
+	25, // 53: coupon.Coupon.ListCouponForCustomer:output_type -> coupon.ListCouponForCustomerResponse
+	27, // 54: coupon.Coupon.ListCouponForCms:output_type -> coupon.ListCouponForCmsResponse
+	38, // 55: coupon.Coupon.ListAppliedCoupon:output_type -> coupon.ListAppliedCouponResponse
+	29, // 56: coupon.Coupon.ListProgress:output_type -> coupon.ListProgressResponse
+	31, // 57: coupon.Coupon.ListCurrency:output_type -> coupon.ListCurrencyResponse
+	14, // 58: coupon.Coupon.CreateMileStone:output_type -> coupon.CreateMileStoneResponse
+	18, // 59: coupon.Coupon.ListMileStone:output_type -> coupon.ListMileStoneResponse
+	44, // 60: coupon.Coupon.DeleteMileStone:output_type -> google.protobuf.Empty
+	36, // 61: coupon.Coupon.CheckCoupon:output_type -> coupon.CheckCouponsResponse
+	33, // 62: coupon.Coupon.CreateCoupon:output_type -> coupon.CreateCouponResponse
+	44, // 63: coupon.Coupon.DeleteCoupon:output_type -> google.protobuf.Empty
+	39, // 64: coupon.Coupon.GetSecretCode:output_type -> coupon.GetSecretCodeResponse
+	44, // 65: coupon.Coupon.AddSecretPoints:output_type -> google.protobuf.Empty
+	44, // 66: coupon.CouponInternal.ReserveCoupon:output_type -> google.protobuf.Empty
+	44, // 67: coupon.CouponInternal.UnReserveCoupon:output_type -> google.protobuf.Empty
+	44, // 68: coupon.CouponInternal.ConfirmCouponUsage:output_type -> google.protobuf.Empty
+	44, // 69: coupon.CouponInternal.AddPoint:output_type -> google.protobuf.Empty
+	53, // [53:70] is the sub-list for method output_type
+	36, // [36:53] is the sub-list for method input_type
+	36, // [36:36] is the sub-list for extension type_name
+	36, // [36:36] is the sub-list for extension extendee
+	0,  // [0:36] is the sub-list for field type_name
 }
 
 func init() { file_coupon_api_coupon_proto_init() }

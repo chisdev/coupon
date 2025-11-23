@@ -1166,9 +1166,8 @@
     "couponProgress": {
       "type": "object",
       "properties": {
-        "milestone_id": {
-          "type": "string",
-          "format": "uint64"
+        "Milestone": {
+          "$ref": "#/definitions/couponMilestone"
         },
         "progress": {
           "type": "integer",

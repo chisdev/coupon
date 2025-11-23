@@ -7,6 +7,7 @@ import (
 	utils "github.com/chisdev/coupon/internal/utiils/sort"
 	"github.com/chisdev/coupon/internal/utiils/tx"
 	"github.com/chisdev/coupon/pkg/ent"
+	"github.com/chisdev/coupon/pkg/ent/milestone"
 	entprogress "github.com/chisdev/coupon/pkg/ent/progress"
 )
 
@@ -17,6 +18,10 @@ func (p *progress) List(ctx context.Context, opts ...Option) ([]*ent.Progress, i
 	}
 
 	query := p.ent.Progress.Query()
+
+	if len(option.StoreIds) != 0 {
+		query = query.Where(entprogress.HasMilestoneWith(milestone.StoreIDIn(option.StoreIds...)))
+	}
 
 	if len(option.CustomerIds) != 0 {
 		query = query.Where(entprogress.CustomerIDIn(option.CustomerIds...))
@@ -46,7 +51,7 @@ func (p *progress) List(ctx context.Context, opts ...Option) ([]*ent.Progress, i
 		totalPage = paging.GetPagingData(int32(totalCount), option.Limit)
 	}
 
-	progs, err := query.All(ctx)
+	progs, err := query.WithMilestone().All(ctx)
 	if err != nil {
 		return nil, 0, 0, err
 	}
@@ -61,6 +66,10 @@ func (p *progress) ListTx(ctx context.Context, tx tx.Tx, opts ...Option) ([]*ent
 	}
 
 	query := tx.Client().Progress.Query()
+
+	if len(option.StoreIds) != 0 {
+		query = query.Where(entprogress.HasMilestoneWith(milestone.StoreIDIn(option.StoreIds...)))
+	}
 
 	if len(option.CustomerIds) != 0 {
 		query = query.Where(entprogress.CustomerIDIn(option.CustomerIds...))

@@ -805,7 +805,34 @@ func (m *Progress) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for MilestoneId
+	if all {
+		switch v := interface{}(m.GetMilestone()).(type) {
+		case interface{ ValidateAll() error }:
+			if err := v.ValidateAll(); err != nil {
+				errors = append(errors, ProgressValidationError{
+					field:  "Milestone",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		case interface{ Validate() error }:
+			if err := v.Validate(); err != nil {
+				errors = append(errors, ProgressValidationError{
+					field:  "Milestone",
+					reason: "embedded message failed validation",
+					cause:  err,
+				})
+			}
+		}
+	} else if v, ok := interface{}(m.GetMilestone()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return ProgressValidationError{
+				field:  "Milestone",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
 
 	// no validation rules for Progress
 
