@@ -28,6 +28,7 @@ func (c *coupon) Update(ctx context.Context, tx tx.Tx, id uint64, opts ...Option
 func (c *coupon) UpdateAllCouponStatus(ctx context.Context, tx tx.Tx, query *ent.CouponQuery) error {
 	entcoupons, err := query.ForUpdate().WithCouponBookings(func(cbq *ent.CouponBookingQuery) {
 		cbq.Select(couponbooking.FieldID)
+		cbq.Where(couponbooking.StatusEQ(api.CouponUsedStatus_COUPON_USED_STATUS_USED))
 	}).All(ctx)
 	if err != nil {
 		return err
