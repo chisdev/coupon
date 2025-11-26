@@ -85,6 +85,7 @@ func ConvertCoupon(e *ent.Coupon) *coupon.StoreCoupon {
 		CouponUsages:  ConvertUsages(e.Edges.CouponBookings),
 		UsedCount:     0,
 		ReservedCount: 0,
+		CouponValue:   e.Value,
 	}
 
 	if e.ExpireAt != nil {
