@@ -20,3 +20,4 @@ func (s *couponServer) ListAppliedCoupon(ctx context.Context, request *coupon.Li
 
 	return resp, nil
 }
+
