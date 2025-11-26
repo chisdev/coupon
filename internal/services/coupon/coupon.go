@@ -17,6 +17,7 @@ type Coupon interface {
 	UnReserve(ctx context.Context, req *api.UnReserveCouponRequest) error
 	ListCouponForCustomer(ctx context.Context, request *api.ListCouponForCustomerRequest) (*api.ListCouponForCustomerResponse, error)
 	ListCouponForCms(ctx context.Context, request *api.ListCouponForCmsRequest) (*api.ListCouponForCmsResponse, error)
+	ListAppliedCoupons(ctx context.Context, request *api.ListAppliedCouponRequest) (*api.ListAppliedCouponResponse, error) 
 }
 
 type coupon struct {
