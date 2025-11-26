@@ -23,7 +23,7 @@ func (c *coupon) List(ctx context.Context, tx tx.Tx, opts ...Option) ([]*ent.Cou
 	query := tx.Client().Coupon.Query().ForUpdate()
 
 	if len(couponOpts.UserIDs) > 0 {
-		query = query.Where(entcoupon.CustomerIDIn(couponOpts.UserIDs...))
+		query = query.Where(entcoupon.Or(entcoupon.CustomerIDIn(couponOpts.UserIDs...), entcoupon.CustomerIDIsNil()))
 	}
 
 	if len(couponOpts.StoreIDs) > 0 {
