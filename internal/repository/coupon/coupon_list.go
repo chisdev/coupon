@@ -92,7 +92,6 @@ func (c *coupon) ListAppliedCoupons(ctx context.Context, bookingID string) ([]*e
 		Where(
 			entcoupon.HasCouponBookingsWith(
 				couponbooking.BookingID(bookingID),
-				couponbooking.StatusEQ(api.CouponUsedStatus_COUPON_USED_STATUS_RESERVED),
 			),
 		).
 		Order(entcoupon.ByCreatedAt(), ent.Asc()).
