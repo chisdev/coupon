@@ -5,21 +5,44 @@ import (
 	"time"
 
 	api "github.com/chisdev/coupon/api"
+	"github.com/chisdev/coupon/internal/utiils/generator"
 	"github.com/chisdev/coupon/internal/utiils/tx"
 	"github.com/chisdev/coupon/pkg/ent"
-	"github.com/google/uuid"
+	entcoupon "github.com/chisdev/coupon/pkg/ent/coupon"
 )
 
 func (c *coupon) Create(ctx context.Context, value float64, opts ...Option) (*ent.Coupon, error) {
 	var couponOpts CouponOpts
+	var code string
+	var err error
+
 	for _, opt := range opts {
 		opt.Apply(&couponOpts)
+	}
+
+	for i := 0; i < c.maxRetry; i++ {
+		code, err = generator.GenCode(c.codeLen)
+		if err != nil {
+			return nil, err
+		}
+
+		exist, err := c.ent.Coupon.
+			Query().
+			Where(entcoupon.CodeEQ(code)).
+			Exist(ctx)
+		if err != nil {
+			return nil, err
+		}
+
+		if !exist {
+			break
+		}
 	}
 
 	query := c.ent.Coupon.Create().
 		SetValue(value).
 		SetStatus(api.CouponStatus_COUPON_STATUS_ACTIVE).
-		SetCode(uuid.NewString())
+		SetCode(code)
 
 	if len(couponOpts.UserIDs) != 0 {
 		query = query.SetCustomerID(couponOpts.UserIDs[0])
@@ -56,14 +79,36 @@ func (c *coupon) Create(ctx context.Context, value float64, opts ...Option) (*en
 
 func (c *coupon) CreateTx(ctx context.Context, tx tx.Tx, value float64, opts ...Option) error {
 	var couponOpts CouponOpts
+	var code string
+	var err error
+
 	for _, opt := range opts {
 		opt.Apply(&couponOpts)
+	}
+
+	for i := 0; i < c.maxRetry; i++ {
+		code, err = generator.GenCode(c.codeLen)
+		if err != nil {
+			return err
+		}
+
+		exist, err := c.ent.Coupon.
+			Query().
+			Where(entcoupon.CodeEQ(code)).
+			Exist(ctx)
+		if err != nil {
+			return err
+		}
+
+		if !exist {
+			break
+		}
 	}
 
 	query := tx.Client().Coupon.Create().
 		SetValue(value).
 		SetStatus(api.CouponStatus_COUPON_STATUS_ACTIVE).
-		SetCode(uuid.NewString())
+		SetCode(code)
 
 	if len(couponOpts.UserIDs) != 0 {
 		query = query.SetCustomerID(couponOpts.UserIDs[0])

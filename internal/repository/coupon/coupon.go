@@ -20,9 +20,11 @@ type Coupon interface {
 }
 
 type coupon struct {
-	ent *ent.Client
+	ent      *ent.Client
+	maxRetry int
+	codeLen  int
 }
 
 func New(ent *ent.Client) Coupon {
-	return &coupon{ent: ent}
+	return &coupon{ent: ent, maxRetry: 10, codeLen: 8}
 }
