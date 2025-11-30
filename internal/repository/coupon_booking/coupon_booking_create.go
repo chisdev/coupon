@@ -108,6 +108,10 @@ func (c *couponBooking) CreateListTx(ctx context.Context, tx tx.Tx, storeId, boo
 		return err
 	}
 
+	if len(eCoupons) != len(couponCodes) {
+		return errCouponNotFound
+	}
+
 	for _, eCoupon := range eCoupons {
 		query := tx.Client().CouponBooking.
 			Create().
@@ -121,14 +125,6 @@ func (c *couponBooking) CreateListTx(ctx context.Context, tx tx.Tx, storeId, boo
 			}
 			query = query.SetCustomerID(*customerID)
 		}
-
-		// if len(eCoupon.ServiceIds) > 0 {
-		// 	acceptedServiceIds, ok := checker.IsContains(eCoupon.ServiceIds, serviceIds)
-		// 	if !ok {
-		// 		return errServiceIdsNotAccepted
-		// 	}
-		// 	query = query.SetServiceIds(acceptedServiceIds)
-		// }
 
 		if eCoupon.Status != coupon.CouponStatus_COUPON_STATUS_ACTIVE {
 			return errCouponNotActive

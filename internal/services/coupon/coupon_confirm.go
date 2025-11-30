@@ -14,7 +14,6 @@ func (c *coupon) ConfirmUsage(ctx context.Context, req *api.ConfirmCouponUsageRe
 				return err
 			}
 		}
-
 		return c.repo.CouponBookingRepository.UpdateStatusTx(ctx, tx, req.StoreId, req.BookingId, api.CouponUsedStatus_COUPON_USED_STATUS_RESERVED, api.CouponUsedStatus_COUPON_USED_STATUS_USED)
 	})
 }
