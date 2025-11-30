@@ -94,7 +94,8 @@ func (c *coupon) ListAppliedCoupons(ctx context.Context, bookingID string) ([]*e
 				couponbooking.BookingID(bookingID),
 			),
 		).
-		Order(entcoupon.ByCreatedAt(), ent.Asc()).
+		Order(entcoupon.ByCreatedAt(), ent.Asc()).WithCouponBookings(func(cbq *ent.CouponBookingQuery) {
+	}).
 		All(ctx)
 	if err != nil {
 		return nil, err
