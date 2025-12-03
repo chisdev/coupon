@@ -4784,7 +4784,7 @@ func (m *AddSecretPointsRequest) validate(all bool) error {
 
 	// no validation rules for Points
 
-	// no validation rules for CustomerId
+	// no validation rules for StoreId
 
 	if len(errors) > 0 {
 		return AddSecretPointsRequestMultiError(errors)

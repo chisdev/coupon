@@ -2,9 +2,10 @@ package redis
 
 import (
 	"context"
-	config "github.com/chisdev/coupon/pkg/config"
 	"fmt"
 	"time"
+
+	config "github.com/chisdev/coupon/pkg/config"
 
 	re "github.com/redis/go-redis/v9"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -13,6 +14,7 @@ import (
 
 type Redis interface {
 	Set(ctx context.Context, key string, value proto.Message, expireTime time.Duration) (bool, error)
+	SetV2(ctx context.Context, key string, value interface{}, expireTime time.Duration) (bool, error)
 	Get(ctx context.Context, key string) ([]byte, error)
 	Delete(ctx context.Context, key string) (bool, error)
 }
@@ -29,7 +31,9 @@ func New(enable bool, cfg *config.Config) Redis {
 
 	return &redis{
 		redis: re.NewClient(&re.Options{
-			Addr: cfg.Redis.Address,
+			Addr:     cfg.Redis.Address,
+			Password: cfg.Redis.Password,
+			DB:       0,
 		}),
 		namespace: cfg.Redis.Namespace, // Assuming namespace is part of the config
 	}
@@ -46,6 +50,11 @@ func (r *redis) Set(ctx context.Context, key string, value proto.Message, expire
 		return false, err
 	}
 	return r.redis.Set(ctx, namespacedKey, string(jsonData), expireTime).Err() == nil, nil
+}
+
+func (r *redis) SetV2(ctx context.Context, key string, value interface{}, expireTime time.Duration) (bool, error) {
+	namespacedKey := r.withNamespace(key)
+	return r.redis.Set(ctx, namespacedKey, value, expireTime).Err() == nil, nil
 }
 
 func (r *redis) Get(ctx context.Context, key string) ([]byte, error) {

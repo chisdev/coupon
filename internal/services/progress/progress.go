@@ -10,6 +10,7 @@ import (
 
 type Progress interface {
 	AddPoints(ctx context.Context, req *coupon.AddPointRequest) error
+	AddSecretPoints(ctx context.Context, req *coupon.AddSecretPointsRequest) error
 	List(ctx context.Context, req *coupon.ListProgressRequest) (*coupon.ListProgressResponse, error)
 }
 

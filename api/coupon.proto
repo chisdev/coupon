@@ -100,7 +100,6 @@ service Coupon {
             body: "*"
         };
     }
-    
 
 }
 
@@ -425,5 +424,5 @@ message GetSecretCodeResponse {
 message AddSecretPointsRequest {
     string secret_code = 1;
     int32 points = 2;
-    string customer_id = 3;
+    string store_id = 3;
 }

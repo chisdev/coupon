@@ -2514,7 +2514,7 @@ type AddSecretPointsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	SecretCode    string                 `protobuf:"bytes,1,opt,name=secret_code,json=secretCode,proto3" json:"secret_code,omitempty"`
 	Points        int32                  `protobuf:"varint,2,opt,name=points,proto3" json:"points,omitempty"`
-	CustomerId    string                 `protobuf:"bytes,3,opt,name=customer_id,json=customerId,proto3" json:"customer_id,omitempty"`
+	StoreId       string                 `protobuf:"bytes,3,opt,name=store_id,json=storeId,proto3" json:"store_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2563,9 +2563,9 @@ func (x *AddSecretPointsRequest) GetPoints() int32 {
 	return 0
 }
 
-func (x *AddSecretPointsRequest) GetCustomerId() string {
+func (x *AddSecretPointsRequest) GetStoreId() string {
 	if x != nil {
-		return x.CustomerId
+		return x.StoreId
 	}
 	return ""
 }
@@ -2953,13 +2953,12 @@ const file_coupon_api_coupon_proto_rawDesc = "" +
 	"\acoupons\x18\x01 \x03(\v2\x13.coupon.StoreCouponR\acoupons\"8\n" +
 	"\x15GetSecretCodeResponse\x12\x1f\n" +
 	"\vsecret_code\x18\x01 \x01(\tR\n" +
-	"secretCode\"r\n" +
+	"secretCode\"l\n" +
 	"\x16AddSecretPointsRequest\x12\x1f\n" +
 	"\vsecret_code\x18\x01 \x01(\tR\n" +
 	"secretCode\x12\x16\n" +
-	"\x06points\x18\x02 \x01(\x05R\x06points\x12\x1f\n" +
-	"\vcustomer_id\x18\x03 \x01(\tR\n" +
-	"customerId*p\n" +
+	"\x06points\x18\x02 \x01(\x05R\x06points\x12\x19\n" +
+	"\bstore_id\x18\x03 \x01(\tR\astoreId*p\n" +
 	"\x10CouponUsedStatus\x12\x1e\n" +
 	"\x1aCOUPON_USED_STATUS_UNKNOWN\x10\x00\x12\x1f\n" +
 	"\x1bCOUPON_USED_STATUS_RESERVED\x10\x01\x12\x1b\n" +

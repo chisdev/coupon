@@ -19,6 +19,7 @@ import (
 	"github.com/chisdev/coupon/internal/server/couponinternal"
 	"github.com/chisdev/coupon/internal/services"
 	"github.com/chisdev/coupon/internal/utiils/extractor"
+	"github.com/chisdev/coupon/internal/utiils/redis"
 	config "github.com/chisdev/coupon/pkg/config"
 	"github.com/chisdev/coupon/pkg/ent"
 	"github.com/chisdev/coupon/pkg/ent/migrate"
@@ -58,6 +59,8 @@ func Serve(cfg *config.Config) {
 		logger.Fatal("can not init my database", zap.Error(err))
 	}
 
+	redis := redis.New(cfg.Redis != nil, cfg)
+
 	server := service.Server()
 
 	repo := repository.New(ent)
@@ -66,7 +69,7 @@ func Serve(cfg *config.Config) {
 
 	services := services.New(repo, extractor)
 
-	couponServie := coupon.NewServer(services, logger)
+	couponServie := coupon.NewServer(services, logger, redis)
 	couponInternalService := couponinternal.NewServer(services, logger)
 
 	grpcGatewayMux := runtime.NewServeMux(
