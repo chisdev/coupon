@@ -2,6 +2,7 @@ package couponinternal
 
 import (
 	"context"
+	"fmt"
 
 	"go.uber.org/zap"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -12,6 +13,11 @@ import (
 func (s *couponInternalServer) AddPoint(ctx context.Context, request *coupon.AddPointRequest) (*emptypb.Empty, error) {
 	if err := request.Validate(); err != nil {
 		return nil, err
+	}
+
+	if request.Points < 0 {
+		s.logger.Error("points to add cannot be negative", zap.Int32("points", request.Points))
+		return nil, fmt.Errorf("points to add cannot be negative")
 	}
 
 	if err := s.service.ProgressService.AddPoints(ctx, request); err != nil {

@@ -24,6 +24,11 @@ func (s *couponServer) AddSecretPoints(ctx context.Context, request *coupon.AddS
 		return nil, fmt.Errorf("invalid secret code")
 	}
 
+	if request.Points < 0 {
+		s.logger.Error("points to add cannot be negative", zap.Int32("points", request.Points))
+		return nil, fmt.Errorf("points to add cannot be negative")
+	}
+
 	if err := s.service.ProgressService.AddSecretPoints(ctx, request); err != nil {
 		s.logger.Error("error while calling AddSecretPoints", zap.Error(err))
 		return nil, err
