@@ -2,6 +2,7 @@ package milestone
 
 import (
 	"context"
+	"fmt"
 
 	coupon "github.com/chisdev/coupon/api"
 	"github.com/chisdev/coupon/internal/utiils/tx"
@@ -27,10 +28,17 @@ func (m *milestone) Create(ctx context.Context, tx tx.Tx, storeID string, opts .
 		if milestoneOpts.Step == nil {
 			return nil, errMissingStep
 		}
+		if *milestoneOpts.Step < 0 {
+			return nil, fmt.Errorf("step cannot be negative")
+		}
+
 		query = query.SetStep(*milestoneOpts.Step)
 	case coupon.MilestoneType_MILESTONE_TYPE_FIXED:
 		if milestoneOpts.Threshold == nil {
 			return nil, errMissingThreshold
+		}
+		if *milestoneOpts.Threshold < 0 {
+			return nil, fmt.Errorf("threshold cannot be negative")
 		}
 		query = query.SetThreshold(*milestoneOpts.Threshold)
 	default:

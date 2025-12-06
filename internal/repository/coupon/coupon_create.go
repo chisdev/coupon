@@ -2,6 +2,7 @@ package coupon
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	api "github.com/chisdev/coupon/api"
@@ -103,6 +104,10 @@ func (c *coupon) CreateTx(ctx context.Context, tx tx.Tx, value float64, opts ...
 		if !exist {
 			break
 		}
+	}
+
+	if value < 0 {
+		return fmt.Errorf("coupon value cannot be negative")
 	}
 
 	query := tx.Client().Coupon.Create().
