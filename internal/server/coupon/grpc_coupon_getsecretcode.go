@@ -19,7 +19,7 @@ func (s *couponServer) GetSecretCode(ctx context.Context, request *emptypb.Empty
 		return nil, fmt.Errorf("store id is missing in context")
 	}
 
-	code, err := generator.GenCodeV2("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789", 8)
+	code, err := generator.GenCodeV2("Z0123456789", 4)
 	if err != nil {
 		s.logger.Error("failed to generate code", zap.Error(err))
 		return nil, fmt.Errorf("failed to generate code: %w", err)
